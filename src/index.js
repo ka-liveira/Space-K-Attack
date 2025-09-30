@@ -6,6 +6,8 @@ const ctx = canvas.getContext("2d"); // Contexto 2D do canvas
 canvas.width = innerWidth;  // Define a largura do canvas
 canvas.height = innerHeight;  // Define a altura do canvas
 
+ctx.imageSmoothingEnabled = false; // Desativa o suavização de imagem para um estilo pixelado
+
 const player = new Player(canvas.width, canvas.height); // Cria uma nova instância do jogador
 
 const keys = { // Objeto para rastrear o estado das teclas
