@@ -3,7 +3,6 @@ import Player from "./classes/Player.js"; // Importa a classe Player do arquivo 
 const canvas = document.querySelector("canvas"); // Seleciona o canvas
 const ctx = canvas.getContext("2d"); // Contexto 2D do canvas
 
-
 canvas.width = innerWidth;  // Define a largura do canvas
 canvas.height = innerHeight;  // Define a altura do canvas
 
@@ -17,28 +16,32 @@ const keys = { // Objeto para rastrear o estado das teclas
 const gameLoop = () => { // Função de loop do jogo
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas para redesenhar
 
-    if (keys.left.pressed) {
-        player.position.x -= 5; // Move o jogador para a esquerda
-    }
-    if (keys.right.pressed) {
-        player.position.x += 5; // Move o jogador para a direita
-    }
+   if (keys.left.pressed && player.position.x >= 0) { // Verifique .pressed
+       player.moveLeft(); // Move o jogador para a esquerda
+   }
+
+   if (keys.right.pressed && player.position.x <= canvas.width - player.width) { // Verifique .pressed
+       player.moveRight(); // Move o jogador para a direita
+   }
 
     player.draw(ctx); // Desenha o jogador no canvas
 
     requestAnimationFrame(gameLoop); // Chama a função novamente para o próximo frame
 };
 
-gameLoop(); // Inicia o loop do jogo
-
 addEventListener ("keydown", (event) => { // Adiciona um ouvinte de evento para a tecla pressionada
-    const key = event.key.toLowerCase(); // Converte a tecla pressionada para minúscula
+   const key = event.key.toLowerCase();
 
-    if (key === "a") {
-        player.position.x -= 20; // Move o jogador para a esquerda
-    }
+   if (key === "a") keys.left.pressed = true; // Altere a propriedade .pressed
+   if (key === "d") keys.right.pressed = true; // Altere a propriedade .pressed
+ });      
 
-    if (key === "d") {
-        player.position.x += 20; // Move o jogador para a direita
-    }   
-});
+addEventListener ("keyup", (event) => {
+   const key = event.key.toLowerCase();    
+
+   if (key === "a") keys.left.pressed = false; // Altere a propriedade .pressed
+   if (key === "d") keys.right.pressed = false; // Altere a propriedade .pressed
+ });
+
+  gameLoop(); // Inicia o loop do jogo
+
