@@ -1,0 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"); /*importando fonnte - google fonts*/
+
+* {
+    margin: 0; /*remove margens externas padrão dos elementos*/
+    padding: 0; /*remove espaçamentos internos padrão*/
+    box-sizing: border-box; /*faz largura/altura considerar bordas e paddings*/
+    font-family: "Press Start 2P", sans-serif; /*define a fonte padrão da página como "Press Start 2P"*/
+}
+
+canvas {
+    background-color: #121212; /* Define o fundo */
+}
