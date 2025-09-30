@@ -9,7 +9,27 @@ canvas.height = innerHeight;  // Define a altura do canvas
 
 const player = new Player(canvas.width, canvas.height); // Cria uma nova instância do jogador
 
-player.draw(ctx); // Desenha o jogador no canvas
+const keys = { // Objeto para rastrear o estado das teclas
+    left: { pressed: false },
+    right: { pressed: false }
+};
+
+const gameLoop = () => { // Função de loop do jogo
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas para redesenhar
+
+    if (keys.left.pressed) {
+        player.position.x -= 5; // Move o jogador para a esquerda
+    }
+    if (keys.right.pressed) {
+        player.position.x += 5; // Move o jogador para a direita
+    }
+
+    player.draw(ctx); // Desenha o jogador no canvas
+
+    requestAnimationFrame(gameLoop); // Chama a função novamente para o próximo frame
+};
+
+gameLoop(); // Inicia o loop do jogo
 
 addEventListener ("keydown", (event) => { // Adiciona um ouvinte de evento para a tecla pressionada
     const key = event.key.toLowerCase(); // Converte a tecla pressionada para minúscula
