@@ -72,7 +72,7 @@ addEventListener ("keydown", (event) => { // Adiciona um ouvinte de evento para 
 
    if (key === "a") keys.left.pressed = true; // Altere a propriedade .pressed
    if (key === "d") keys.right.pressed = true; // Altere a propriedade .pressed
-   if (key === "enter") keys.shoot.pressed = true; // Altere a propriedade .pressed
+   if (key === "enter" || key === ' ') keys.shoot.pressed = true; // Altere a propriedade .pressed
  });      
 
 addEventListener ("keyup", (event) => {
@@ -81,7 +81,7 @@ addEventListener ("keyup", (event) => {
    if (key === "a") keys.left.pressed = false; // Altere a propriedade .pressed
    if (key === "d") keys.right.pressed = false; // Altere a propriedade .pressed
 
-   if (key === "enter") {
+   if (key === "enter" || key === ' ') {
          keys.shoot.pressed = false; // Altere a propriedade .pressed
          keys.shoot.released = true; // Altere a propriedade .released 
    }
