@@ -18,15 +18,26 @@ const keys = { // Objeto para rastrear o estado das teclas
 const gameLoop = () => { // Função de loop do jogo
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas para redesenhar
 
+    ctx.save(); // Salva o estado atual do canvas
+
+    ctx.translate(player.position.x + player.width / 2, player.position.y + player.height / 2); // Move o ponto de origem para o centro do jogador
+    ctx.rotate(0); // Reseta a rotação
+
    if (keys.left.pressed && player.position.x >= 0) { // Verifique .pressed
        player.moveLeft(); // Move o jogador para a esquerda
+       ctx.rotate(-0.15); // Rotaciona o canvas para a esquerda
    }
 
    if (keys.right.pressed && player.position.x <= canvas.width - player.width) { // Verifique .pressed
        player.moveRight(); // Move o jogador para a direita
+       ctx.rotate(0.15); // Rotaciona o canvas para a direita
    }
 
-    player.draw(ctx); // Desenha o jogador no canvas
+   ctx.translate(-player.position.x - player.width / 2, -player.position.y - player.height / 2); // Move o ponto de origem para o centro do jogador
+
+    player.draw(ctx); // Desenha o jogador no canvas 
+
+    ctx.restore(); // Restaura o estado salvo do canvas
 
     requestAnimationFrame(gameLoop); // Chama a função novamente para o próximo frame
 };
