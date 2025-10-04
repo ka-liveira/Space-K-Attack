@@ -2,8 +2,6 @@ import { INITIAL_FRAMES, PATH_ENGINE_IMAGE, PATH_ENGINE_SPRITES, PATH_SPACESHIP_
 import Projectile from "./Projectile.js";
 
 class Player { //define a classe Player
-    width; // Declara a propriedade 'width' (largura) para a classe.
-
        constructor(canvasWidth, canvasHeight) { // Construtor da classe que inicializa as propriedades do jogador.
         this.width = 48 * 2; //define a largura do jogador
         this.height = 48 * 2;  // Define a altura do jogador
@@ -20,7 +18,7 @@ class Player { //define a classe Player
 
         this.sx = 0; // Posição x inicial do sprite
         this.framesCounter = INITIAL_FRAMES; // Contador de frames para animação do motor
- }
+      }
 
   getImage(path) { // Método 'getImage' que retorna a imagem do jogador.
     const image = new Image();
