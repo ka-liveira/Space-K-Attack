@@ -1,4 +1,5 @@
 import Player from "./classes/Player.js"; // Importa a classe Player do arquivo Player.js
+import Projectile from "./classes/Projectile.js";
 
 const canvas = document.querySelector("canvas"); // Seleciona o canvas
 const ctx = canvas.getContext("2d"); // Contexto 2D do canvas
@@ -9,19 +10,43 @@ canvas.height = innerHeight;  // Define a altura do canvas
 ctx.imageSmoothingEnabled = false; // Desativa o suavização de imagem para um estilo pixelado
 
 const player = new Player(canvas.width, canvas.height); // Cria uma nova instância do jogador
+const playerProjectiles = [];
 
 const keys = { // Objeto para rastrear o estado das teclas
     left: { pressed: false },
-    right: { pressed: false }
+    right: { pressed: false },
+    shoot: { pressed: false, released: true },
+};
+
+const drawProjectiles = () => { // Função para desenhar os projéteis
+   playerProjectiles.forEach((projectile) => {
+    projectile.draw(ctx); // Desenha o projétil
+    projectile.update(); // Atualiza a posição do projétil
+   });
+};
+
+const clearProjectiles = () => { // Função para limpar projéteis que saíram da tela
+    playerProjectiles.forEach((projectile, index) => {
+        if (projectile.position.y <= 0) {
+            playerProjectiles.splice(index, 1);
+        }
+    });
 };
 
 const gameLoop = () => { // Função de loop do jogo
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas para redesenhar
 
+    drawProjectiles(); // Desenha os projéteis
+    clearProjectiles(); // Limpa os projéteis que saíram da tela
+
     ctx.save(); // Salva o estado atual do canvas
 
     ctx.translate(player.position.x + player.width / 2, player.position.y + player.height / 2); // Move o ponto de origem para o centro do jogador
-    ctx.rotate(0); // Reseta a rotação
+
+    if (keys.shoot.pressed && keys.shoot.released) { // Verifique .pressed e .released
+        player.shoot(playerProjectiles); // O jogador atira
+        keys.shoot.released = false;
+    }
 
    if (keys.left.pressed && player.position.x >= 0) { // Verifique .pressed
        player.moveLeft(); // Move o jogador para a esquerda
@@ -47,6 +72,7 @@ addEventListener ("keydown", (event) => { // Adiciona um ouvinte de evento para 
 
    if (key === "a") keys.left.pressed = true; // Altere a propriedade .pressed
    if (key === "d") keys.right.pressed = true; // Altere a propriedade .pressed
+   if (key === "enter") keys.shoot.pressed = true; // Altere a propriedade .pressed
  });      
 
 addEventListener ("keyup", (event) => {
@@ -54,6 +80,11 @@ addEventListener ("keyup", (event) => {
 
    if (key === "a") keys.left.pressed = false; // Altere a propriedade .pressed
    if (key === "d") keys.right.pressed = false; // Altere a propriedade .pressed
+
+   if (key === "enter") {
+         keys.shoot.pressed = false; // Altere a propriedade .pressed
+         keys.shoot.released = true; // Altere a propriedade .released 
+   }
  });
 
   gameLoop(); // Inicia o loop do jogo

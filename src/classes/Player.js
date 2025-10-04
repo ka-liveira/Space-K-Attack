@@ -1,4 +1,5 @@
 import { INITIAL_FRAMES, PATH_ENGINE_IMAGE, PATH_ENGINE_SPRITES, PATH_SPACESHIP_IMAGE } from "../utils/constants.js";
+import Projectile from "./Projectile.js";
 
 class Player { //define a classe Player
     width; // Declara a propriedade 'width' (largura) para a classe.
@@ -50,5 +51,14 @@ draw (ctx) { // Método 'draw' que recebe o contexto do canvas como parâmetro.
     }
         this.framesCounter--; // Decrementa o contador de frames
 }
+
+  shoot(Projectiles) { // Método 'shoot' que cria e retorna um novo projétil.
+    const p = new Projectile( // Cria uma nova instância do projétil
+        { x: this.position.x + this.width / 2 - 1, y: this.position.y + 2 }, // Posição inicial do projétil (centro superior do jogador)
+        -10 // Velocidade do projétil
+    );
+    Projectiles.push(p); // Adiciona o projétil ao array de projéteis
 }
+}
+
 export default Player; // Exporta a classe 'Player' como padrão para que possa ser importada em outros arquivos.
