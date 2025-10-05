@@ -28,9 +28,13 @@ class Invader { //define a classe Invader
 
    moveDown() { // Método 'moveDown' que move o jogador para baixo.
     this.position.y += this.height;
-}    
+} 
 
-draw(ctx) {
+   incrementVelocity(boost) { // Método 'incrementVelocity' que aumenta a velocidade do invasor.
+       this.velocity += boost;
+   }
+
+        draw(ctx) {
         ctx.drawImage(
             this.image,
             this.position.x,
@@ -38,7 +42,7 @@ draw(ctx) {
             this.width,
             this.height
         );
-    }
+     }
 
   shoot(Projectiles) { // Método 'shoot' que cria e retorna um novo projétil.
     const p = new Projectile( // Cria uma nova instância do projétil
