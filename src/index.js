@@ -1,5 +1,7 @@
 import Player from "./classes/Player.js"; // Importa a classe Player do arquivo Player.js
-import Projectile from "./classes/Projectile.js";
+import Projectile from "./classes/Projectile.js"; // Importa a classe Projectile do arquivo Projectile.js
+import Grid from "./classes/Grid.js"; // Importa a classe Grid do arquivo Grid.js
+import Invader from "./classes/Invader.js"; // Importa a classe Invader do arquivo Invader.js
 
 const canvas = document.querySelector("canvas"); // Seleciona o canvas
 const ctx = canvas.getContext("2d"); // Contexto 2D do canvas
@@ -10,6 +12,7 @@ canvas.height = innerHeight;  // Define a altura do canvas
 ctx.imageSmoothingEnabled = false; // Desativa o suavização de imagem para um estilo pixelado
 
 const player = new Player(canvas.width, canvas.height); // Cria uma nova instância do jogador
+const grid = new Grid(3, 6); // Cria uma nova instância da grade de invasores
 const playerProjectiles = [];
 
 const keys = { // Objeto para rastrear o estado das teclas
@@ -38,6 +41,9 @@ const gameLoop = () => { // Função de loop do jogo
 
     drawProjectiles(); // Desenha os projéteis
     clearProjectiles(); // Limpa os projéteis que saíram da tela
+
+    grid.draw(ctx); // Desenha a grade de invasores
+   grid.update(); // Atualiza a posição dos invasores
 
     ctx.save(); // Salva o estado atual do canvas
 
@@ -85,7 +91,23 @@ addEventListener ("keyup", (event) => {
          keys.shoot.pressed = false; // Altere a propriedade .pressed
          keys.shoot.released = true; // Altere a propriedade .released 
    }
- });
+
+   // Adiciona o disparo ao pressionar o botão esquerdo do mouse
+    addEventListener("mousedown", (event) => {
+    // A propriedade 'button' com valor 0 corresponde ao botão esquerdo
+    if (event.button === 0) {
+        keys.shoot.pressed = true;
+    }
+    });
+
+    // Para o disparo quando o botão do mouse é solto
+    addEventListener("mouseup", (event) => {
+    if (event.button === 0) {
+        keys.shoot.pressed = false;
+        keys.shoot.released = true; // Resetando a lógica para permitir novo tiro
+    }
+    });
+});
 
   gameLoop(); // Inicia o loop do jogo
 

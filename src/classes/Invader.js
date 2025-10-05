@@ -1,11 +1,11 @@
-import { PATH_INVADER_IMAGE } from "../utils/constants,js";
+import { PATH_INVADER_IMAGE } from "../utils/constants.js";
 import Projectile  from "./Projectile.js";
 
 class Invader { //define a classe Invader
        constructor(position, velocity) { // Construtor da classe que inicializa as propriedades do jogador.
         this.position = position 
-        this.width = 50 * 2; //define a largura do invasor
-        this.height = 37 * 2;  // Define a altura do invasor
+        this.width = 50 * 0.8; //define a largura do invasor
+        this.height = 37 * 0.8;  // Define a altura do invasor
         this.velocity = velocity; // Define a velocidade de movimento do invasor
         
 
@@ -26,13 +26,19 @@ class Invader { //define a classe Invader
     this.position.x += this.velocity;
 }    
 
-draw (ctx) { // Método 'draw' que recebe o contexto do canvas como parâmetro.
-    ctx.drawImage(this.image, this.position.x, this.position.y, this.width, this.height ); // Desenha a imagem do invasor no canvas na posição (x, y) com a largura e altura especificadas.
-    ctx.drawImage(this.engineSprites, this.sx, 0, 48,48, this.position.x, this.position.y +10, this.width, this.height ); // Desenha os sprites do motor do invasor
-    ctx.drawImage(this.engineImage, this.position.x, this.position.y +8, this.width, this.height ); // Desenha a imagem do motor do jogador
+   moveDown() { // Método 'moveDown' que move o jogador para baixo.
+    this.position.y += this.height;
+}    
 
-    this.update(); // Atualiza o estado do jogador
-  }
+draw(ctx) {
+        ctx.drawImage(
+            this.image,
+            this.position.x,
+            this.position.y,
+            this.width,
+            this.height
+        );
+    }
 
   shoot(Projectiles) { // Método 'shoot' que cria e retorna um novo projétil.
     const p = new Projectile( // Cria uma nova instância do projétil
