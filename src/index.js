@@ -13,7 +13,9 @@ ctx.imageSmoothingEnabled = false; // Desativa o suavização de imagem para um 
 
 const player = new Player(canvas.width, canvas.height); // Cria uma nova instância do jogador
 const grid = new Grid(3, 6); // Cria uma nova instância da grade de invasores
+
 const playerProjectiles = [];
+const invaderProjectiles = [];
 
 const keys = { // Objeto para rastrear o estado das teclas
     left: { pressed: false },
@@ -22,9 +24,10 @@ const keys = { // Objeto para rastrear o estado das teclas
 };
 
 const drawProjectiles = () => { // Função para desenhar os projéteis
-   playerProjectiles.forEach((projectile) => {
-    projectile.draw(ctx); // Desenha o projétil
-    projectile.update(); // Atualiza a posição do projétil
+   const projectiles = [...playerProjectiles, ...invaderProjectiles];
+   projectiles.forEach((projectile) => {
+       projectile.draw(ctx); // Desenha o projétil
+       projectile.update(); // Atualiza a posição do projétil
    });
 };
 
@@ -108,6 +111,14 @@ addEventListener ("keyup", (event) => {
     }
     });
 });
+
+    setInterval(() => {
+        const invader = grid.getRandomInvader();
+
+        if (invader) {
+            invader.shoot(invaderProjectiles);
+        }
+}, 1000 );
 
   gameLoop(); // Inicia o loop do jogo
 
