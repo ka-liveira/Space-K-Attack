@@ -39,11 +39,23 @@ const clearProjectiles = () => { // Função para limpar projéteis que saíram 
     });
 };
 
+const checkShootInvaders = () => {
+    grid.invaders.forEach((invader, invaderIndex) => {
+        playerProjectiles.some((projectile) => {
+            if (invader.hit(projectile)) {
+                grid.invaders.splice(invaderIndex, 1);
+            }
+        });
+    });
+};
+
 const gameLoop = () => { // Função de loop do jogo
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas para redesenhar
 
     drawProjectiles(); // Desenha os projéteis
     clearProjectiles(); // Limpa os projéteis que saíram da tela
+
+    checkShootInvaders();
 
     grid.draw(ctx); // Desenha a grade de invasores
    grid.update(); // Atualiza a posição dos invasores
