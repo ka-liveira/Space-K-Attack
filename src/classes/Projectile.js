@@ -7,7 +7,7 @@ class Projectile {
     }
 
     draw(ctx) {
-        ctx.fillStyle = "#ffc800";
+        ctx.fillStyle = "#2a9cd1ff";
         ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
 
