@@ -2,6 +2,7 @@ import Player from "./classes/Player.js"; // Importa a classe Player do arquivo 
 import Projectile from "./classes/Projectile.js"; // Importa a classe Projectile do arquivo Projectile.js
 import Grid from "./classes/Grid.js"; // Importa a classe Grid do arquivo Grid.js
 import Invader from "./classes/Invader.js"; // Importa a classe Invader do arquivo Invader.js
+import Particle from "./classes/Particle.js"; // Importa a classe Particle do arquivo Particle.js
 
 const canvas = document.querySelector("canvas"); // Seleciona o canvas
 const ctx = canvas.getContext("2d"); // Contexto 2D do canvas
@@ -16,6 +17,7 @@ const grid = new Grid(3, 6); // Cria uma nova instância da grade de invasores
 
 const playerProjectiles = [];
 const invaderProjectiles = [];
+const particles = [];
 
 const keys = { // Objeto para rastrear o estado das teclas
     left: { pressed: false },
@@ -39,10 +41,44 @@ const clearProjectiles = () => { // Função para limpar projéteis que saíram 
     });
 };
 
+const drawParticles = () => {
+    particles.forEach((particle) => {
+        particle.draw(ctx);
+        particle.update();
+    });
+};
+
+const createExplosion = (position, size, color) => {
+    for (let i = 0; i < size; i += 1) {
+        const particle = new Particle(
+            {
+                x: position.x,
+                y: position.y,
+            },
+            {
+                x: (Math.random() - 0.5) * 1.5,
+                y: (Math.random() - 0.5) * 1.5,
+            },
+            2,
+            "red"
+        );
+
+        particles.push(particle);
+    }
+};
+
 const checkShootInvaders = () => {
     grid.invaders.forEach((invader, invaderIndex) => {
         playerProjectiles.some((projectile, projectilesIndex) => {
             if (invader.hit(projectile)) {
+                createExplosion( {
+                        x: invader.position.x + invader.width / 2,
+                        y: invader.position.y + invader.height / 2,
+                    },
+                    10,
+                    invader.color
+                );
+                
                 grid.invaders.splice(invaderIndex, 1);
                 playerProjectiles.splice(projectilesIndex, 1);
             }
@@ -53,6 +89,7 @@ const checkShootInvaders = () => {
 const gameLoop = () => { // Função de loop do jogo
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas para redesenhar
 
+    drawParticles();
     drawProjectiles(); // Desenha os projéteis
     clearProjectiles(); // Limpa os projéteis que saíram da tela
 
