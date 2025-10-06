@@ -41,9 +41,10 @@ const clearProjectiles = () => { // Função para limpar projéteis que saíram 
 
 const checkShootInvaders = () => {
     grid.invaders.forEach((invader, invaderIndex) => {
-        playerProjectiles.some((projectile) => {
+        playerProjectiles.some((projectile, projectilesIndex) => {
             if (invader.hit(projectile)) {
                 grid.invaders.splice(invaderIndex, 1);
+                playerProjectiles.splice(projectilesIndex, 1);
             }
         });
     });
