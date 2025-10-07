@@ -140,7 +140,7 @@ const checkShootInvaders = () => {
                         y: invader.position.y + invader.height / 2,
                     },
                     10,
-                    color
+                    "#941CFF"
                 );
                 
                 incrementScore(10);
@@ -339,7 +339,7 @@ buttonPlay.addEventListener("click", () => {
         const invader = grid.getRandomInvader();
 
         if (invader) {
-            invader.shoot(invadersProjectiles);
+            invader.shoot(invaderProjectiles);
         }
     }, 1000);
 });
@@ -351,14 +351,13 @@ buttonRestart.addEventListener("click", () => {
     grid.invaders.length = 0;
     grid.invadersVelocity = 1;
 
-    invadersProjectiles.length = 0; 
+    invaderProjectiles.length = 0; 
     
     gameData.score = 0
     gameData.level = 0
 
     gameOverScreen.remove();
 });
-
 
   gameLoop(); // Inicia o loop do jogo
 
