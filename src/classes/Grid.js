@@ -18,7 +18,7 @@ class Grid {
 
         for (let row = 0; row < this.rows; row += 1) {
             for (let col = 0; col < this.cols; col += 1) {
-                const invader = new Invader({  x: col * 50 + 20, y: row * 37 + 20 }, this.invadersVelocity);
+                const invader = new Invader({  x: col * 50 + 20, y: row * 37 + 100 }, this.invadersVelocity);
 
                 array.push(invader);
             }

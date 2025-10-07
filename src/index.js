@@ -27,6 +27,18 @@ ctx.imageSmoothingEnabled = false; // Desativa o suavização de imagem para um 
 
 let currentState = GameState.START;
 
+const gameData = {
+    score: 0,
+    level: 1,
+    high: 0,
+};
+
+const showGameData = () => {
+    scoreElement.textContent = gameData.score;
+    levelElement.textContent = gameData.level;
+    highElement.textContent = gameData.high;
+};
+
 const player = new Player(canvas.width, canvas.height); // Cria uma nova instância do jogador
 const grid = new Grid(3, 6); // Cria uma nova instância da grade de invasores
 
@@ -54,6 +66,15 @@ const keys = { // Objeto para rastrear o estado das teclas
     right: { pressed: false },
     shoot: { pressed: false, released: true },
 };
+
+const incrementScore = (value) => {
+    gameData.score += value;
+
+    if (gameData.score > gameData.high) {
+        gameData.high = gameData.score;
+    }
+};
+
 
 const drawObstacles = () => { // Função para desenhar os obstáculos
     obstacles.forEach((obstacle) => obstacle.draw(ctx));
@@ -119,9 +140,11 @@ const checkShootInvaders = () => {
                         y: invader.position.y + invader.height / 2,
                     },
                     10,
-                    invader.color
+                    color
                 );
                 
+                incrementScore(10);
+
                 grid.invaders.splice(invaderIndex, 1);
                 playerProjectiles.splice(projectilesIndex, 1);
             }
@@ -161,6 +184,8 @@ const spawnGrid = () => {
         grid.rows = Math.round(Math.random() * 9 + 1); // Garante pelo menos 1 linha
         grid.cols = Math.round(Math.random() * 9 + 1); // Garante pelo menos 1 coluna
         grid.restart();
+
+        gameData.level += 1;
     };
 };
 
@@ -194,7 +219,9 @@ const gameOver = () => {
 
     player.alive = false;
     currentState = GameState.GAME_OVER;
+    document.body.append(gameOverScreen);
 };
+
 
 const gameLoop = () => { // Função de loop do jogo
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas para redesenhar
@@ -202,6 +229,7 @@ const gameLoop = () => { // Função de loop do jogo
     if (currentState === GameState.PLAYING) {
 
     spawnGrid();
+    showGameData();
 
     drawParticles();
     drawProjectiles(); // Desenha os projéteis
@@ -314,6 +342,21 @@ buttonPlay.addEventListener("click", () => {
             invader.shoot(invadersProjectiles);
         }
     }, 1000);
+});
+
+buttonRestart.addEventListener("click", () => {
+    currentState = GameState.PLAYING;
+    player.alive = true;
+
+    grid.invaders.length = 0;
+    grid.invadersVelocity = 1;
+
+    invadersProjectiles.length = 0; 
+    
+    gameData.score = 0
+    gameData.level = 0
+
+    gameOverScreen.remove();
 });
 
 
