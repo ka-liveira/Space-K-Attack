@@ -7,5 +7,5 @@ export const INITIAL_FRAMES = 8;
 export const GameState = {
     START: 'START',
     PLAYING: 'PLAYING',
-    GAME_OVER: 'GAMEOVER',
+    GAME_OVER: 'GAME_OVER',
 }

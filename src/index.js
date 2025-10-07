@@ -3,6 +3,8 @@ import Projectile from "./classes/Projectile.js"; // Importa a classe Projectile
 import Grid from "./classes/Grid.js"; // Importa a classe Grid do arquivo Grid.js
 import Invader from "./classes/Invader.js"; // Importa a classe Invader do arquivo Invader.js
 import Particle from "./classes/Particle.js"; // Importa a classe Particle do arquivo Particle.js
+import { GameState } from "./utils/constants.js";
+import Obstacle from "./classes/Obstacle.js"; // Importa a classe Obstacle do arquivo Obstacle.js
 
 const canvas = document.querySelector("canvas"); // Seleciona o canvas
 const ctx = canvas.getContext("2d"); // Contexto 2D do canvas
@@ -20,11 +22,30 @@ const grid = new Grid(3, 6); // Cria uma nova instância da grade de invasores
 const playerProjectiles = [];
 const invaderProjectiles = [];
 const particles = [];
+const obstacles = [];
+
+const InitObstacles = () => { // Função para inicializar os obstáculos
+     const x = canvas.width / 2 - 50;
+    const y = canvas.height - 250;
+    const offset = canvas.width * 0.15;
+    const color = "crimson";
+
+    const obstacle1 = new Obstacle({ x: x - offset, y }, 100, 20, color);
+    const obstacle2 = new Obstacle({ x: x + offset, y }, 100, 20, color);
+
+    obstacles.push(obstacle1);
+    obstacles.push(obstacle2);
+};
+InitObstacles();
 
 const keys = { // Objeto para rastrear o estado das teclas
     left: { pressed: false },
     right: { pressed: false },
     shoot: { pressed: false, released: true },
+};
+
+const drawObstacles = () => { // Função para desenhar os obstáculos
+    obstacles.forEach((obstacle) => obstacle.draw(ctx));
 };
 
 const drawProjectiles = () => { // Função para desenhar os projéteis
@@ -71,7 +92,7 @@ const createExplosion = (position, size, color) => {
                 y: (Math.random() - 0.5) * 1.5,
             },
             2,
-            "red"
+            "color"
         );
 
         particles.push(particle);
@@ -103,6 +124,24 @@ const checkShootPlayer = () => {
             invaderProjectiles.splice(index, 1);
             gameOver();
         }
+    });
+};
+
+const checkShootObstacles = () => {
+    obstacles.forEach((obstacle) => {
+        playerProjectiles.some((projectile, index) => {
+            if (obstacle.hit(projectile)) {
+                playerProjectiles.splice(index, 1);
+                return;
+            }
+        });
+
+        invaderProjectiles.some((projectile, index) => {
+            if (obstacle.hit(projectile)) {
+                invaderProjectiles.splice(index, 1);
+                return;
+            }
+        });
     });
 };
 
@@ -155,12 +194,14 @@ const gameLoop = () => { // Função de loop do jogo
 
     drawParticles();
     drawProjectiles(); // Desenha os projéteis
+    drawObstacles(); // Desenha os obstáculos
 
     clearProjectiles(); // Limpa os projéteis que saíram da tela
     clearParticles(); // Limpa as partículas que desapareceram
 
     checkShootInvaders();
     checkShootPlayer();
+    checkShootObstacles();
 
     grid.draw(ctx); // Desenha a grade de invasores
    grid.update(player.alive); // Atualiza a posição dos invasores
@@ -189,11 +230,13 @@ const gameLoop = () => { // Função de loop do jogo
     player.draw(ctx); // Desenha o jogador no canvas 
     ctx.restore(); // Restaura o estado salvo do canvas
 }
-requestAnimationFrame(gameLoop); // Chama a função novamente para o próximo frame
 
     if (currentState === GameState.GAME_OVER) {
+        checkShootObstacles();
+
         drawProjectiles();
         drawParticles();
+        drawObstacles();
 
         clearProjectiles();
         clearParticles();
