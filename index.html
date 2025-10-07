@@ -1,23 +1,38 @@
-<!DOCTYPE html> <!-- Informa que o documento segue o padrão HTML5 -->
-
-
-<html lang="en"> <!-- define o idioma como inglês -->
+<!DOCTYPE html>
+<html lang="en">
 <head>
-
-    <meta charset="UTF-8"> <!-- Define a codificação de caracteres como UTF-8 (suporte a acentos e símbolos) -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajustar automaticamente ao tamanho da tela -->
-
-    <link rel="stylesheet" href="src/style.css"> <!-- Importa o CSS que controla a aparência da página -->
-
-    <title>Space K'Attack</title> <!-- Define o título da aba  -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="src/style.css">
+    <title>Space Invaders</title>
 </head>
-
 <body>
-        <canvas></canvas>   <!-- canvas do jogo renderizado (animações, sprites) -->
+    <section class="score-ui">
+        <div>
+            <span class="score">score: <span>0</span></span>
+            <span class="level">level: <span>1</span></span>
+            <span class="high">high: <span>0</span></span>
+        </div>
+    </section>
 
-        <script type="module" src="src/index.js"></script> <!-- Importa o JS principal como módulo ES6 -->
+    <section class="start-screen screen">
+        <div>
+            <h1>Space K'Attack</h1>
+            <button class="button-play">Play</button>
+        </div>
 
+        <span>Kassandra Oliveira</span>
+    </section>
+
+    <section class="game-over screen">
+        <div>
+            <h1>Game Over</h1>
+            <button class="button-restart">Restart</button>
+        </div>
+    </section>
+
+    <canvas></canvas>
+
+    <script type="module" src="src/index.js"></script>
 </body>
 </html>
-
-

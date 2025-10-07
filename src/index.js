@@ -6,6 +6,17 @@ import Particle from "./classes/Particle.js"; // Importa a classe Particle do ar
 import { GameState } from "./utils/constants.js";
 import Obstacle from "./classes/Obstacle.js"; // Importa a classe Obstacle do arquivo Obstacle.js
 
+const startScreen = document.querySelector(".start-screen");
+const gameOverScreen = document.querySelector(".game-over");
+const scoreUi = document.querySelector(".score-ui");
+const scoreElement = scoreUi.querySelector(".score > span");
+const levelElement = scoreUi.querySelector(".level > span");
+const highElement = scoreUi.querySelector(".high > span");
+const buttonPlay = document.querySelector(".button-play");
+const buttonRestart = document.querySelector(".button-restart");
+
+gameOverScreen.remove();
+
 const canvas = document.querySelector("canvas"); // Seleciona o canvas
 const ctx = canvas.getContext("2d"); // Contexto 2D do canvas
 
@@ -14,7 +25,7 @@ canvas.height = innerHeight;  // Define a altura do canvas
 
 ctx.imageSmoothingEnabled = false; // Desativa o suavização de imagem para um estilo pixelado
 
-let currentState = GameState.PLAYING;
+let currentState = GameState.START;
 
 const player = new Player(canvas.width, canvas.height); // Cria uma nova instância do jogador
 const grid = new Grid(3, 6); // Cria uma nova instância da grade de invasores
@@ -290,6 +301,20 @@ addEventListener ("keyup", (event) => {
             invader.shoot(invaderProjectiles);
         }
 }, 1000 );
+
+buttonPlay.addEventListener("click", () => {
+    startScreen.remove();
+    scoreUi.style.display = "block";
+    currentState = GameState.PLAYING;
+
+    setInterval(() => {
+        const invader = grid.getRandomInvader();
+
+        if (invader) {
+            invader.shoot(invadersProjectiles);
+        }
+    }, 1000);
+});
 
 
   gameLoop(); // Inicia o loop do jogo
