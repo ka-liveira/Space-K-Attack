@@ -1,34 +1,33 @@
-import Invader from "./Invader.js";
+import Invader from "./Invader.js"; //importa a classe Invader
 
 class Grid {
-    constructor(rows, cols) {
-        this.rows = rows;
-        this.cols = cols;
+    constructor(rows, cols) { //construtor que inicializa a grade dos invasores
 
-        this.direction = "right";
-        this.moveDown = false;
+        this.rows = rows; //número de linhas 
+        this.cols = cols; //número de colunas
+
+        this.direction = "right"; //direção inicial
+        this.moveDown = false; //indica se os invasores devem descer
 
 
-        this.invadersVelocity = 1;
-        this.invaders = this.init();
+        this.invadersVelocity = 1; //velocidade inicial 
+        this.invaders = this.init(); //inicializa os invasores chamando o método init
     }
 
-    init() {
-        const array = [];
+    init() { //método que cria e posiciona os invasores na grade
 
-        for (let row = 0; row < this.rows; row += 1) {
-            for (let col = 0; col < this.cols; col += 1) {
-                const invader = new Invader({  x: col * 50 + 20, y: row * 37 + 100 }, this.invadersVelocity);
+    const array = []; //array para armazenar os invasores
+        for (let row = 0; row < this.rows; row += 1) { //loop para criar as linhas
+            for (let col = 0; col < this.cols; col += 1) { //loop para criar as colunas
+                const invader = new Invader({  x: col * 50 + 20, y: row * 37 + 100 }, this.invadersVelocity); //cria um novo invasor em uma posição específica
 
-                array.push(invader);
+                array.push(invader); //adiciona o invasor ao array
             }
         }
-        return array;
+        return array; 
     }
 
-    draw(ctx) {
-        this.invaders.forEach((invader) => invader.draw(ctx));
-    }
+    draw(ctx) { this.invaders.forEach((invader) => invader.draw(ctx)); } //método que desenha os invasores na tela
 
     update(playerStatus) {
         if(this.reachedRightBoundary()) {
