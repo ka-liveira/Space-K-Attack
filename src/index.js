@@ -12,6 +12,8 @@ canvas.height = innerHeight;  // Define a altura do canvas
 
 ctx.imageSmoothingEnabled = false; // Desativa o suavização de imagem para um estilo pixelado
 
+let currentState = GameState.PLAYING;
+
 const player = new Player(canvas.width, canvas.height); // Cria uma nova instância do jogador
 const grid = new Grid(3, 6); // Cria uma nova instância da grade de invasores
 
@@ -142,23 +144,26 @@ const gameOver = () => {
 
     player.alive = false;
     currentState = GameState.GAME_OVER;
-    showGameOverScreen();
 };
 
 const gameLoop = () => { // Função de loop do jogo
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas para redesenhar
 
+    if (currentState === GameState.PLAYING) {
+
     spawnGrid();
 
     drawParticles();
     drawProjectiles(); // Desenha os projéteis
+
     clearProjectiles(); // Limpa os projéteis que saíram da tela
+    clearParticles(); // Limpa as partículas que desapareceram
 
     checkShootInvaders();
     checkShootPlayer();
 
     grid.draw(ctx); // Desenha a grade de invasores
-   grid.update(); // Atualiza a posição dos invasores
+   grid.update(player.alive); // Atualiza a posição dos invasores
 
     ctx.save(); // Salva o estado atual do canvas
 
@@ -182,10 +187,21 @@ const gameLoop = () => { // Função de loop do jogo
    ctx.translate(-player.position.x - player.width / 2, -player.position.y - player.height / 2); // Move o ponto de origem para o centro do jogador
 
     player.draw(ctx); // Desenha o jogador no canvas 
-
     ctx.restore(); // Restaura o estado salvo do canvas
+}
+requestAnimationFrame(gameLoop); // Chama a função novamente para o próximo frame
 
-    requestAnimationFrame(gameLoop); // Chama a função novamente para o próximo frame
+    if (currentState === GameState.GAME_OVER) {
+        drawProjectiles();
+        drawParticles();
+
+        clearProjectiles();
+        clearParticles();
+
+        grid.draw(ctx);
+        grid.update(player.alive);
+    }
+    requestAnimationFrame(gameLoop);
 };
 
 addEventListener ("keydown", (event) => { // Adiciona um ouvinte de evento para a tecla pressionada
@@ -231,6 +247,7 @@ addEventListener ("keyup", (event) => {
             invader.shoot(invaderProjectiles);
         }
 }, 1000 );
+
 
   gameLoop(); // Inicia o loop do jogo
 

@@ -6,6 +6,7 @@ class Player { //define a classe Player
         this.width = 48 * 2; //define a largura do jogador
         this.height = 48 * 2;  // Define a altura do jogador
         this.velocity = 6; // Define a velocidade de movimento do jogador
+        this.alive = true; // Define o estado de vida do jogador
 
         this.position = {  // Cria um objeto 'position' para armazenar as coordenadas (x, y) do jogador.
             x: canvasWidth / 2 - this.width / 2,
