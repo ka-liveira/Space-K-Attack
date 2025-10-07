@@ -6,6 +6,7 @@ import Particle from "./classes/Particle.js"; // Importa a classe Particle do ar
 import { GameState } from "./utils/constants.js";
 import Obstacle from "./classes/Obstacle.js"; // Importa a classe Obstacle do arquivo Obstacle.js
 import SoundEffects from "./classes/SoundEffects.js";
+import Boss from "./classes/Boss.js";
 
 const soundEffects = new SoundEffects();
 
@@ -51,8 +52,12 @@ const invaderProjectiles = [];
 const particles = [];
 const obstacles = [];
 
+// [BOSS] Variáveis para controlar o chefe
+let boss = null;
+let bossFightActive = false;
+
 const InitObstacles = () => { // Função para inicializar os obstáculos
-     const x = canvas.width / 2 - 50;
+    const x = canvas.width / 2 - 50;
     const y = canvas.height - 250;
     const offset = canvas.width * 0.15;
     const color = "crimson";
@@ -85,11 +90,11 @@ const drawObstacles = () => { // Função para desenhar os obstáculos
 };
 
 const drawProjectiles = () => { // Função para desenhar os projéteis
-   const projectiles = [...playerProjectiles, ...invaderProjectiles];
-   projectiles.forEach((projectile) => {
-       projectile.draw(ctx); // Desenha o projétil
-       projectile.update(); // Atualiza a posição do projétil
-   });
+    const projectiles = [...playerProjectiles, ...invaderProjectiles];
+    projectiles.forEach((projectile) => {
+        projectile.draw(ctx); // Desenha o projétil
+        projectile.update(); // Atualiza a posição do projétil
+    });
 };
 
 const clearProjectiles = () => { // Função para limpar projéteis que saíram da tela
@@ -157,6 +162,26 @@ const checkShootInvaders = () => {
     });
 };
 
+// [BOSS] Nova função para verificar colisão com o chefe
+const checkShootBoss = () => {
+    playerProjectiles.some((projectile, projectilesIndex) => {
+        if (boss.hit(projectile)) { // Supondo que a classe Boss tenha um método hit()
+            soundEffects.playHitSound();
+            createExplosion( {
+                    x: projectile.position.x,
+                    y: projectile.position.y,
+                },
+                10,
+                "orange"
+            );
+            incrementScore(50); // Mais pontos por acertar o chefe
+            boss.takeDamage(10); // Causa dano ao chefe
+            playerProjectiles.splice(projectilesIndex, 1);
+        }
+    });
+};
+
+
 const checkShootPlayer = () => {
     invaderProjectiles.some((projectile, index) => {
         if (player.hit(projectile)) {
@@ -186,14 +211,21 @@ const checkShootObstacles = () => {
 };
 
 const spawnGrid = () => {
-    if (grid.invaders.length === 0) {
+    // [BOSS] A lógica de spawn agora também decide se é hora do chefe
+    if (grid.invaders.length === 0 && !bossFightActive) {
         soundEffects.playNextLevelSound();
-        
-        grid.rows = Math.round(Math.random() * 9 + 1); // Garante pelo menos 1 linha
-        grid.cols = Math.round(Math.random() * 9 + 1); // Garante pelo menos 1 coluna
-        grid.restart();
-
         gameData.level += 1;
+
+        // [BOSS] Verifica se é um nível de chefe
+        if (gameData.level > 0 && gameData.level % 10 === 0) {
+            bossFightActive = true;
+            boss = new Boss(canvas.width, canvas.height);
+        } else {
+            // [BOSS] Se não for, cria inimigos normais
+            grid.rows = Math.round(Math.random() * 9 + 1); // Garante pelo menos 1 linha
+            grid.cols = Math.round(Math.random() * 9 + 1); // Garante pelo menos 1 coluna
+            grid.restart();
+        }
     };
 };
 
@@ -236,48 +268,63 @@ const gameLoop = () => { // Função de loop do jogo
 
     if (currentState === GameState.PLAYING) {
 
-    spawnGrid();
-    showGameData();
+        showGameData();
 
-    drawParticles();
-    drawProjectiles(); // Desenha os projéteis
-    drawObstacles(); // Desenha os obstáculos
+        drawParticles();
+        drawProjectiles(); // Desenha os projéteis
+        drawObstacles(); // Desenha os obstáculos
 
-    clearProjectiles(); // Limpa os projéteis que saíram da tela
-    clearParticles(); // Limpa as partículas que desapareceram
+        clearProjectiles(); // Limpa os projéteis que saíram da tela
+        clearParticles(); // Limpa as partículas que desapareceram
 
-    checkShootInvaders();
-    checkShootPlayer();
-    checkShootObstacles();
+        checkShootPlayer();
+        checkShootObstacles();
+        
+        // [BOSS] Lógica condicional para o que acontece no jogo
+        if (bossFightActive) {
+            if (boss && boss.alive) {
+                boss.update(invaderProjectiles); // O chefe usa o array de projéteis inimigos
+                boss.draw(ctx);
+                checkShootBoss(); // Verifica se o jogador acertou o chefe
+            } else if (boss) { // Se o chefe existe, mas não está vivo
+                bossFightActive = false;
+                boss = null;
+                incrementScore(1000); // Bônus por derrotar o chefe
+                spawnGrid(); // Dispara a lógica para o próximo nível (ex: nível 11)
+            }
+        } else {
+            // [BOSS] Isto só acontece em níveis normais
+            spawnGrid();
+            checkShootInvaders();
+            grid.draw(ctx); // Desenha a grade de invasores
+            grid.update(player.alive); // Atualiza a posição dos invasores
+        }
 
-    grid.draw(ctx); // Desenha a grade de invasores
-   grid.update(player.alive); // Atualiza a posição dos invasores
+        ctx.save(); // Salva o estado atual do canvas
 
-    ctx.save(); // Salva o estado atual do canvas
+        ctx.translate(player.position.x + player.width / 2, player.position.y + player.height / 2); // Move o ponto de origem para o centro do jogador
 
-    ctx.translate(player.position.x + player.width / 2, player.position.y + player.height / 2); // Move o ponto de origem para o centro do jogador
+        if (keys.shoot.pressed && keys.shoot.released) { // Verifique .pressed e .released
+            player.shoot(playerProjectiles); // O jogador atira
+            soundEffects.playShootSound();
+            keys.shoot.released = false;
+        }
 
-    if (keys.shoot.pressed && keys.shoot.released) { // Verifique .pressed e .released
-        player.shoot(playerProjectiles); // O jogador atira
-        soundEffects.playShootSound();
-        keys.shoot.released = false;
+        if (keys.left.pressed && player.position.x >= 0) { // Verifique .pressed
+            player.moveLeft(); // Move o jogador para a esquerda
+            ctx.rotate(-0.15); // Rotaciona o canvas para a esquerda
+        }
+
+        if (keys.right.pressed && player.position.x <= canvas.width - player.width) { // Verifique .pressed
+            player.moveRight(); // Move o jogador para a direita
+            ctx.rotate(0.15); // Rotaciona o canvas para a direita
+        }
+
+        ctx.translate(-player.position.x - player.width / 2, -player.position.y - player.height / 2); // Move o ponto de origem para o centro do jogador
+
+        player.draw(ctx); // Desenha o jogador no canvas 
+        ctx.restore(); // Restaura o estado salvo do canvas
     }
-
-   if (keys.left.pressed && player.position.x >= 0) { // Verifique .pressed
-       player.moveLeft(); // Move o jogador para a esquerda
-       ctx.rotate(-0.15); // Rotaciona o canvas para a esquerda
-   }
-
-   if (keys.right.pressed && player.position.x <= canvas.width - player.width) { // Verifique .pressed
-       player.moveRight(); // Move o jogador para a direita
-       ctx.rotate(0.15); // Rotaciona o canvas para a direita
-   }
-
-   ctx.translate(-player.position.x - player.width / 2, -player.position.y - player.height / 2); // Move o ponto de origem para o centro do jogador
-
-    player.draw(ctx); // Desenha o jogador no canvas 
-    ctx.restore(); // Restaura o estado salvo do canvas
-}
 
     if (currentState === GameState.GAME_OVER) {
         checkShootObstacles();
@@ -296,25 +343,25 @@ const gameLoop = () => { // Função de loop do jogo
 };
 
 addEventListener ("keydown", (event) => { // Adiciona um ouvinte de evento para a tecla pressionada
-   const key = event.key.toLowerCase();
+    const key = event.key.toLowerCase();
 
-   if (key === "a") keys.left.pressed = true; // Altere a propriedade .pressed
-   if (key === "d") keys.right.pressed = true; // Altere a propriedade .pressed
-   if (key === "enter" || key === ' ') keys.shoot.pressed = true; // Altere a propriedade .pressed
- });      
+    if (key === "a") keys.left.pressed = true; // Altere a propriedade .pressed
+    if (key === "d") keys.right.pressed = true; // Altere a propriedade .pressed
+    if (key === "enter" || key === ' ') keys.shoot.pressed = true; // Altere a propriedade .pressed
+});       
 
 addEventListener ("keyup", (event) => {
-   const key = event.key.toLowerCase();    
+    const key = event.key.toLowerCase();    
 
-   if (key === "a") keys.left.pressed = false; // Altere a propriedade .pressed
-   if (key === "d") keys.right.pressed = false; // Altere a propriedade .pressed
+    if (key === "a") keys.left.pressed = false; // Altere a propriedade .pressed
+    if (key === "d") keys.right.pressed = false; // Altere a propriedade .pressed
 
-   if (key === "enter" || key === ' ') {
+    if (key === "enter" || key === ' ') {
          keys.shoot.pressed = false; // Altere a propriedade .pressed
          keys.shoot.released = true; // Altere a propriedade .released 
-   }
+    }
 
-   // Adiciona o disparo ao pressionar o botão esquerdo do mouse
+    // Adiciona o disparo ao pressionar o botão esquerdo do mouse
     addEventListener("mousedown", (event) => {
     // A propriedade 'button' com valor 0 corresponde ao botão esquerdo
     if (event.button === 0) {
@@ -332,10 +379,12 @@ addEventListener ("keyup", (event) => {
 });
 
     setInterval(() => {
-        const invader = grid.getRandomInvader();
-
-        if (invader) {
-            invader.shoot(invaderProjectiles);
+        // [BOSS] Inimigos normais só atiram se não for uma luta de chefe
+        if (!bossFightActive) {
+            const invader = grid.getRandomInvader();
+            if (invader) {
+                invader.shoot(invaderProjectiles);
+            }
         }
 }, 1000 );
 
@@ -344,13 +393,8 @@ buttonPlay.addEventListener("click", () => {
     scoreUi.style.display = "block";
     currentState = GameState.PLAYING;
 
-    setInterval(() => {
-        const invader = grid.getRandomInvader();
-
-        if (invader) {
-            invader.shoot(invaderProjectiles);
-        }
-    }, 1000);
+    // Este setInterval aqui está duplicado, removi o conteúdo para evitar tiros em dobro.
+    // O setInterval que está fora já controla os tiros.
 });
 
 buttonRestart.addEventListener("click", () => {
@@ -359,14 +403,17 @@ buttonRestart.addEventListener("click", () => {
 
     grid.invaders.length = 0;
     grid.invadersVelocity = 1;
+    
+    // [BOSS] Reseta o estado do chefe ao reiniciar
+    boss = null;
+    bossFightActive = false;
 
     invaderProjectiles.length = 0; 
     
     gameData.score = 0
-    gameData.level = 0
+    gameData.level = 1; // [BOSS] Nível deve reiniciar em 1, não 0
 
     gameOverScreen.remove();
 });
 
   gameLoop(); // Inicia o loop do jogo
-

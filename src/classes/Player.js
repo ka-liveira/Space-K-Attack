@@ -30,10 +30,7 @@ class Player { //define a classe Player
     this.position.x += this.velocity;
 }    
 
- @param {CanvasRenderingContext2D} ctx - O contexto 2D do canvas.
-
 draw (ctx) { // Método 'draw' que recebe o contexto do canvas como parâmetro.
-    ctx.fillStyle = 'white'; // Define a cor do jogador
     ctx.drawImage(this.image, this.position.x, this.position.y, this.width, this.height ); // Desenha a imagem do jogador no canvas na posição (x, y) com a largura e altura especificadas.
   }
 
