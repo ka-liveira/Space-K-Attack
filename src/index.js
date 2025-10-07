@@ -5,6 +5,9 @@ import Invader from "./classes/Invader.js"; // Importa a classe Invader do arqui
 import Particle from "./classes/Particle.js"; // Importa a classe Particle do arquivo Particle.js
 import { GameState } from "./utils/constants.js";
 import Obstacle from "./classes/Obstacle.js"; // Importa a classe Obstacle do arquivo Obstacle.js
+import SoundEffects from "./classes/SoundEffects.js";
+
+const soundEffects = new SoundEffects();
 
 const startScreen = document.querySelector(".start-screen");
 const gameOverScreen = document.querySelector(".game-over");
@@ -41,6 +44,7 @@ const showGameData = () => {
 
 const player = new Player(canvas.width, canvas.height); // Cria uma nova instância do jogador
 const grid = new Grid(3, 6); // Cria uma nova instância da grade de invasores
+
 
 const playerProjectiles = [];
 const invaderProjectiles = [];
@@ -135,6 +139,7 @@ const checkShootInvaders = () => {
     grid.invaders.forEach((invader, invaderIndex) => {
         playerProjectiles.some((projectile, projectilesIndex) => {
             if (invader.hit(projectile)) {
+                soundEffects.playHitSound();
                 createExplosion( {
                         x: invader.position.x + invader.width / 2,
                         y: invader.position.y + invader.height / 2,
@@ -155,6 +160,7 @@ const checkShootInvaders = () => {
 const checkShootPlayer = () => {
     invaderProjectiles.some((projectile, index) => {
         if (player.hit(projectile)) {
+            soundEffects.playExplosionSound();
             invaderProjectiles.splice(index, 1);
             gameOver();
         }
@@ -181,6 +187,8 @@ const checkShootObstacles = () => {
 
 const spawnGrid = () => {
     if (grid.invaders.length === 0) {
+        soundEffects.playNextLevelSound();
+        
         grid.rows = Math.round(Math.random() * 9 + 1); // Garante pelo menos 1 linha
         grid.cols = Math.round(Math.random() * 9 + 1); // Garante pelo menos 1 coluna
         grid.restart();
@@ -251,6 +259,7 @@ const gameLoop = () => { // Função de loop do jogo
 
     if (keys.shoot.pressed && keys.shoot.released) { // Verifique .pressed e .released
         player.shoot(playerProjectiles); // O jogador atira
+        soundEffects.playShootSound();
         keys.shoot.released = false;
     }
 
