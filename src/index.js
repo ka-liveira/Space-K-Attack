@@ -96,24 +96,59 @@ const checkShootInvaders = () => {
 };
 
 const checkShootPlayer = () => {
-    grid.invaders.forEach((invader, invaderIndex) => {
-        invaderProjectiles.some((projectile, index) => {
-            if (player.hit(projectile)) {
-                invaderProjectiles.splice(index, 1);
-                createExplosion( {
-                    x: player.position.x,
-                    y: player.position.y
-            }, 
-            10,
-             "white"
-            );
+    invaderProjectiles.some((projectile, index) => {
+        if (player.hit(projectile)) {
+            invaderProjectiles.splice(index, 1);
+            gameOver();
         }
     });
-});
+};
+
+const spawnGrid = () => {
+    if (grid.invaders.length === 0) {
+        grid.rows = Math.round(Math.random() * 9 + 1); // Garante pelo menos 1 linha
+        grid.cols = Math.round(Math.random() * 9 + 1); // Garante pelo menos 1 coluna
+        grid.restart();
+    };
+};
+
+const gameOver = () => {
+    createExplosion(
+        {
+            x: player.position.x + player.width / 2,
+            y: player.position.y + player.height / 2,
+        },
+        10,
+        "white"
+    );
+
+    createExplosion(
+        {
+            x: player.position.x + player.width / 2,
+            y: player.position.y + player.height / 2,
+        },
+        5,
+        "#4D9BE6"
+    );
+
+    createExplosion(
+        {
+            x: player.position.x + player.width / 2,
+            y: player.position.y + player.height / 2,
+        },
+        5,
+        "crimson"
+    );
+
+    player.alive = false;
+    currentState = GameState.GAME_OVER;
+    showGameOverScreen();
 };
 
 const gameLoop = () => { // Função de loop do jogo
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas para redesenhar
+
+    spawnGrid();
 
     drawParticles();
     drawProjectiles(); // Desenha os projéteis

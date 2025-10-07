@@ -65,6 +65,11 @@ class Grid {
         const index = Math.floor(Math.random() * this.invaders.length);
         return this.invaders[index];
     }
+
+     restart() {
+        this.invaders = this.init();
+        this.direction = "right";
+    }
 }
 
 export default Grid;
