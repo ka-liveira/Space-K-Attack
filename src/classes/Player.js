@@ -58,6 +58,15 @@ draw (ctx) { // Método 'draw' que recebe o contexto do canvas como parâmetro.
     );
     Projectiles.push(p); // Adiciona o projétil ao array de projéteis
 }
+
+hit(projectile) {
+    return (
+        projectile.position.x >= this.position.x + 20 &&
+        projectile.position.x <= this.position.x + 20 + this.width - 38 &&
+        projectile.position.y + projectile.height >= this.position.y + 22 &&
+        projectile.position.y + projectile.height <= this.position.y + 22 + this.height - 34
+    );
+}
 }
 
 export default Player; // Exporta a classe 'Player' como padrão para que possa ser importada em outros arquivos.

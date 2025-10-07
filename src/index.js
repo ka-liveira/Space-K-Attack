@@ -48,6 +48,15 @@ const drawParticles = () => {
     });
 };
 
+const clearParticles = () => {
+    particles.forEach((particle, i) => {
+        if (particle.opacity <= 0) {
+            particles.splice(i, 1);
+        }
+    });
+};
+
+
 const createExplosion = (position, size, color) => {
     for (let i = 0; i < size; i += 1) {
         const particle = new Particle(
@@ -86,6 +95,23 @@ const checkShootInvaders = () => {
     });
 };
 
+const checkShootPlayer = () => {
+    grid.invaders.forEach((invader, invaderIndex) => {
+        invaderProjectiles.some((projectile, index) => {
+            if (player.hit(projectile)) {
+                invaderProjectiles.splice(index, 1);
+                createExplosion( {
+                    x: player.position.x,
+                    y: player.position.y
+            }, 
+            10,
+             "white"
+            );
+        }
+    });
+});
+};
+
 const gameLoop = () => { // Função de loop do jogo
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas para redesenhar
 
@@ -94,6 +120,7 @@ const gameLoop = () => { // Função de loop do jogo
     clearProjectiles(); // Limpa os projéteis que saíram da tela
 
     checkShootInvaders();
+    checkShootPlayer();
 
     grid.draw(ctx); // Desenha a grade de invasores
    grid.update(); // Atualiza a posição dos invasores
