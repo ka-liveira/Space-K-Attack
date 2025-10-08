@@ -84,6 +84,38 @@ const incrementScore = (value) => {
     }
 };
 
+function drawBossHealthBar(ctx) {
+    console.log("Vida do Chefe:", boss.health, "Vida Máxima:", boss.maxHealth);
+
+    // Posição e dimensões da barra de vida
+    const barWidth = canvas.width * 0.4; // A barra terá 60% da largura da tela
+    const barHeight = 30; // 30 pixels de altura
+    const barX = (canvas.width - barWidth) / 2; // Centraliza a barra no eixo X
+    const barY = 100; // 20 pixels de distância do topo
+
+    // Calcula a porcentagem de vida restante (um valor de 0.0 a 1.0)
+    const healthPercentage = boss.health / boss.maxHealth;
+
+    // 1. Desenha o fundo da barra (vida máxima)
+    ctx.fillStyle = '#444'; // Um cinza escuro
+    ctx.fillRect(barX, barY, barWidth, barHeight);
+
+    // 2. Desenha a frente da barra (vida atual)
+    ctx.fillStyle = 'crimson'; // Um vermelho vivo para a vida
+    // A largura da barra de vida atual é a largura máxima * a porcentagem de vida
+    ctx.fillRect(barX, barY, barWidth * healthPercentage, barHeight);
+    
+    // 3. (Opcional) Adiciona uma borda para dar acabamento
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(barX, barY, barWidth, barHeight);
+
+    // 4. (Opcional) Adiciona um texto
+    ctx.fillStyle = 'white';
+    ctx.font = '20px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('BOSS', barX + barWidth / 2, barY + barHeight / 2 + 7);
+}
 
 const drawObstacles = () => { // Função para desenhar os obstáculos
     obstacles.forEach((obstacle) => obstacle.draw(ctx));
@@ -281,23 +313,25 @@ const gameLoop = () => { // Função de loop do jogo
         checkShootObstacles();
         
         // [BOSS] Lógica condicional para o que acontece no jogo
-        if (bossFightActive) {
+         if (bossFightActive) {
             if (boss && boss.alive) {
-                boss.update(invaderProjectiles); // O chefe usa o array de projéteis inimigos
+                boss.update(invaderProjectiles);
                 boss.draw(ctx);
-                checkShootBoss(); // Verifica se o jogador acertou o chefe
-            } else if (boss) { // Se o chefe existe, mas não está vivo
+                checkShootBoss();
+
+                // [BARRA DE VIDA] Chamada para desenhar a barra de vida
+                drawBossHealthBar(ctx);
+            } else if (boss) {
                 bossFightActive = false;
                 boss = null;
-                incrementScore(1000); // Bônus por derrotar o chefe
-                spawnGrid(); // Dispara a lógica para o próximo nível (ex: nível 11)
+                incrementScore(1000);
+                spawnGrid();
             }
         } else {
-            // [BOSS] Isto só acontece em níveis normais
             spawnGrid();
             checkShootInvaders();
-            grid.draw(ctx); // Desenha a grade de invasores
-            grid.update(player.alive); // Atualiza a posição dos invasores
+            grid.draw(ctx);
+            grid.update(player.alive);
         }
 
         ctx.save(); // Salva o estado atual do canvas

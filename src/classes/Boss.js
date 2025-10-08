@@ -26,7 +26,8 @@ class Boss {
         this.canvasHeight = canvasHeight;
 
         // --- Atributos do Chefe ---
-        this.health = 100; // Vida inicial
+        this.health = 1000; // Vida inicial
+        this.maxHealth = 1000; //vida máxima
         this.alive = true;
         this.velocity = { x: 3, y: 2 }; // Velocidade de movimento
 
