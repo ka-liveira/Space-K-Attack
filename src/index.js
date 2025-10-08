@@ -217,13 +217,13 @@ const spawnGrid = () => {
         gameData.level += 1;
 
         // [BOSS] Verifica se é um nível de chefe
-        if (gameData.level > 0 && gameData.level % 10 === 0) {
+        if (gameData.level > 0 && gameData.level % 5 === 0) {
             bossFightActive = true;
             boss = new Boss(canvas.width, canvas.height);
         } else {
             // [BOSS] Se não for, cria inimigos normais
-            grid.rows = Math.round(Math.random() * 9 + 1); // Garante pelo menos 1 linha
-            grid.cols = Math.round(Math.random() * 9 + 1); // Garante pelo menos 1 coluna
+            grid.rows = Math.round(Math.random() * 4 + 1); // Garante pelo menos 1 linha
+            grid.cols = Math.round(Math.random() * 4 + 1); // Garante pelo menos 1 coluna
             grid.restart();
         }
     };
@@ -401,7 +401,7 @@ buttonRestart.addEventListener("click", () => {
     currentState = GameState.PLAYING;
     player.alive = true;
 
-    grid.invaders.length = 0;
+    grid.restart();
     grid.invadersVelocity = 1;
     
     // [BOSS] Reseta o estado do chefe ao reiniciar

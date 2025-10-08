@@ -3,11 +3,18 @@ import { PATH_BOSS_IMAGE } from "../utils/constants.js"; // Certifique-se que es
 
 class Boss {
     constructor(canvasWidth, canvasHeight) {
-        // --- Dimensões e Posição ---
-        // Mesmo que a imagem seja 25x25, vamos desenhá-la maior para que o chefe seja imponente.
-        // O drawImage vai esticar a imagem para este tamanho.
-        this.width = 150;
-        this.height = 100;
+         // --- Dimensões e Posição ---
+        this.scale = 5; 
+        this.baseWidth = 64;
+        this.baseHeight = 64;
+
+        this.width = this.baseWidth * this.scale;
+        this.height = this.baseHeight * this.scale;
+
+        this.hitboxPadding = {
+        x: 16, // 16 pixels de margem na horizontal
+        y: 17  // 17 pixels de margem na vertical
+    };
 
         this.position = {
             x: canvasWidth / 2 - this.width / 2, // Começa centralizado no topo
@@ -86,12 +93,22 @@ class Boss {
     }
 
      hit(projectile) {
+        // Calcula o padding dinamicamente baseado na escala
+        const paddingX = this.hitboxPadding.x * this.scale;
+        const paddingY = this.hitboxPadding.y * this.scale;
+
+        // O resto do cálculo da hitbox continua igual
+        const hitboxX = this.position.x + paddingX;
+        const hitboxY = this.position.y + paddingY;
+        const hitboxWidth = this.width - (paddingX * 2);
+        const hitboxHeight = this.height - (paddingY * 2);
+
         // Lógica de colisão de retângulo simples
         return (
-            projectile.position.y <= this.position.y + this.height &&
-            projectile.position.y + projectile.height >= this.position.y &&
-            projectile.position.x <= this.position.x + this.width &&
-            projectile.position.x + projectile.width >= this.position.x
+            projectile.position.y <= hitboxY + hitboxHeight &&
+            projectile.position.y + projectile.height >= hitboxY &&
+            projectile.position.x <= hitboxX + hitboxWidth &&
+            projectile.position.x + projectile.width >= hitboxX
         );
     }
 }
