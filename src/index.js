@@ -283,6 +283,12 @@ const spawnGrid = () => {
     soundEffects.playNextLevelSound();
     gameData.level += 1;
 
+    if (gameData.level > 0 && gameData.level % 3 === 0) {
+            grid.invadersVelocity += 0.5; // Adiciona 0.5 à velocidade atual
+            // Mensagem no console para você testar e ver a mudança
+            console.log(`Nível ${gameData.level} atingido! Velocidade dos invasores aumentada para ${grid.invadersVelocity}`);
+        }
+
     if (gameData.level > 0 && gameData.level % 5 === 0) {
       bossFightActive = true;
       boss = new Boss(canvas.width, canvas.height);
