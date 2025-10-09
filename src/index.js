@@ -24,23 +24,23 @@ gameOverScreen.remove();
 const canvas = document.querySelector("canvas"); // Seleciona o canvas
 const ctx = canvas.getContext("2d"); // Contexto 2D do canvas
 
-canvas.width = innerWidth;  // Define a largura do canvas
-canvas.height = innerHeight;  // Define a altura do canvas
+canvas.width = innerWidth; // Define a largura do canvas
+canvas.height = innerHeight; // Define a altura do canvas
 
 ctx.imageSmoothingEnabled = false; // Desativa o suavização de imagem para um estilo pixelado
 
 let currentState = GameState.START;
 
 const gameData = {
-    score: 0,
-    level: 1,
-    high: 0,
+score: 0,
+level: 1,
+high: 0,
 };
 
 const showGameData = () => {
-    scoreElement.textContent = gameData.score;
-    levelElement.textContent = gameData.level;
-    highElement.textContent = gameData.high;
+scoreElement.textContent = gameData.score;
+levelElement.textContent = gameData.level;
+highElement.textContent = gameData.high;
 };
 
 const player = new Player(canvas.width, canvas.height); // Cria uma nova instância do jogador
@@ -58,113 +58,113 @@ let bossFightActive = false;
 
 // Paletas de partículas para as explosões
 const PLAYER_DEATH_PARTICLES = [
-    { color: '#cccccc', radius: 10 }, 
-    { color: '#FFD700', radius: 12 }, 
-    { color: '#87CEEB', radius: 8  }
+{ color: '#cccccc', radius: 5 }, 
+{ color: '#FFD700', radius: 4 }, 
+{ color: '#87CEEB', radius: 3 }
 ];
 
 const INVADER_DEATH_PARTICLES = [
-    { color: 'crimson', radius: 10 },
-    { color: '#ff4040', radius: 5  }
+{ color: 'crimson', radius: 3 },
+{ color: '#ff4040', radius: 3 }
 ];
 
 const BOSS_HIT_PARTICLES = [
-    { color: 'white',   radius: 5 },
-    { color: 'crimson', radius: 8 }
+{ color: 'lightgray',  radius: 2 },
+{ color: 'crimson', radius: 3 }
 ];
 
 const BOSS_DEATH_PARTICLES = [
-    { color: 'crimson', radius: 20 },
-    { color: 'orange',  radius: 15 },
-    { color: 'yellow',  radius: 10 }
+{ color: 'crimson', radius: 14 },
+{ color: 'orange', radius: 12 },
+{ color: 'yellow', radius: 10 }
 ];
 
 const InitObstacles = () => { // Função para inicializar os obstáculos
-    const x = canvas.width / 2 - 50;
-    const y = canvas.height - 250;
-    const offset = canvas.width * 0.15;
-    const color = "crimson";
+const x = canvas.width / 2 - 50;
+const y = canvas.height - 250;
+const offset = canvas.width * 0.15;
+const color = "crimson";
 
-    const obstacle1 = new Obstacle({ x: x - offset, y }, 100, 20, color);
-    const obstacle2 = new Obstacle({ x: x + offset, y }, 100, 20, color);
+const obstacle1 = new Obstacle({ x: x - offset, y }, 100, 20, color);
+const obstacle2 = new Obstacle({ x: x + offset, y }, 100, 20, color);
 
-    obstacles.push(obstacle1);
-    obstacles.push(obstacle2);
+obstacles.push(obstacle1);
+obstacles.push(obstacle2);
 };
 InitObstacles();
 
 const keys = { // Objeto para rastrear o estado das teclas
-    left: { pressed: false },
-    right: { pressed: false },
-    shoot: { pressed: false, released: true },
+left: { pressed: false },
+right: { pressed: false },
+shoot: { pressed: false, released: true },
 };
 
 const incrementScore = (value) => {
-    gameData.score += value;
+gameData.score += value;
 
-    if (gameData.score > gameData.high) {
-        gameData.high = gameData.score;
-    }
+if (gameData.score > gameData.high) {
+ gameData.high = gameData.score;
+ }
 };
 
 function drawBossHealthBar(ctx) {
-    if (!boss) return; // Garante que a função não execute se não houver chefe
-    
-    const barWidth = canvas.width * 0.4;
-    const barHeight = 30;
-    const barX = (canvas.width - barWidth) / 2;
-    const barY = 100;
-    const healthPercentage = boss.health / boss.maxHealth;
+  if (!boss) return; // Garante que a função não execute se não houver chefe
+  
+  const barWidth = canvas.width * 0.4;
+  const barHeight = 30;
+  const barX = (canvas.width - barWidth) / 2;
+  const barY = 100;
+  const healthPercentage = boss.health / boss.maxHealth;
 
-    ctx.fillStyle = '#444';
-    ctx.fillRect(barX, barY, barWidth, barHeight);
+  ctx.fillStyle = '#444';
+  ctx.fillRect(barX, barY, barWidth, barHeight);
 
-    ctx.fillStyle = 'crimson';
-    ctx.fillRect(barX, barY, barWidth * healthPercentage, barHeight);
-    
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(barX, barY, barWidth, barHeight);
+  ctx.fillStyle = 'crimson';
+  ctx.fillRect(barX, barY, barWidth * healthPercentage, barHeight);
+  
+  ctx.strokeStyle = 'white';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(barX, barY, barWidth, barHeight);
 
-    ctx.fillStyle = 'white';
-    ctx.font = '20px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('BOSS', barX + barWidth / 2, barY + barHeight / 2 + 7);
+  ctx.fillStyle = 'white';
+  ctx.font = '20px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('BOSS', barX + barWidth / 2, barY + barHeight / 2 + 7);
 }
 
 const drawObstacles = () => {
-    obstacles.forEach((obstacle) => obstacle.draw(ctx));
+  obstacles.forEach((obstacle) => obstacle.draw(ctx));
 };
 
 const drawProjectiles = () => {
-    const projectiles = [...playerProjectiles, ...invaderProjectiles];
-    projectiles.forEach((projectile) => {
-        projectile.draw(ctx);
-        projectile.update();
-    });
+  const projectiles = [...playerProjectiles, ...invaderProjectiles];
+  projectiles.forEach((projectile) => {
+    projectile.draw(ctx);
+    projectile.update();
+  });
 };
 
 const clearProjectiles = () => {
-    playerProjectiles.forEach((projectile, index) => {
-        if (projectile.position.y <= 0) {
-            playerProjectiles.splice(index, 1);
-        }
-    });
+  playerProjectiles.forEach((projectile, index) => {
+    if (projectile.position.y <= 0) {
+      playerProjectiles.splice(index, 1);
+    }
+  });
 };
 
 const drawParticles = () => {
-    particles.forEach((particle) => {
-        particle.draw(ctx);
-        particle.update();
-    });
+  particles.forEach((particle) => {
+    particle.draw(ctx);
+    particle.update();
+  });
 };
 
 const clearParticles = () => {
-    particles.forEach((particle, i) => {
-        if (particle.opacity <= 0) {
-            particles.splice(i, 1);
-        }
-    });
+  particles.forEach((particle, i) => {
+    if (particle.opacity <= 0) {
+      particles.splice(i, 1);
+    }
+  });
 };
 
 // [ALTERADO] Função createExplosion corrigida e melhorada
@@ -208,83 +208,83 @@ function createExplosionEffect(target, particleDefinitions) {
 }
 
 const checkShootInvaders = () => {
-    grid.invaders.forEach((invader, invaderIndex) => {
-        playerProjectiles.some((projectile, projectilesIndex) => {
-            if (invader.hit(projectile)) {
-                soundEffects.playHitSound();
+  grid.invaders.forEach((invader, invaderIndex) => {
+    playerProjectiles.some((projectile, projectilesIndex) => {
+      if (invader.hit(projectile)) {
+        soundEffects.playHitSound();
 
-                // [ALTERADO] Usa a nova função de efeito com a paleta de invasores
+        // [ALTERADO] Usa a nova função de efeito com a paleta de invasores
                 createExplosionEffect(invader, INVADER_DEATH_PARTICLES);
-                
-                incrementScore(10);
+        
+        incrementScore(10);
 
-                grid.invaders.splice(invaderIndex, 1);
-                playerProjectiles.splice(projectilesIndex, 1);
-            }
-        });
-    });
+        grid.invaders.splice(invaderIndex, 1);
+        playerProjectiles.splice(projectilesIndex, 1);
+      }
+    });
+  });
 };
 
 const checkShootBoss = () => {
-    if (!boss) return;
-    playerProjectiles.some((projectile, projectilesIndex) => {
-        if (boss.hit(projectile)) {
-            soundEffects.playHitSound();
+  if (!boss) return;
+  playerProjectiles.some((projectile, projectilesIndex) => {
+    if (boss.hit(projectile)) {
+      soundEffects.playHitSound();
 
             // [ALTERADO] Usa a nova função com a paleta de dano do chefe
             // Criamos um "alvo falso" na posição do projétil para o efeito acontecer no local do impacto
             const hitMarker = { position: projectile.position, width: 0, height: 0 };
             createExplosionEffect(hitMarker, BOSS_HIT_PARTICLES);
 
-            incrementScore(50);
-            boss.takeDamage(10);
-            playerProjectiles.splice(projectilesIndex, 1);
-        }
-    });
+      incrementScore(50);
+      boss.takeDamage(10);
+      playerProjectiles.splice(projectilesIndex, 1);
+    }
+  });
 };
 
 const checkShootPlayer = () => {
-    invaderProjectiles.some((projectile, index) => {
-        if (player.hit(projectile)) {
-            soundEffects.playExplosionSound();
-            invaderProjectiles.splice(index, 1);
-            player.takeDamage();
-        }
-    });
+  invaderProjectiles.some((projectile, index) => {
+    if (player.hit(projectile)) {
+      soundEffects.playExplosionSound();
+      invaderProjectiles.splice(index, 1);
+      player.takeDamage();
+    }
+  });
 };
 
 const checkShootObstacles = () => {
-    obstacles.forEach((obstacle) => {
-        playerProjectiles.some((projectile, index) => {
-            if (obstacle.hit(projectile)) {
-                playerProjectiles.splice(index, 1);
-                return true;
-            }
-        });
+  obstacles.forEach((obstacle) => {
+    playerProjectiles.some((projectile, index) => {
+      if (obstacle.hit(projectile)) {
+        playerProjectiles.splice(index, 1);
+        return true;
+      }
+    });
 
-        invaderProjectiles.some((projectile, index) => {
-            if (obstacle.hit(projectile)) {
-                invaderProjectiles.splice(index, 1);
-                return true;
-            }
-        });
-    });
+    invaderProjectiles.some((projectile, index) => {
+      if (obstacle.hit(projectile)) {
+        invaderProjectiles.splice(index, 1);
+        return true;
+      }
+    });
+  });
 };
 
 const spawnGrid = () => {
-    if (grid.invaders.length === 0 && !bossFightActive) {
-        soundEffects.playNextLevelSound();
-        gameData.level += 1;
+  if (grid.invaders.length === 0 && !bossFightActive) {
+    soundEffects.playNextLevelSound();
+    gameData.level += 1;
 
-        if (gameData.level > 0 && gameData.level % 5 === 0) {
-            bossFightActive = true;
-            boss = new Boss(canvas.width, canvas.height);
-        } else {
-            grid.rows = Math.round(Math.random() * 4 + 1);
-            grid.cols = Math.round(Math.random() * 4 + 1);
-            grid.restart();
-        }
-    };
+    if (gameData.level > 0 && gameData.level % 5 === 0) {
+      bossFightActive = true;
+      boss = new Boss(canvas.width, canvas.height);
+    } else {
+      grid.rows = Math.round(Math.random() * 4 + 1);
+      grid.cols = Math.round(Math.random() * 4 + 1);
+      grid.restart();
+    }
+  };
 };
 
 // [ALTERADO] Função gameOver agora usa a nova lógica e paleta do jogador
@@ -300,109 +300,108 @@ const gameOver = () => {
 
 
 const gameLoop = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (currentState === GameState.PLAYING) {
+  if (currentState === GameState.PLAYING) {
 
-          if (!player.alive) {
-            gameOver();
-        }
+     if (!player.alive) {
+      gameOver();
+    }
 
-        showGameData();
+    showGameData();
 
-        drawParticles();
-        drawProjectiles();
-        drawObstacles();
+    drawParticles();
+    drawProjectiles();
+    drawObstacles();
 
-        player.draw(ctx);
-        player.drawLives(ctx);
+    player.draw(ctx);
+    player.drawLives(ctx);
 
-        clearProjectiles();
-        clearParticles();
+    clearProjectiles();
+    clearParticles();
 
-        checkShootPlayer();
-        checkShootObstacles();
-        
-        if (bossFightActive) {
-            if (boss && boss.alive) {
-                boss.update(invaderProjectiles);
-                boss.draw(ctx);
-                checkShootBoss();
-                drawBossHealthBar(ctx);
-            } else if (boss) {
+    checkShootPlayer();
+    checkShootObstacles();
+    
+    if (bossFightActive) {
+      if (boss && boss.alive) {
+        boss.update(invaderProjectiles);
+        boss.draw(ctx);
+        checkShootBoss();
+        drawBossHealthBar(ctx);
+      } else if (boss) {
                 // [ALTERADO] Adiciona a explosão de morte do chefe antes de removê-lo
                 createExplosionEffect(boss, BOSS_DEATH_PARTICLES);
 
-                bossFightActive = false;
-                boss = null;
-                incrementScore(1000);
-                spawnGrid();
-            }
-        } else {
-            spawnGrid();
-            checkShootInvaders();
-            grid.draw(ctx);
-            grid.update(player.alive);
-        }
+        bossFightActive = false;
+        boss = null;
+        incrementScore(1000);
+        spawnGrid();
+      }
+    } else {
+      spawnGrid();
+      checkShootInvaders();
+      grid.draw(ctx);
+      grid.update(player.alive);
+    }
 
-        ctx.save();
-        ctx.translate(player.position.x + player.width / 2, player.position.y + player.height / 2);
+    ctx.save();
+    ctx.translate(player.position.x + player.width / 2, player.position.y + player.height / 2);
 
-        if (keys.shoot.pressed && keys.shoot.released) {
-            player.shoot(playerProjectiles);
-            soundEffects.playShootSound();
-            keys.shoot.released = false;
-        }
+    if (keys.shoot.pressed && keys.shoot.released) {
+      player.shoot(playerProjectiles);
+      soundEffects.playShootSound();
+      keys.shoot.released = false;
+    }
 
-        if (keys.left.pressed && player.position.x >= 0) {
-            player.moveLeft();
-            ctx.rotate(-0.15);
-        }
+    if (keys.left.pressed && player.position.x >= 0) {
+      player.moveLeft();
+      ctx.rotate(-0.15);
+    }
 
-        if (keys.right.pressed && player.position.x <= canvas.width - player.width) {
-            player.moveRight();
-            ctx.rotate(0.15);
-        }
+    if (keys.right.pressed && player.position.x <= canvas.width - player.width) {
+      player.moveRight();
+      ctx.rotate(0.15);
+    }
 
-        ctx.translate(-player.position.x - player.width / 2, -player.position.y - player.height / 2);
-        player.draw(ctx);
-        ctx.restore();
-    }
+    ctx.translate(-player.position.x - player.width / 2, -player.position.y - player.height / 2);
+    player.draw(ctx);
+    ctx.restore();
+  }
 
-    if (currentState === GameState.GAME_OVER) {
-        checkShootObstacles();
+  if (currentState === GameState.GAME_OVER) {
+    checkShootObstacles();
 
-        drawProjectiles();
-        drawParticles();
-        drawObstacles();
+    drawProjectiles();
+    drawParticles();
+    drawObstacles();
 
-        clearProjectiles();
-        clearParticles();
+    clearProjectiles();
+    clearParticles();
 
-        grid.draw(ctx);
-        grid.update(player.alive);
-    }
-    requestAnimationFrame(gameLoop);
+    grid.draw(ctx);
+    grid.update(player.alive);
+  }
+  requestAnimationFrame(gameLoop);
 };
 
 addEventListener ("keydown", (event) => {
-    const key = event.key.toLowerCase();
+  const key = event.key.toLowerCase();
 
-    if (key === "a") keys.left.pressed = true;
-    if (key === "d") keys.right.pressed = true;
-    if (key === "enter" || key === ' ') keys.shoot.pressed = true;
-});       
+  if (key === "a") keys.left.pressed = true;
+  if (key === "d") keys.right.pressed = true;
+  if (key === "enter" || key === ' ') keys.shoot.pressed = true;
+});    
 
 addEventListener ("keyup", (event) => {
-    const key = event.key.toLowerCase();    
+  const key = event.key.toLowerCase();  
 
-    if (key === "a") keys.left.pressed = false;
-    if (key === "d") keys.right.pressed = false;
+  if (key === "a") keys.left.pressed = false;
+if (key === "d") keys.right.pressed = false;
 
-    if (key === "enter" || key === ' ') {
-         keys.shoot.pressed = false;
-         keys.shoot.released = true;
-    }
+if (key === "enter" || key === ' ') {
+keys.shoot.pressed = false;
+keys.shoot.released = true; }
 });
 
 addEventListener("mousedown", (event) => {
@@ -420,37 +419,34 @@ addEventListener("mouseup", (event) => {
 
 
 setInterval(() => {
-    if (!bossFightActive) {
-        const invader = grid.getRandomInvader();
-        if (invader) {
-            invader.shoot(invaderProjectiles);
-        }
-    }
+ if (!bossFightActive) {
+ const invader = grid.getRandomInvader();
+if (invader) {
+ invader.shoot(invaderProjectiles); }
+}
 }, 1000 );
 
 buttonPlay.addEventListener("click", () => {
-    startScreen.remove();
-    scoreUi.style.display = "block";
-    currentState = GameState.PLAYING;
+startScreen.remove();
+scoreUi.style.display = "block";
+currentState = GameState.PLAYING;
 });
 
 buttonRestart.addEventListener("click", () => {
-    currentState = GameState.PLAYING;
-    player.lives = 3; 
-    player.alive = true;
+player.lives = 3; 
+player.alive = true;
 
-    grid.restart();
-    grid.invadersVelocity = 1;
-    
-    boss = null;
-    bossFightActive = false;
+grid.restart();
+grid.invadersVelocity = 1;
+ boss = null; 
+ bossFightActive = false;
 
-    invaderProjectiles.length = 0; 
-    
-    gameData.score = 0
-    gameData.level = 1;
+invaderProjectiles.length = 0; 
 
-    gameOverScreen.remove();
+gameData.score = 0
+gameData.level = 1;
+
+ gameOverScreen.remove();
 });
 
 gameLoop();
