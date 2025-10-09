@@ -53,7 +53,8 @@ class Player { //define a classe Player
     shoot(Projectiles) { // Método 'shoot' que cria e retorna um novo projétil.
         const p = new Projectile( // Cria uma nova instância do projétil
             { x: this.position.x + this.width / 2 - 1, y: this.position.y + 2 }, // Posição inicial do projétil (centro superior do jogador)
-            -10 // Velocidade do projétil
+            -10, // Velocidade do projétil
+             '#F000E8'
         );
         Projectiles.push(p); // Adiciona o projétil ao array de projéteis
     }

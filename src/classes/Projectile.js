@@ -1,15 +1,16 @@
 class Projectile {
-    constructor(position, velocity) {
+    constructor(position, velocity, color = 'white') {
         this.position = position;
         this.width = 2;
         this.height = 20;
         this.velocity = velocity;
+        this.color = color;
     }
 
     draw(ctx) {
-        ctx.fillStyle = "#2a9cd1ff";
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-    }
+    ctx.fillStyle = this.color; // CORRIGIDO: Use a cor da propriedade da classe
+    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+}
 
       update() {
         this.position.y += this.velocity;

@@ -56,7 +56,8 @@ class Invader { //define a classe Invader
     const p = new Projectile( // Cria uma nova instância do projétil
         { x: this.position.x + this.width / 2 - 1, 
           y: this.position.y + this.height }, // Posição inicial do projétil (centro superior do jogador)
-        10 // Velocidade do projétil
+        10, // Velocidade do projétil
+        '#ff4040' 
     );
     Projectiles.push(p); // Adiciona o projétil ao array de projéteis
 }

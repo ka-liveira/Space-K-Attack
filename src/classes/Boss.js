@@ -75,9 +75,10 @@ class Boss {
         const p = new Projectile(
             {
                 x: this.position.x + this.width / 2 - 5, // Posição x do tiro (centro do boss)
-                y: this.position.y + this.height         // Posição y do tiro (base do boss)
+                y: this.position.y + this.height / 1.5     // Posição y do tiro (base do boss)
             },
-            7 // Velocidade do projétil (para baixo)
+            7, // Velocidade do projétil (para baixo)
+            '#ADFF2F'
         );
         projectiles.push(p);
     }
