@@ -285,19 +285,29 @@ const spawnGrid = () => {
 
     if (gameData.level > 0 && gameData.level % 3 === 0) {
             grid.invadersVelocity += 0.5; // Adiciona 0.5 à velocidade atual
-            // Mensagem no console para você testar e ver a mudança
-            console.log(`Nível ${gameData.level} atingido! Velocidade dos invasores aumentada para ${grid.invadersVelocity}`);
         }
 
-    if (gameData.level > 0 && gameData.level % 5 === 0) {
-      bossFightActive = true;
-      boss = new Boss(canvas.width, canvas.height);
-    } else {
-      grid.rows = Math.round(Math.random() * 4 + 1);
-      grid.cols = Math.round(Math.random() * 4 + 1);
-      grid.restart();
-    }
+  if (gameData.level > 0 && gameData.level % 5 === 0) {
+            let bossHealth; // 1. Declara uma variável para a vida do chefe
+
+            // 2. Verifica se o nível é um múltiplo de 10
+            if (gameData.level % 10 === 0) {
+                bossHealth = 1000; // Níveis 10, 20, 30... chefe tem 1000 de vida
+            } else {
+                bossHealth = 500; // Níveis 5, 15, 25... chefe tem 500 de vida
+            }
+
+            bossFightActive = true;
+            // 3. Passa a vida calculada ao criar o novo chefe
+            boss = new Boss(canvas.width, canvas.height, bossHealth);
+
+        } else {
+            // Lógica para níveis normais (continua a mesma)
+            grid.rows = Math.round(Math.random() * 4 + 1);
+            grid.cols = Math.round(Math.random() * 4 + 1);
+            grid.restart();
   };
+}
 };
 
 // [ALTERADO] Função gameOver agora usa a nova lógica e paleta do jogador

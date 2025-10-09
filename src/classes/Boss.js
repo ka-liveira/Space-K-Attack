@@ -2,7 +2,7 @@ import Projectile from "./Projectile.js";
 import { PATH_BOSS_IMAGE } from "../utils/constants.js"; // Certifique-se que este caminho está correto
 
 class Boss {
-    constructor(canvasWidth, canvasHeight) {
+    constructor(canvasWidth, canvasHeight, initialHealth) {
          // --- Dimensões e Posição ---
         this.scale = 5; 
         this.baseWidth = 64;
@@ -26,8 +26,8 @@ class Boss {
         this.canvasHeight = canvasHeight;
 
         // --- Atributos do Chefe ---
-        this.health = 1000; // Vida inicial
-        this.maxHealth = 1000; //vida máxima
+        this.health = initialHealth; // Vida inicial
+        this.maxHealth = initialHealth; //vida máxima
         this.alive = true;
         this.velocity = { x: 3, y: 2 }; // Velocidade de movimento
 
