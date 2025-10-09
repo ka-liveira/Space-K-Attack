@@ -39,6 +39,7 @@ class SoundEffects {
     }
 
     playExplosionSound() {
+        this.explosionSound.currentTime = 0;
         this.explosionSound.play();
     }
 
