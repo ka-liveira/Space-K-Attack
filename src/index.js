@@ -63,6 +63,11 @@ const PLAYER_DEATH_PARTICLES = [
 { color: '#87CEEB', radius: 3 }
 ];
 
+const PLAYER_HIT_PARTICLES = [
+    { color: 'lightgray',    radius: 4 },
+    { color: '#87CEEB', radius: 4 } // Azul céu, para combinar com o jogador
+];
+
 const INVADER_DEATH_PARTICLES = [
 { color: 'crimson', radius: 3 },
 { color: '#ff4040', radius: 3 }
@@ -83,10 +88,10 @@ const InitObstacles = () => { // Função para inicializar os obstáculos
 const x = canvas.width / 2 - 50;
 const y = canvas.height - 250;
 const offset = canvas.width * 0.15;
-const color = "crimson";
+const color = "white";
 
-const obstacle1 = new Obstacle({ x: x - offset, y }, 100, 20, color);
-const obstacle2 = new Obstacle({ x: x + offset, y }, 100, 20, color);
+const obstacle1 = new Obstacle({ x: x - offset, y }, 150, 15, color);
+const obstacle2 = new Obstacle({ x: x + offset, y }, 150, 15, color);
 
 obstacles.push(obstacle1);
 obstacles.push(obstacle2);
@@ -248,6 +253,8 @@ const checkShootPlayer = () => {
     if (player.hit(projectile)) {
       soundEffects.playExplosionSound();
       invaderProjectiles.splice(index, 1);
+
+      createExplosionEffect(player, PLAYER_HIT_PARTICLES);
       player.takeDamage();
     }
   });
