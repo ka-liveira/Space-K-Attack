@@ -456,8 +456,9 @@ currentState = GameState.PLAYING;
 });
 
 buttonRestart.addEventListener("click", () => {
-player.lives = 3; 
-player.alive = true;
+ player.restart(canvas.width, canvas.height);
+
+     currentState = GameState.PLAYING;
 
 grid.restart();
 grid.invadersVelocity = 1;

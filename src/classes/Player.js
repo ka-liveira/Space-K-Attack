@@ -77,6 +77,15 @@ class Player { //define a classe Player
             this.alive = false; // Se as vidas acabarem, o jogador não está mais vivo
         }
     }
+
+     restart(canvasWidth, canvasHeight) {
+        this.alive = true;
+        this.lives = 3;
+        this.position = { // Reposiciona o jogador no centro da tela
+            x: canvasWidth / 2 - this.width / 2,
+            y: canvasHeight - this.height - 30
+        };
+    }
 }
 
 export default Player; // Exporta a classe 'Player' como padrão para que possa ser importada em outros arquivos.
