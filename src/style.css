@@ -11,13 +11,28 @@ body {
     overflow: hidden; /* Evita barras de rolagem */
     color: white;
 
-    /* Configurações essenciais para o fundo */
+    background-color: #000;;
+}
+
+.background-fader {
+    /* Faz o div ocupar a tela toda, fixo no fundo */
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+    /* Garante que fique atrás de todo o conteúdo do jogo */
+    z-index: -10; 
+
+    /* Configurações da imagem de fundo */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     
-    /* Efeito de transição suave ao trocar de imagem */
-    transition: background-image 1.2s ease-in-out;
+    /* A mágica da transição suave (fade) */
+    opacity: 0; /* Começa invisível por padrão */
+    transition: opacity 1.2s ease-in-out; /* Duração da transição */
 }
 
 canvas {

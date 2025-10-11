@@ -23,19 +23,60 @@ const buttonRestart = document.querySelector(".button-restart");
 
 gameOverScreen.remove();
 
+const bgDiv1 = document.querySelector("#bg1");
+const bgDiv2 = document.querySelector("#bg2");
+
+// 1. PRIMEIRO: Defina a lista de imagens.
+//    (Lembre-se de importar as constantes PATH_... no topo do seu arquivo)
 const fundosAnimados = [
-  PATH_BACKGROUND_IMAGE,
-  PATH_BACKGROUND_IMAGE_2,
-  PATH_BACKGROUND_IMAGE_3
+    PATH_BACKGROUND_IMAGE,
+    PATH_BACKGROUND_IMAGE_2,
+    PATH_BACKGROUND_IMAGE_3
 ];
 
-let indiceFundoAtual = 0;
+// 2. SEGUNDO: Defina as variáveis de controle.
 let intervaloDoFundo;
+let bgAtivo = 1; 
+let indiceFundoAtual = 0;
+
+// 3. TERCEIRO: Defina as funções auxiliares.
+function precarregarImagens() {
+    fundosAnimados.forEach(caminhoDaImagem => {
+        const img = new Image();
+        img.src = caminhoDaImagem;
+    });
+}
 
 function trocarFundo() {
-     // Esta parte já está quase certa, só faltava o resto da lógica
-    document.body.style.backgroundImage = `url('${fundosAnimados[indiceFundoAtual]}')`;
-    indiceFundoAtual = (indiceFundoAtual + 1) % fundosAnimados.length;
+    // Calcula o índice da PRÓXIMA imagem
+    const proximoIndice = (indiceFundoAtual + 1) % fundosAnimados.length;
+
+    // Identifica qual div está na frente e qual está atrás
+    const divAtivo = (bgAtivo === 1) ? bgDiv1 : bgDiv2;
+    const divInativo = (bgAtivo === 1) ? bgDiv2 : bgDiv1;
+
+    // Define a PRÓXIMA imagem no div que está ESCONDIDO
+    divInativo.style.backgroundImage = `url('${fundosAnimados[proximoIndice]}')`;
+
+    // Inverte a opacidade para criar o efeito de fade
+    divAtivo.style.opacity = 0;   // Esconde o div antigo
+    divInativo.style.opacity = 1; // Mostra o novo div
+
+    // Atualiza as variáveis de controle para a próxima rodada
+    indiceFundoAtual = proximoIndice;
+    bgAtivo = (bgAtivo === 1) ? 2 : 1; // Alterna entre 1 e 2
+}
+
+// 4. QUARTO: Defina a função principal que inicia o processo.
+function iniciarFundo() {
+    precarregarImagens(); // Agora esta função já existe.
+    
+    // Define a primeira imagem no primeiro div e o torna visível
+    bgDiv1.style.backgroundImage = `url('${fundosAnimados[0]}')`;
+    bgDiv1.style.opacity = 1;
+    
+    // Inicia o loop de troca
+    intervaloDoFundo = setInterval(trocarFundo, 4000);
 }
 
 const canvas = document.querySelector("canvas"); // Seleciona o canvas
@@ -519,8 +560,6 @@ startInvaderShooting();
 gameOverScreen.remove();
 
 });
-// Lembre-se de iniciar o processo
-trocarFundo(); // Chama a primeira vez
-intervaloDoFundo = setInterval(trocarFundo, 2500); // Inicia o loop
 
+iniciarFundo();
 gameLoop();
