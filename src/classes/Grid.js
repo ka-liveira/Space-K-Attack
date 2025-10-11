@@ -11,7 +11,7 @@ class Grid {
 
 
         this.invadersVelocity = 1; //velocidade inicial 
-        this.invaders = this.init(); //inicializa os invasores chamando o método init
+         this.invaders = []; 
     }
 
     init() { //método que cria e posiciona os invasores na grade
@@ -30,29 +30,30 @@ class Grid {
     draw(ctx) { this.invaders.forEach((invader) => invader.draw(ctx)); } //método que desenha os invasores na tela
 
     update(playerStatus) {
-        if(this.reachedRightBoundary()) {
-            this.direction= "left";
-            this.moveDown = true;
-        } else if(this.reachedLeftBoundary()) {
-            this.direction = "right";
-            this.moveDown = true; 
+     // A lógica de checar as bordas continua a mesma
+    if (this.reachedRightBoundary()) {
+        this.direction = "left";
+        this.moveDown = true;
+    } else if (this.reachedLeftBoundary()) {
+        this.direction = "right";
+        this.moveDown = true;
+    }
+
+    // Loop para mover cada invasor
+    this.invaders.forEach((invader) => {
+        if (this.moveDown) {
+            invader.moveDown();
         }
 
-        if(!playerStatus) this.moveDown = false;
+        // AGORA, O MOVIMENTO USA A VELOCIDADE PRINCIPAL DA GRADE
+        if (this.direction === "right") {
+            invader.position.x += this.invadersVelocity;
+        } else if (this.direction === "left") {
+            invader.position.x -= this.invadersVelocity;
+        }
+    });
 
-            this.invaders.forEach((invader) => {
-                if (this.moveDown) {
-                    invader.moveDown();
-                    invader.incrementVelocity(0.2);
-                    this.invadersVelocity = invader.velocity;
-                }
-
-
-                if (this.direction === "right") invader.moveRight();
-                if (this.direction === "left") invader.moveLeft();
-            });
-
-            this.moveDown = false;
+    this.moveDown = false;
     }
 
     reachedRightBoundary() {
@@ -68,9 +69,18 @@ class Grid {
     }
 
      restart() {
-        this.invaders = this.init();
-        this.direction = "right";
+        // O restart agora limpa os invasores antigos e cria novos com base nas novas rows/cols
+    this.invaders = [];
+    this.direction = "right";
+
+    for (let row = 0; row < this.rows; row += 1) {
+        for (let col = 0; col < this.cols; col += 1) {
+            // Cria um novo invasor sem passar a velocidade, pois o update da grade vai controlar isso
+            const invader = new Invader({ x: col * 50 + 20, y: row * 37 + 100 });
+            this.invaders.push(invader);
+        }
     }
+}
 }
 
 export default Grid;
