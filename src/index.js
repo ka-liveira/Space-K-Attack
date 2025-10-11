@@ -33,7 +33,7 @@ let currentState = GameState.START;
 
 const gameData = {
 score: 0,
-level: 1,
+level: 0,
 high: 0,
 };
 
