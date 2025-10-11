@@ -52,6 +52,9 @@ const invaderProjectiles = [];
 const particles = [];
 const obstacles = [];
 
+let invaderShootInterval;
+let invaderShootTime = 1000;
+
 // [BOSS] Variáveis para controlar o chefe
 let boss = null;
 let bossFightActive = false;
@@ -278,10 +281,37 @@ const checkShootObstacles = () => {
   });
 };
 
+const startInvaderShooting = () => {
+    // Limpa qualquer timer antigo para evitar que múltiplos rodem ao mesmo tempo
+    if (invaderShootInterval) {
+        clearInterval(invaderShootInterval);
+    }
+
+    // Cria um novo timer com o tempo atualizado
+    invaderShootInterval = setInterval(() => {
+        // Só atira se não for uma luta de chefe e o jogo estiver rodando
+        if (!bossFightActive && currentState === GameState.PLAYING) {
+            const invader = grid.getRandomInvader();
+            if (invader) {
+                invader.shoot(invaderProjectiles);
+            }
+        }
+    }, invaderShootTime);
+};
+
 const spawnGrid = () => {
   if (grid.invaders.length === 0 && !bossFightActive) {
     soundEffects.playNextLevelSound();
     gameData.level += 1;
+
+    if (gameData.level > 0 && gameData.level % 3 === 0) {
+            // Define um limite para não ficar impossível (ex: mínimo de 250ms)
+            if (invaderShootTime > 250) {
+                invaderShootTime -= 100; // Diminui o tempo em 100ms
+                startInvaderShooting(); // Reinicia o timer com a nova velocidade
+                console.log(`Nível ${gameData.level}! Frequência de tiro aumentada. Intervalo: ${invaderShootTime}ms`);
+            }
+        }
 
     if (gameData.level > 0 && gameData.level % 3 === 0) {
             grid.invadersVelocity += 0.5; // Adiciona 0.5 à velocidade atual
@@ -441,18 +471,11 @@ addEventListener("mouseup", (event) => {
 });
 
 
-setInterval(() => {
- if (!bossFightActive) {
- const invader = grid.getRandomInvader();
-if (invader) {
- invader.shoot(invaderProjectiles); }
-}
-}, 1000 );
-
 buttonPlay.addEventListener("click", () => {
 startScreen.remove();
 scoreUi.style.display = "block";
 currentState = GameState.PLAYING;
+startInvaderShooting();
 });
 
 buttonRestart.addEventListener("click", () => {
@@ -469,6 +492,9 @@ invaderProjectiles.length = 0;
 
 gameData.score = 0
 gameData.level = 1;
+
+invaderShootTime = 1000;
+startInvaderShooting();
 
  gameOverScreen.remove();
 });
