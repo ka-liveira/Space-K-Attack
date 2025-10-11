@@ -496,9 +496,6 @@ scoreUi.style.display = "block";
 currentState = GameState.PLAYING;
 startInvaderShooting();
 
-// Lembre-se de iniciar o processo
-trocarFundo(); // Chama a primeira vez
-intervaloDoFundo = setInterval(trocarFundo, 2000); // Inicia o loop
 });
 
 buttonRestart.addEventListener("click", () => {
@@ -522,5 +519,8 @@ startInvaderShooting();
 gameOverScreen.remove();
 
 });
+// Lembre-se de iniciar o processo
+trocarFundo(); // Chama a primeira vez
+intervaloDoFundo = setInterval(trocarFundo, 2500); // Inicia o loop
 
 gameLoop();
