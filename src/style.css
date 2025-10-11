@@ -7,8 +7,28 @@
     font-family: "Press Start 2P", sans-serif;
 }
 
+body {
+    overflow: hidden; /* Evita barras de rolagem */
+    color: white;
+
+    /* Configurações essenciais para o fundo */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* Efeito de transição suave ao trocar de imagem */
+    transition: background-image 1.2s ease-in-out;
+}
+
 canvas {
-    background-color: #121212;
+    /* Deixamos o canvas transparente para o fundo do 'body' aparecer */
+    background-color: transparent; 
+    
+    /* Posiciona o canvas atrás da UI */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 
 .screen {

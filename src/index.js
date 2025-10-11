@@ -7,6 +7,8 @@ import { GameState } from "./utils/constants.js";
 import Obstacle from "./classes/Obstacle.js"; // Importa a classe Obstacle do arquivo Obstacle.js
 import SoundEffects from "./classes/SoundEffects.js";
 import Boss from "./classes/Boss.js";
+import { PATH_BACKGROUND_IMAGE, PATH_BACKGROUND_IMAGE_2, PATH_BACKGROUND_IMAGE_3 } from "./utils/constants.js";
+
 
 const soundEffects = new SoundEffects();
 
@@ -20,6 +22,21 @@ const buttonPlay = document.querySelector(".button-play");
 const buttonRestart = document.querySelector(".button-restart");
 
 gameOverScreen.remove();
+
+const fundosAnimados = [
+  PATH_BACKGROUND_IMAGE,
+  PATH_BACKGROUND_IMAGE_2,
+  PATH_BACKGROUND_IMAGE_3
+];
+
+let indiceFundoAtual = 0;
+let intervaloDoFundo;
+
+function trocarFundo() {
+     // Esta parte já está quase certa, só faltava o resto da lógica
+    document.body.style.backgroundImage = `url('${fundosAnimados[indiceFundoAtual]}')`;
+    indiceFundoAtual = (indiceFundoAtual + 1) % fundosAnimados.length;
+}
 
 const canvas = document.querySelector("canvas"); // Seleciona o canvas
 const ctx = canvas.getContext("2d"); // Contexto 2D do canvas
@@ -86,6 +103,8 @@ const BOSS_DEATH_PARTICLES = [
 { color: 'orange', radius: 12 },
 { color: 'yellow', radius: 10 }
 ];
+
+
 
 const InitObstacles = () => { // Função para inicializar os obstáculos
 const x = canvas.width / 2 - 50;
@@ -476,17 +495,21 @@ startScreen.remove();
 scoreUi.style.display = "block";
 currentState = GameState.PLAYING;
 startInvaderShooting();
+
+// Lembre-se de iniciar o processo
+trocarFundo(); // Chama a primeira vez
+intervaloDoFundo = setInterval(trocarFundo, 2000); // Inicia o loop
 });
 
 buttonRestart.addEventListener("click", () => {
  player.restart(canvas.width, canvas.height);
+ currentState = GameState.PLAYING;
 
-     currentState = GameState.PLAYING;
+  grid.restart();
+  grid.invadersVelocity = 1;
 
-grid.restart();
-grid.invadersVelocity = 1;
- boss = null; 
- bossFightActive = false;
+  boss = null; 
+  bossFightActive = false;
 
 invaderProjectiles.length = 0; 
 
@@ -496,7 +519,8 @@ gameData.level = 1;
 invaderShootTime = 1000;
 startInvaderShooting();
 
- gameOverScreen.remove();
+gameOverScreen.remove();
+
 });
 
 gameLoop();
