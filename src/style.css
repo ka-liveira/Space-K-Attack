@@ -74,7 +74,53 @@ canvas {
     margin-top: auto;
 }
 
-.button-play,
+.menu-screen {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 10;
+}
+.menu-screen p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Container para os botões na tela inicial */
+.main-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaçamento entre botões */
+    margin-top: 20px;
+    width: 200px; /* Largura fixa para os botões */
+}
+
+/* Estilo para TODOS os botões de menu na tela inicial */
+.main-menu button {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    background-color: #ddd;
+    font-size: 1rem;
+    cursor: pointer;
+    color: black; /* Adicionado para garantir a legibilidade */
+}
+.main-menu button:hover {
+    background-color: #fff;
+}
+
+/* Botão de voltar */
+.button-back-to-start {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    background-color: #555;
+    color: white;
+    margin-top: 30px;
+    cursor: pointer;
+}
+.button-back-to-start:hover {
+    background-color: #777;
+}
+
 .button-restart {
     border: none;
     padding: 12px 20px;

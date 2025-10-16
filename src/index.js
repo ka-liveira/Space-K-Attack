@@ -20,6 +20,11 @@ const levelElement = scoreUi.querySelector(".level > span");
 const highElement = scoreUi.querySelector(".high > span");
 const buttonPlay = document.querySelector(".button-play");
 const buttonRestart = document.querySelector(".button-restart");
+const settingsScreen = document.querySelector("#settings-screen");
+const instructionsScreen = document.querySelector("#instructions-screen");
+const optionsBtn = document.querySelector("#options-btn");
+const instructionsBtn = document.querySelector("#instructions-btn");
+const backToStartButtons = document.querySelectorAll(".button-back-to-start");
 
 gameOverScreen.remove();
 
@@ -537,6 +542,28 @@ scoreUi.style.display = "block";
 currentState = GameState.PLAYING;
 startInvaderShooting();
 
+});
+
+// 1. Botão "Opções"
+optionsBtn.addEventListener("click", () => {
+    startScreen.style.display = "none";  // Esconde a tela inicial
+    settingsScreen.style.display = "flex"; // Mostra a tela de opções
+});
+
+// 2. Botão "Instruções"
+instructionsBtn.addEventListener("click", () => {
+    startScreen.style.display = "none";     // Esconde a tela inicial
+    instructionsScreen.style.display = "flex"; // Mostra a tela de instruções
+});
+
+// 3. Botões de "Voltar"
+backToStartButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        startScreen.style.display = "flex"; // Mostra a tela inicial
+
+        // Esconde a tela de menu atual
+        button.closest(".menu-screen").style.display = "none";
+    });
 });
 
 buttonRestart.addEventListener("click", () => {
