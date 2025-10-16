@@ -61,8 +61,40 @@ canvas {
     padding-top: 15vh; /* Experimente valores como 10vh, 20vh, etc. */
 }
 
+/* Estilos base e chamada da animação */
 .screen h1 {
-    font-size: 2rem;
+  font-size: 3rem;
+  color: #FFFFFF;
+  margin-top: 70px;
+  margin-bottom: 20px;
+  
+  animation: glow-cycle-soft 6s ease-in-out infinite;
+
+  /* Estado inicial do brilho SUAVE para navegadores sem suporte à animação */
+  text-shadow:
+    0 0 10px rgba(240, 248, 255, 0.7),
+    0 0 30px rgba(176, 196, 222, 0.6),
+    0 0 60px rgba(70, 130, 180, 0.5);
+}
+
+/* Animação com brilho mais suave e difuso */
+@keyframes glow-cycle-soft {
+  /* Estado Inicial: Brilho Azul SUAVE */
+  0%, 100% {
+    text-shadow:
+      /* Menos camadas, maior desfoque e cores com transparência */
+      0 0 10px rgba(240, 248, 255, 0.7),   /* Luz interna com 70% de opacidade */
+      0 0 30px rgba(176, 196, 222, 0.6),   /* Luz média com 60% de opacidade */
+      0 0 60px rgba(70, 130, 180, 0.5);    /* Luz externa com 50% de opacidade */
+  }
+  
+  /* Meio da Animação: Brilho Branco/Cinza SUAVE */
+  50% {
+    text-shadow:
+      0 0 12px rgba(255, 255, 255, 0.7),      /* Luz interna branca com 70% de opacidade */
+      0 0 35px rgba(220, 220, 220, 0.5),      /* Luz média cinza com 50% de opacidade */
+      0 0 70px rgba(190, 190, 190, 0.4);    /* Luz externa cinza com 40% de opacidade */
+  }
 }
 
 .screen span {
@@ -102,7 +134,7 @@ canvas {
     display: flex;
     flex-direction: column;
     gap: 15px; /* Espaçamento entre botões */
-    margin-top: 200px;
+    margin-top: 120px;
     width: 200px; /* Largura fixa para os botões */
 }
 
