@@ -590,3 +590,4 @@ gameOverScreen.remove();
 
 iniciarFundo();
 gameLoop();
+console.log("Estado final do startScreen:", startScreen.style.display);

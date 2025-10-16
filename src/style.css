@@ -52,10 +52,13 @@ canvas {
     color: white;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* <<< Alinha o conteúdo no topo */
     flex-direction: column;
     position: absolute;
     inset: 0;
+    
+    /* Adicione um espaçamento no topo para empurrar para baixo */
+    padding-top: 15vh; /* Experimente valores como 10vh, 20vh, etc. */
 }
 
 .screen h1 {
@@ -63,15 +66,25 @@ canvas {
 }
 
 .screen span {
+    /* Posiciona seu nome fixo na parte de baixo */
+    position: absolute;
+    bottom: 20px;
+
+    /* Mantém o estilo original */
     font-size: 0.6rem;
     color: #aaa;
-    margin-top: auto;
-    margin-bottom: 20px;
     text-decoration: underline;
+
+    /* Garante que ele não ocupe espaço no fluxo normal */
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .start-screen > div {
-    margin-top: auto;
+    /* Define este container como um organizador de coluna */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .menu-screen {
@@ -89,7 +102,7 @@ canvas {
     display: flex;
     flex-direction: column;
     gap: 15px; /* Espaçamento entre botões */
-    margin-top: 20px;
+    margin-top: 200px;
     width: 200px; /* Largura fixa para os botões */
 }
 
