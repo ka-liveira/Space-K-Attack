@@ -138,6 +138,7 @@ canvas {
 }
 
 .game-over {
+    display: none;
     scale: 0;
     animation: zoom 2s ease-in-out forwards;
 }
