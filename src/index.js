@@ -154,7 +154,7 @@ const BOSS_DEATH_PARTICLES = [
 
 const InitObstacles = () => { // Função para inicializar os obstáculos
 const x = canvas.width / 2 - 50;
-const y = canvas.height - 250;
+const y = canvas.height - 220;
 const offset = canvas.width * 0.15;
 const color = "white";
 
@@ -590,4 +590,3 @@ gameOverScreen.remove();
 
 iniciarFundo();
 gameLoop();
-console.log("Estado final do startScreen:", startScreen.style.display);
