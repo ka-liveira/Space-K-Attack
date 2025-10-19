@@ -182,10 +182,41 @@ canvas {
     background-color: #fff;
 }
 
+/* 1. O estado ESCONDIDO (como ele começa) */
 .game-over {
-    display: none;
-    scale: 0;
-    animation: zoom 2s ease-in-out forwards;
+  /* Garante a centralização do conteúdo (h1 e botão) */
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+
+  /* Esconde o elemento sem removê-lo da página */
+  visibility: hidden; /* Começa invisível */
+  opacity: 0;         /* Começa transparente */
+  scale: 0;           /* Começa com tamanho zero */
+
+  /* Adiciona uma transição suave para o caso de a animação falhar */
+  transition: opacity 0.5s, visibility 0.5s;
+}
+
+/* 2. O estado VISÍVEL (a classe que o JavaScript vai adicionar) */
+.game-over.show {
+  visibility: visible; /* Torna visível */
+  opacity: 1;          /* Torna opaco */
+  
+  /* APLICA A ANIMAÇÃO DE ZOOM QUANDO A CLASSE .show É ADICIONADA */
+  animation: zoom 0.7s ease-out forwards; /* Duração ajustada para ser mais rápida */
+}
+
+/* 3. Sua animação @keyframes (melhorada para incluir opacidade) */
+@keyframes zoom {
+    from {
+        scale: 0;
+        opacity: 0; /* Anima a opacidade também para um fade-in */
+    }
+    to {
+        scale: 1;
+        opacity: 1;
+    }
 }
 
 .score-ui {

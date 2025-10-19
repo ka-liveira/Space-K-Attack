@@ -26,8 +26,6 @@ const optionsBtn = document.querySelector("#options-btn");
 const instructionsBtn = document.querySelector("#instructions-btn");
 const backToStartButtons = document.querySelectorAll(".button-back-to-start");
 
-gameOverScreen.remove();
-
 const bgDiv1 = document.querySelector("#bg1");
 const bgDiv2 = document.querySelector("#bg2");
 
@@ -38,6 +36,7 @@ const fundosAnimados = [
     PATH_BACKGROUND_IMAGE_2,
     PATH_BACKGROUND_IMAGE_3
 ];
+
 
 // 2. SEGUNDO: Defina as variáveis de controle.
 let intervaloDoFundo;
@@ -410,7 +409,11 @@ const gameOver = () => {
     // Primeiro, altera o estado do jogo e do jogador
     player.alive = false;
     currentState = GameState.GAME_OVER;
-    document.body.append(gameOverScreen);
+   
+    // Em vez de 'append', nós ADICIONAMOS a classe '.show'
+    if (gameOverScreen) {
+        gameOverScreen.classList.add('show');
+    }
 
     // Depois, cria o efeito visual da morte
     createExplosionEffect(player, PLAYER_DEATH_PARTICLES);
@@ -567,25 +570,29 @@ backToStartButtons.forEach(button => {
 });
 
 buttonRestart.addEventListener("click", () => {
- player.restart(canvas.width, canvas.height);
- currentState = GameState.PLAYING;
+    player.restart(canvas.width, canvas.height);
+    currentState = GameState.PLAYING;
 
-  grid.restart();
-  grid.invadersVelocity = 1;
+    grid.restart();
+    grid.invadersVelocity = 1;
 
-  boss = null; 
-  bossFightActive = false;
+    boss = null; 
+    bossFightActive = false;
 
-invaderProjectiles.length = 0; 
+    invaderProjectiles.length = 0; 
 
-gameData.score = 0
-gameData.level = 1;
+    gameData.score = 0;
+    gameData.level = 1;
 
-invaderShootTime = 1000;
-startInvaderShooting();
+    invaderShootTime = 1000;
+    startInvaderShooting();
 
-gameOverScreen.remove();
-
+    // [CORREÇÃO AQUI]
+    // Em vez de 'remove', nós REMOVEMOS a classe '.show' para escondê-la
+    if (gameOverScreen) {
+        gameOverScreen.classList.remove('show');
+    }
+    // [REMOVIDO] gameOverScreen.remove();
 });
 
 iniciarFundo();
