@@ -252,3 +252,34 @@ canvas {
         scale: 1;
     }
 }
+
+.kills-ui {
+    /* Posiciona fixo na tela */
+    position: fixed;
+
+    /* O .score-ui tem 40px de padding. As vidas devem estar
+     logo abaixo disso (ex: y=80).
+     Vamos posicionar os contadores abaixo disso (y=100).
+    */
+    top: 60px;  /* Distância do topo */
+    left: 22px;  /* Distância da esquerda (alinhado com o score) */
+    
+    /* Começa escondido, assim como o score-ui */
+    display: none; 
+    
+    /* Organiza os contadores em coluna */
+    flex-direction: column;
+    align-items: flex-start; /* Alinha o texto à esquerda */
+    gap: 4px; /* Espaço entre as linhas */
+    
+    /* Garante que fique acima do canvas */
+    z-index: 5; 
+}
+
+/* 2. O estilo do texto dos contadores */
+.kills-ui .kills-invaders,
+.kills-ui .kills-boss {
+    font-size: 0.75rem; /* Fonte um pouco menor */
+    text-transform: uppercase;
+    color: #ccc; /* Cinza-claro */
+}

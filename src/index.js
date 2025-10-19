@@ -18,6 +18,10 @@ const scoreUi = document.querySelector(".score-ui");
 const scoreElement = scoreUi.querySelector(".score > span");
 const levelElement = scoreUi.querySelector(".level > span");
 const highElement = scoreUi.querySelector(".high > span");
+const killsUi = document.querySelector(".kills-ui"); // <-- Seleciona o novo container
+const killsInvadersElement = killsUi.querySelector(".kills-invaders > span");
+const killsBossElement = killsUi.querySelector(".kills-boss > span");
+
 const buttonPlay = document.querySelector(".button-play");
 const buttonRestart = document.querySelector(".button-restart");
 const settingsScreen = document.querySelector("#settings-screen");
@@ -97,12 +101,16 @@ const gameData = {
 score: 0,
 level: 0,
 high: 0,
+invadersKilled: 0,
+bossesKilled: 0
 };
 
 const showGameData = () => {
 scoreElement.textContent = gameData.score;
 levelElement.textContent = gameData.level;
 highElement.textContent = gameData.high;
+killsInvadersElement.textContent = gameData.invadersKilled; 
+killsBossElement.textContent = gameData.bossesKilled;
 };
 
 const player = new Player(canvas.width, canvas.height); // Cria uma nova instância do jogador
@@ -289,6 +297,7 @@ const checkShootInvaders = () => {
                 createExplosionEffect(invader, INVADER_DEATH_PARTICLES);
         
         incrementScore(10);
+        gameData.invadersKilled += 1;
 
         grid.invaders.splice(invaderIndex, 1);
         playerProjectiles.splice(projectilesIndex, 1);
@@ -457,6 +466,7 @@ const gameLoop = () => {
         bossFightActive = false;
         boss = null;
         incrementScore(1000);
+        gameData.bossesKilled += 1;
         spawnGrid();
       }
     } else {
@@ -542,6 +552,7 @@ addEventListener("mouseup", (event) => {
 buttonPlay.addEventListener("click", () => {
 startScreen.remove();
 scoreUi.style.display = "block";
+killsUi.style.display = "flex";
 currentState = GameState.PLAYING;
 startInvaderShooting();
 
@@ -572,6 +583,8 @@ backToStartButtons.forEach(button => {
 buttonRestart.addEventListener("click", () => {
     player.restart(canvas.width, canvas.height);
     currentState = GameState.PLAYING;
+    
+    killsUi.style.display = "flex";
 
     grid.restart();
     grid.invadersVelocity = 1;
@@ -583,6 +596,8 @@ buttonRestart.addEventListener("click", () => {
 
     gameData.score = 0;
     gameData.level = 1;
+    gameData.invadersKilled = 0;
+    gameData.bossesKilled = 0;
 
     invaderShootTime = 1000;
     startInvaderShooting();
