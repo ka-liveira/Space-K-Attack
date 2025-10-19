@@ -189,6 +189,10 @@ canvas {
   align-items: center;
   justify-content: center;
 
+  align-items: center;      /* Centraliza horizontalmente (no modo coluna) */
+  justify-content: center; /* FORÇA a centralização vertical */
+  padding-top: 0;          /* REMOVE o espaçamento do topo herdado da classe .screen */
+
   /* Esconde o elemento sem removê-lo da página */
   visibility: hidden; /* Começa invisível */
   opacity: 0;         /* Começa transparente */
