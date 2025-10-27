@@ -157,11 +157,19 @@ canvas {
     border: none;
     padding: 12px 20px;
     border-radius: 5px;
-    background-color: #555;
-    color: white;
-    margin-top: 30px;
+    background-color: #ddd;
+    display: block;
+    font-size: 1rem;
+    margin-top: 20px;
     cursor: pointer;
 }
+
+/* Centraliza o botão 'Exit' APENAS na tela de Game Over */
+.game-over .button-back-to-start {
+    display: block;
+    margin: 20px auto 0; /* 20px em cima, 'auto' nas laterais para centralizar */
+}
+
 .button-back-to-start:hover {
     background-color: #777;
 }
@@ -241,16 +249,6 @@ canvas {
     justify-content: space-between;
     max-width: 600px;
     margin: 0 auto;
-}
-
-@keyframes zoom {
-    from {
-        scale: 0;
-    }
-
-    to {
-        scale: 1;
-    }
 }
 
 .kills-ui {

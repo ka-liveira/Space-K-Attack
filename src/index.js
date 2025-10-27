@@ -428,6 +428,47 @@ const gameOver = () => {
     createExplosionEffect(player, PLAYER_DEATH_PARTICLES);
 };
 
+// [NOVA FUNÇÃO PARA RESETAR O JOGO]
+const resetGame = () => {
+    // Reseta o jogador
+    player.restart(canvas.width, canvas.height);
+    
+    // Esconde as UIs de jogo
+    killsUi.style.display = "none";
+    scoreUi.style.display = "none";
+
+    // Reseta a grade de inimigos
+    grid.restart();
+    grid.invadersVelocity = 1;
+
+    // Limpa o chefe e a luta
+    boss = null; 
+    bossFightActive = false;
+
+    // Limpa todos os projéteis e partículas da tela
+    invaderProjectiles.length = 0; 
+    playerProjectiles.length = 0;
+    particles.length = 0;
+
+    // Reseta os dados do jogo
+    gameData.score = 0;
+    gameData.level = 1;
+    gameData.invadersKilled = 0;
+    gameData.bossesKilled = 0;
+
+    // Reseta a velocidade de tiro
+    invaderShootTime = 1000;
+    
+    // Para qualquer timer de tiro que estiver rodando
+    if (invaderShootInterval) {
+        clearInterval(invaderShootInterval);
+    }
+
+    // Esconde a tela de Game Over
+    if (gameOverScreen) {
+        gameOverScreen.classList.remove('show');
+    }
+};
 
 const gameLoop = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -550,7 +591,7 @@ addEventListener("mouseup", (event) => {
 
 
 buttonPlay.addEventListener("click", () => {
-startScreen.remove();
+startScreen.style.display = "none";
 scoreUi.style.display = "block";
 killsUi.style.display = "flex";
 currentState = GameState.PLAYING;
@@ -570,44 +611,39 @@ instructionsBtn.addEventListener("click", () => {
     instructionsScreen.style.display = "flex"; // Mostra a tela de instruções
 });
 
-// 3. Botões de "Voltar"
+// 3. Botões de "Voltar" (e agora "Exit")
 backToStartButtons.forEach(button => {
     button.addEventListener("click", () => {
-        startScreen.style.display = "flex"; // Mostra a tela inicial
+        // 1. Sempre mostra a tela inicial
+        startScreen.style.display = "flex"; 
 
-        // Esconde a tela de menu atual
-        button.closest(".menu-screen").style.display = "none";
+        // 2. Verifica se o botão estava num menu (Opções/Instruções)
+        const parentMenu = button.closest(".menu-screen");
+        if (parentMenu) {
+            parentMenu.style.display = "none";
+        }
+
+        // 3. (NOVO) Verifica se o botão estava na tela de Game Over
+        const parentGameOver = button.closest(".game-over");
+        if (parentGameOver) {
+            // Chama o reset para limpar o jogo
+            resetGame(); 
+            // Define o estado do jogo como "menu inicial"
+            currentState = GameState.START; 
+        }
     });
 });
 
+// [ATUALIZADO]
 buttonRestart.addEventListener("click", () => {
-    player.restart(canvas.width, canvas.height);
+    // 1. Chama a nova função de reset (que faz toda a limpeza)
+    resetGame(); 
+
+    // 2. Inicia o jogo novamente
     currentState = GameState.PLAYING;
-    
     killsUi.style.display = "flex";
-
-    grid.restart();
-    grid.invadersVelocity = 1;
-
-    boss = null; 
-    bossFightActive = false;
-
-    invaderProjectiles.length = 0; 
-
-    gameData.score = 0;
-    gameData.level = 1;
-    gameData.invadersKilled = 0;
-    gameData.bossesKilled = 0;
-
-    invaderShootTime = 1000;
+    scoreUi.style.display = "block"; // <-- Eu também adicionei isso
     startInvaderShooting();
-
-    // [CORREÇÃO AQUI]
-    // Em vez de 'remove', nós REMOVEMOS a classe '.show' para escondê-la
-    if (gameOverScreen) {
-        gameOverScreen.classList.remove('show');
-    }
-    // [REMOVIDO] gameOverScreen.remove();
 });
 
 iniciarFundo();
