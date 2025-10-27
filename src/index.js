@@ -30,6 +30,7 @@ const optionsBtn = document.querySelector("#options-btn");
 const instructionsBtn = document.querySelector("#instructions-btn");
 const backToStartButtons = document.querySelectorAll(".button-back-to-start");
 
+const bgm = document.querySelector("#bgm"); // Pega o áudio com id 'bgm' do HTML
 const bgDiv1 = document.querySelector("#bg1");
 const bgDiv2 = document.querySelector("#bg2");
 
@@ -464,6 +465,12 @@ const resetGame = () => {
         clearInterval(invaderShootInterval);
     }
 
+// Para e reseta a música de fundo
+    if (bgm) {
+        bgm.pause();
+        bgm.currentTime = 0; // Volta para o começo
+    }
+
     // Esconde a tela de Game Over
     if (gameOverScreen) {
         gameOverScreen.classList.remove('show');
@@ -597,6 +604,11 @@ killsUi.style.display = "flex";
 currentState = GameState.PLAYING;
 startInvaderShooting();
 
+// Inicia a música de fundo
+    if (bgm) {
+        bgm.volume = 0.1; // Define o volume (0.0 = mudo, 1.0 = máximo)
+        bgm.play();
+    }
 });
 
 // 1. Botão "Opções"
