@@ -120,11 +120,28 @@ canvas {
     align-items: center;
 }
 
+/* 1. O estado ESCONDIDO (Substitua o .menu-screen antigo) */
 .menu-screen {
-    display: none;
-    background-color: rgba(0, 0, 0, 0.85);
-    z-index: 10;
+   /* Seus estilos originais: */
+   background-color: rgba(0, 0, 0, 0.3);
+   z-index: 10;
+   padding-top: 0; /* Remove o espaçamento do topo herdado */
+   justify-content: center; /* Centraliza verticalmente o conteúdo */
+
+   /* A MÁGICA (substitui 'display: none'): */
+   visibility: hidden;
+   opacity: 0;
+   
+   /* A transição */
+   transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
 }
+
+/* 2. O estado VISÍVEL (a classe que o JS vai adicionar) */
+.menu-screen.show {
+   visibility: visible; /* Torna visível */
+   opacity: 1;     /* Torna opaco */
+}
+
 .menu-screen p {
     font-size: 1rem;
     line-height: 1.6;
@@ -399,4 +416,26 @@ input[type="range"]::-moz-range-thumb {
 
 #reset-settings-btn:hover {
     background-color: #999;
+}
+
+.menu-screen > div {
+   background-color: rgba(10, 25, 40, 0.9); /* Um cinza-escuro suave */
+   padding: 20px 40px 30px 40px; 
+   
+   border: 2px solid #090732;
+   
+   /* Cantos arredondados */
+   border-radius: 10px; 
+   
+   /* Sombra suave para dar profundidade */
+   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+   /* Brilho externo (glow) para o efeito de holograma */
+   box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+  
+   margin-top: 0; 
+}
+
+/* Ajuste para o H1 dentro da nova caixa */
+.menu-screen > div h1 {
+    margin-top: 10px; /* Reduz a margem do título "Opções" */
 }

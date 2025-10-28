@@ -668,16 +668,16 @@ startInvaderShooting();
     }
 });
 
-// 1. Botão "Opções"
+// 1. Botão "Opções" (CORRIGIDO)
 optionsBtn.addEventListener("click", () => {
-    startScreen.style.display = "none";  // Esconde a tela inicial
-    settingsScreen.style.display = "flex"; // Mostra a tela de opções
+  startScreen.style.display = "none"; // Esconde a tela inicial
+  settingsScreen.classList.add("show"); // <-- MUDANÇA AQUI
 });
 
-// 2. Botão "Instruções"
+// 2. Botão "Instruções" (CORRIGIDO)
 instructionsBtn.addEventListener("click", () => {
-    startScreen.style.display = "none";     // Esconde a tela inicial
-    instructionsScreen.style.display = "flex"; // Mostra a tela de instruções
+  startScreen.style.display = "none";   // Esconde a tela inicial
+  instructionsScreen.classList.add("show"); // <-- MUDANÇA AQUI
 });
 
 // 3. Botões de "Voltar" (e agora "Exit")
@@ -689,7 +689,7 @@ backToStartButtons.forEach(button => {
         // 2. Verifica se o botão estava num menu (Opções/Instruções)
         const parentMenu = button.closest(".menu-screen");
         if (parentMenu) {
-            parentMenu.style.display = "none";
+            parentMenu.classList.remove("show");
         }
 
         // 3. (NOVO) Verifica se o botão estava na tela de Game Over
@@ -714,6 +714,8 @@ buttonRestart.addEventListener("click", () => {
     scoreUi.style.display = "block"; // 
     startInvaderShooting();
 });
+
+
 
 iniciarFundo();
 gameLoop();
