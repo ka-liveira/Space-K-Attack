@@ -75,6 +75,32 @@
         </div>
     </section>
 
+    <section id="pause-screen" class="screen menu-screen">
+    <div>
+        <h1>Pausado</h1>
+        
+        <div class="settings-menu">
+            <div class="setting-item">
+                <label for="pause-music-volume">Música: <span id="pause-music-volume-label">10%</span></label>
+                <input type="range" id="pause-music-volume" min="0" max="100" value="10">
+            </div>
+            <div class="setting-item">
+                <label for="pause-fx-volume">Efeitos: <span id="pause-fx-volume-label">50%</span></label>
+                <input type="range" id="pause-fx-volume" min="0" max="100" value="50">
+            </div>
+        </div>
+        
+        <div class="settings-buttons-container">
+            <button id="pause-reset-settings-btn">Resetar</button>
+
+            <button id="button-resume">Continuar</button> 
+            <button id="button-pause-restart" class="button-restart">Restart</button> 
+            
+            <button id="button-pause-quit" class="button-back-to-start">Sair</button>
+        </div>
+    </div>
+</section>
+
     <audio id="bgm" src="src/assets/audios/music.mp3" loop></audio>
 
     <script type="module" src="src/index.js"></script>

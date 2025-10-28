@@ -38,6 +38,17 @@ const fxVolumeSlider = document.querySelector("#fx-volume");
 const fxVolumeLabel = document.querySelector("#fx-volume-label");
 const resetSettingsBtn = document.querySelector("#reset-settings-btn");
 
+const pauseScreen = document.querySelector("#pause-screen");
+const buttonResume = document.querySelector("#button-resume");
+const buttonPauseRestart = document.querySelector("#button-pause-restart");
+const buttonPauseQuit = document.querySelector("#button-pause-quit");
+
+const pauseMusicVolumeSlider = document.querySelector("#pause-music-volume");
+const pauseMusicVolumeLabel = document.querySelector("#pause-music-volume-label");
+const pauseFxVolumeSlider = document.querySelector("#pause-fx-volume");
+const pauseFxVolumeLabel = document.querySelector("#pause-fx-volume-label");
+const pauseResetSettingsBtn = document.querySelector("#pause-reset-settings-btn");
+
 const bgDiv1 = document.querySelector("#bg1");
 const bgDiv2 = document.querySelector("#bg2");
 
@@ -106,7 +117,7 @@ let currentState = GameState.START;
 
 // Define os volumes padrão
 const DEFAULT_MUSIC_VOLUME = 0.10; // 10%
-const DEFAULT_FX_VOLUME = 0.75;   // 75%
+const DEFAULT_FX_VOLUME = 0.50;   // 50%
 
 // Define as variáveis de volume atual, começando com o padrão
 let musicVolume = DEFAULT_MUSIC_VOLUME;
@@ -489,137 +500,180 @@ const resetGame = () => {
     }
 };
 
+// [NOVO] Função que RODA A LÓGICA DO JOGO
+const updateGame = () => {
+  if (!player.alive) {
+   gameOver();
+  }
+
+  showGameData();
+
+  drawParticles();
+  drawProjectiles();
+  drawObstacles();
+
+  player.draw(ctx);
+  player.drawLives(ctx);
+
+  clearProjectiles();
+  clearParticles();
+
+  checkShootPlayer();
+  checkShootObstacles();
+  
+  if (bossFightActive) {
+   if (boss && boss.alive) {
+    boss.update(invaderProjectiles);
+    boss.draw(ctx);
+    checkShootBoss();
+    drawBossHealthBar(ctx);
+   } else if (boss) {
+         createExplosionEffect(boss, BOSS_DEATH_PARTICLES);
+    bossFightActive = false;
+    boss = null;
+    incrementScore(1000);
+    gameData.bossesKilled += 1;
+    spawnGrid();
+   }
+  } else {
+   spawnGrid();
+   checkShootInvaders();
+   grid.draw(ctx);
+   grid.update(player.alive);
+  }
+
+  ctx.save();
+  ctx.translate(player.position.x + player.width / 2, player.position.y + player.height / 2);
+
+  if (keys.shoot.pressed && keys.shoot.released) {
+   player.shoot(playerProjectiles);
+   soundEffects.playShootSound();
+   keys.shoot.released = false;
+  }
+
+  if (keys.left.pressed && player.position.x >= 0) {
+   player.moveLeft();
+   ctx.rotate(-0.15);
+  }
+
+  if (keys.right.pressed && player.position.x <= canvas.width - player.width) {
+   player.moveRight();
+   ctx.rotate(0.15);
+  }
+
+  ctx.translate(-player.position.x - player.width / 2, -player.position.y - player.height / 2);
+  player.draw(ctx);
+  ctx.restore();
+};
+
 const gameLoop = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   if (currentState === GameState.PLAYING) {
-
-     if (!player.alive) {
-      gameOver();
-    }
-
-    showGameData();
-
+    // 1. Se estiver jogando, roda a lógica de atualização
+    updateGame();
+  
+  } else if (currentState === GameState.PAUSED) {
+    // 2. Se estiver pausado, SÓ desenha as coisas (sem atualizar)
     drawParticles();
     drawProjectiles();
     drawObstacles();
-
     player.draw(ctx);
     player.drawLives(ctx);
-
-    clearProjectiles();
-    clearParticles();
-
-    checkShootPlayer();
-    checkShootObstacles();
-    
     if (bossFightActive) {
-      if (boss && boss.alive) {
-        boss.update(invaderProjectiles);
-        boss.draw(ctx);
-        checkShootBoss();
-        drawBossHealthBar(ctx);
-      } else if (boss) {
-                // [ALTERADO] Adiciona a explosão de morte do chefe antes de removê-lo
-                createExplosionEffect(boss, BOSS_DEATH_PARTICLES);
-
-        bossFightActive = false;
-        boss = null;
-        incrementScore(1000);
-        gameData.bossesKilled += 1;
-        spawnGrid();
-      }
+      if(boss) boss.draw(ctx);
+      drawBossHealthBar(ctx);
     } else {
-      spawnGrid();
-      checkShootInvaders();
       grid.draw(ctx);
-      grid.update(player.alive);
     }
-
-    ctx.save();
-    ctx.translate(player.position.x + player.width / 2, player.position.y + player.height / 2);
-
-    if (keys.shoot.pressed && keys.shoot.released) {
-      player.shoot(playerProjectiles);
-      soundEffects.playShootSound();
-      keys.shoot.released = false;
-    }
-
-    if (keys.left.pressed && player.position.x >= 0) {
-      player.moveLeft();
-      ctx.rotate(-0.15);
-    }
-
-    if (keys.right.pressed && player.position.x <= canvas.width - player.width) {
-      player.moveRight();
-      ctx.rotate(0.15);
-    }
-
-    ctx.translate(-player.position.x - player.width / 2, -player.position.y - player.height / 2);
-    player.draw(ctx);
-    ctx.restore();
-  }
-
-  if (currentState === GameState.GAME_OVER) {
+  
+  } else if (currentState === GameState.GAME_OVER) {
+    // 3. Lógica de Game Over (continua a mesma)
     checkShootObstacles();
-
     drawProjectiles();
     drawParticles();
     drawObstacles();
-
     clearProjectiles();
     clearParticles();
-
     grid.draw(ctx);
     grid.update(player.alive);
   }
-  requestAnimationFrame(gameLoop);
+  
+  // O loop continua rodando, não importa o estado
+  requestAnimationFrame(gameLoop); 
 };
 
-musicVolumeSlider.addEventListener("input", (e) => {
-    // 1. Atualiza a variável de volume
-    musicVolume = e.target.value / 100;
+const pauseGame = () => {
+  // Só pausa se estiver jogando
+  if (currentState !== GameState.PLAYING) return; 
 
-    // 2. Atualiza o volume da música que está tocando
-    if (bgm) {
-        bgm.volume = musicVolume;
-    }
+  currentState = GameState.PAUSED;
+  pauseScreen.classList.add("show");
+  clearInterval(invaderShootInterval); // PARA o timer de tiro
+  if (bgm) bgm.pause(); // Pausa a música
+};
 
-    // 3. Atualiza o texto (ex: "10%")
-    musicVolumeLabel.textContent = `${e.target.value}%`;
-});
+const resumeGame = () => {
+  // Só continua se estiver pausado
+  if (currentState !== GameState.PAUSED) return; 
 
-fxVolumeSlider.addEventListener("input", (e) => {
-    // 1. Atualiza a variável de volume
-    fxVolume = e.target.value / 100;
+  currentState = GameState.PLAYING;
+  pauseScreen.classList.remove("show");
+  startInvaderShooting(); // REINICIA o timer de tiro
+  if (bgm) bgm.play(); // Volta a música
+};
 
-    // 2. Avisa a sua classe 'SoundEffects' do novo volume
-    soundEffects.setVolume(fxVolume); 
+const updateVolumeDisplays = (musicVal, fxVal) => {
+  // Atualiza os sliders
+  musicVolumeSlider.value = musicVal;
+  pauseMusicVolumeSlider.value = musicVal;
+  
+  fxVolumeSlider.value = fxVal;
+  pauseFxVolumeSlider.value = fxVal;
 
-    // 3. Atualiza o texto (ex: "75%")
-    fxVolumeLabel.textContent = `${e.target.value}%`;
-});
+  // Atualiza os labels (%)
+  musicVolumeLabel.textContent = `${musicVal}%`;
+  pauseMusicVolumeLabel.textContent = `${musicVal}%`;
+  
+  fxVolumeLabel.textContent = `${fxVal}%`;
+  pauseFxVolumeLabel.textContent = `${fxVal}%`;
+};
 
-// Listener do botão 'Resetar'
-resetSettingsBtn.addEventListener("click", () => {
-    // 1. Reseta as variáveis de volume
-    musicVolume = DEFAULT_MUSIC_VOLUME;
-    fxVolume = DEFAULT_FX_VOLUME;
+// 2. Funções "Handler" que aplicam a lógica
+const handleMusicVolumeChange = (value) => {
+  musicVolume = value / 100;
+  if (bgm) bgm.volume = musicVolume;
+  updateVolumeDisplays(value, fxVolume * 100);
+};
 
-    // 2. Atualiza os sliders na tela
-    musicVolumeSlider.value = DEFAULT_MUSIC_VOLUME * 100;
-    fxVolumeSlider.value = DEFAULT_FX_VOLUME * 100;
+const handleFxVolumeChange = (value) => {
+  fxVolume = value / 100;
+  soundEffects.setVolume(fxVolume);
+  updateVolumeDisplays(musicVolume * 100, value);
+};
 
-    // 3. Atualiza os labels (%) na tela
-    musicVolumeLabel.textContent = `${DEFAULT_MUSIC_VOLUME * 100}%`;
-    fxVolumeLabel.textContent = `${DEFAULT_FX_VOLUME * 100}%`;
+const handleResetSettings = () => {
+  musicVolume = DEFAULT_MUSIC_VOLUME;
+  fxVolume = DEFAULT_FX_VOLUME;
+  
+  if (bgm) bgm.volume = musicVolume;
+  soundEffects.setVolume(fxVolume);
+  
+  updateVolumeDisplays(DEFAULT_MUSIC_VOLUME * 100, DEFAULT_FX_VOLUME * 100);
+};
 
-    // 4. Aplica o volume resetado
-    if (bgm) {
-        bgm.volume = musicVolume;
-    }
-    soundEffects.setVolume(fxVolume);
-});
+// 3. Adiciona os listeners para os DOIS menus
+musicVolumeSlider.addEventListener("input", (e) => handleMusicVolumeChange(e.target.value));
+pauseMusicVolumeSlider.addEventListener("input", (e) => handleMusicVolumeChange(e.target.value));
+
+fxVolumeSlider.addEventListener("input", (e) => handleFxVolumeChange(e.target.value));
+pauseFxVolumeSlider.addEventListener("input", (e) => handleFxVolumeChange(e.target.value));
+
+resetSettingsBtn.addEventListener("click", handleResetSettings);
+pauseResetSettingsBtn.addEventListener("click", handleResetSettings);
+
+// 4. Define o valor inicial dos sliders da pausa (senão eles começam em 0)
+updateVolumeDisplays(musicVolume * 100, fxVolume * 100);
 
 addEventListener ("keydown", (event) => {
   const key = event.key.toLowerCase();
@@ -652,7 +706,6 @@ addEventListener("mouseup", (event) => {
         keys.shoot.released = true;
     }
 });
-
 
 buttonPlay.addEventListener("click", () => {
 startScreen.style.display = "none";
@@ -713,8 +766,51 @@ buttonRestart.addEventListener("click", () => {
     killsUi.style.display = "flex";
     scoreUi.style.display = "block"; // 
     startInvaderShooting();
+    if (bgm) bgm.play();
 });
 
+addEventListener ("keydown", (event) => {
+  const key = event.key.toLowerCase();
+
+  // Tecla de Pausa
+  if (key === "escape") {
+    if (currentState === GameState.PLAYING) {
+      pauseGame();
+    } else if (currentState === GameState.PAUSED) {
+      resumeGame();
+    }
+  }
+
+  // Não deixa o jogador se mover se o jogo não estiver rodando
+  if (currentState !== GameState.PLAYING) return; 
+
+  if (key === "a") keys.left.pressed = true;
+  if (key === "d") keys.right.pressed = true;
+  if (key === "enter" || key === ' ') keys.shoot.pressed = true;
+});
+
+buttonResume.addEventListener("click", resumeGame);
+
+// 2. Botão "Restart" (dentro da pausa)
+buttonPauseRestart.addEventListener("click", () => {
+  pauseScreen.classList.remove("show"); // Esconde o menu de pausa
+  resetGame(); // Reseta o jogo
+  
+  // Reinicia o jogo (igual ao outro botão Restart)
+  currentState = GameState.PLAYING;
+  killsUi.style.display = "flex";
+  scoreUi.style.display = "block"; 
+  startInvaderShooting();
+  if (bgm) bgm.play(); // Toca a música
+});
+
+// 3. Botão "Sair" (dentro da pausa)
+buttonPauseQuit.addEventListener("click", () => {
+  pauseScreen.classList.remove("show"); // Esconde o menu de pausa
+  resetGame(); // Reseta o jogo
+  currentState = GameState.START;
+  startScreen.style.display = "flex"; // Mostra o menu inicial
+});
 
 
 iniciarFundo();

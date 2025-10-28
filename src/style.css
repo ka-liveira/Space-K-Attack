@@ -439,3 +439,52 @@ input[type="range"]::-moz-range-thumb {
 .menu-screen > div h1 {
     margin-top: 10px; /* Reduz a margem do título "Opções" */
 }
+
+/* --- [NOVO] Estilos do Menu de Pausa --- */
+
+/* 1. Garante que o overlay de pausa fique acima de TUDO (do score, etc.) */
+#pause-screen {
+  z-index: 20; /* Mais alto que o z-index: 10 do .menu-screen padrão */
+  
+  /* (O resto dos estilos de fade-in são herdados do .menu-screen) */
+}
+
+/* 2. Estilo para o botão "Continuar" (para ficar igual ao "Play") */
+#button-resume {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  background-color: #ddd;
+  font-size: 1rem;
+  cursor: pointer;
+  color: black;
+  font-family: "Press Start 2P", sans-serif;
+}
+#button-resume:hover {
+  background-color: #fff;
+}
+
+/* 3. Estilo para o botão "Resetar Sons" (para ficar igual ao "Resetar" original) */
+#pause-reset-settings-btn {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #777; 
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: "Press Start 2P", sans-serif;
+}
+#pause-reset-settings-btn:hover {
+  background-color: #999;
+}
+
+/* 4. Remove a margem do botão "Sair" (assim como fizemos no "Voltar") */
+#pause-screen .button-back-to-start {
+  margin-top: 0;
+}
+
+/* 5. Remove a margem do botão "Restart" (para alinhar no menu) */
+#pause-screen .button-restart {
+  margin: 0;
+}
