@@ -115,6 +115,7 @@ canvas {
 .start-screen > div {
     /* Define este container como um organizador de coluna */
     display: flex;
+    justify-content: center;
     flex-direction: column;
     align-items: center;
 }
@@ -280,4 +281,122 @@ canvas {
     font-size: 0.75rem; /* Fonte um pouco menor */
     text-transform: uppercase;
     color: #ccc; /* Cinza-claro */
+}
+
+/* --- Estilos do Menu de Opções --- */
+.settings-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Espaço entre os sliders */
+    margin: 40px 0;
+    width: 300px; /* Largura do menu de opções */
+}
+
+.setting-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.setting-item label {
+    font-size: 1rem;
+    
+    display: flex;
+    justify-content: space-between; /* Joga "Música:" p/ esquerda e a "%" p/ direita */
+    align-items: center; /* Centraliza eles verticalmente */
+}
+
+/* Estilização básica do slider */
+input[type="range"] {
+    -webkit-appearance: none; /* Remove o estilo padrão do Chrome */
+    appearance: none;
+    width: 100%;
+    height: 10px;
+    background: #555; /* Cor da barra do slider */
+    outline: none;
+    border-radius: 5px;
+}
+
+/* Estilização do "pino" do slider (Chrome) */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #ddd; /* Cor do pino */
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+/* Estilização do "pino" do slider (Firefox) */
+input[type="range"]::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #ddd;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+/* 1. Alinha o texto (Música:) e a porcentagem (%) na mesma linha */
+.setting-item label {
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between; /* Joga o texto para a esquerda e a % para a direita */
+    align-items: center;
+}
+
+/* 2. Reseta o 'span' da porcentagem para ele não ir para o rodapé */
+.setting-item label span {
+    /* Reseta a regra global problemática (.screen span) */
+    position: static;   /* << A MÁGICA ESTÁ AQUI */
+    transform: none;
+    
+    /* Devolve o estilo de fonte normal (em vez do estilo 'Kassandra Oliveira') */
+    font-size: 1rem;
+    color: white;
+    text-decoration: none;
+}
+
+/* --- Estilos dos Botões de Opções (Versão Empilhada) --- */
+
+/* 1. Define o container dos botões */
+.settings-buttons-container {
+    display: flex;
+    flex-direction: column; /* << A MÁGICA: Coloca os botões em coluna */
+    align-items: center;   /* << Centraliza os botões na horizontal */
+    
+    gap: 15px; 
+    margin-top: 30px;
+    
+    /* Centraliza o container */
+    width: 300px; /* Mesma largura dos sliders */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 2. Define uma largura fixa para os botões ficarem iguais */
+.settings-buttons-container button {
+    width: 200px; /* Largura fixa (pode ajustar se quiser) */
+    box-sizing: border-box; /* Garante que o padding não afete a largura */
+}
+
+/* 3. Remove a margem individual do botão 'Voltar' */
+#settings-screen .button-back-to-start {
+    margin-top: 0;
+}
+
+/* 4. Estilo para o novo botão 'Resetar' */
+#reset-settings-btn {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    background-color: #777; 
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: "Press Start 2P", sans-serif;
+}
+
+#reset-settings-btn:hover {
+    background-color: #999;
 }

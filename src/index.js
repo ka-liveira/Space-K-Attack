@@ -31,6 +31,13 @@ const instructionsBtn = document.querySelector("#instructions-btn");
 const backToStartButtons = document.querySelectorAll(".button-back-to-start");
 
 const bgm = document.querySelector("#bgm"); // Pega o áudio com id 'bgm' do HTML
+
+const musicVolumeSlider = document.querySelector("#music-volume");
+const musicVolumeLabel = document.querySelector("#music-volume-label");
+const fxVolumeSlider = document.querySelector("#fx-volume");
+const fxVolumeLabel = document.querySelector("#fx-volume-label");
+const resetSettingsBtn = document.querySelector("#reset-settings-btn");
+
 const bgDiv1 = document.querySelector("#bg1");
 const bgDiv2 = document.querySelector("#bg2");
 
@@ -41,7 +48,6 @@ const fundosAnimados = [
     PATH_BACKGROUND_IMAGE_2,
     PATH_BACKGROUND_IMAGE_3
 ];
-
 
 // 2. SEGUNDO: Defina as variáveis de controle.
 let intervaloDoFundo;
@@ -97,6 +103,14 @@ canvas.height = innerHeight; // Define a altura do canvas
 ctx.imageSmoothingEnabled = false; // Desativa o suavização de imagem para um estilo pixelado
 
 let currentState = GameState.START;
+
+// Define os volumes padrão
+const DEFAULT_MUSIC_VOLUME = 0.10; // 10%
+const DEFAULT_FX_VOLUME = 0.75;   // 75%
+
+// Define as variáveis de volume atual, começando com o padrão
+let musicVolume = DEFAULT_MUSIC_VOLUME;
+let fxVolume = DEFAULT_FX_VOLUME;
 
 const gameData = {
 score: 0,
@@ -157,8 +171,6 @@ const BOSS_DEATH_PARTICLES = [
 { color: 'orange', radius: 12 },
 { color: 'yellow', radius: 10 }
 ];
-
-
 
 const InitObstacles = () => { // Função para inicializar os obstáculos
 const x = canvas.width / 2 - 50;
@@ -564,6 +576,27 @@ const gameLoop = () => {
   requestAnimationFrame(gameLoop);
 };
 
+// Listener do botão 'Resetar'
+resetSettingsBtn.addEventListener("click", () => {
+    // 1. Reseta as variáveis de volume
+    musicVolume = DEFAULT_MUSIC_VOLUME;
+    fxVolume = DEFAULT_FX_VOLUME;
+
+    // 2. Atualiza os sliders na tela
+    musicVolumeSlider.value = DEFAULT_MUSIC_VOLUME * 100;
+    fxVolumeSlider.value = DEFAULT_FX_VOLUME * 100;
+
+    // 3. Atualiza os labels (%) na tela
+    musicVolumeLabel.textContent = `${DEFAULT_MUSIC_VOLUME * 100}%`;
+    fxVolumeLabel.textContent = `${DEFAULT_FX_VOLUME * 100}%`;
+
+    // 4. Aplica o volume resetado
+    if (bgm) {
+        bgm.volume = musicVolume;
+    }
+    soundEffects.setVolume(fxVolume);
+});
+
 addEventListener ("keydown", (event) => {
   const key = event.key.toLowerCase();
 
@@ -606,7 +639,7 @@ startInvaderShooting();
 
 // Inicia a música de fundo
     if (bgm) {
-        bgm.volume = 0.1; // Define o volume (0.0 = mudo, 1.0 = máximo)
+        bgm.volume = musicVolume; // Define o volume (0.0 = mudo, 1.0 = máximo)
         bgm.play();
     }
 });

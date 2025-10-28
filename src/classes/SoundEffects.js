@@ -1,5 +1,7 @@
 class SoundEffects {
     constructor() {
+    this.fxVolume = 1.0
+
         this.shootSounds = [
             new Audio("src/assets/audios/shoot.mp3"),
             new Audio("src/assets/audios/shoot.mp3"),
@@ -22,6 +24,14 @@ class SoundEffects {
         this.currentShootSound = 0;
         this.currentHitSound = 0;
 
+        this.adjustVolumes();
+    }
+
+    setVolume(level) {
+        // 1. Guarda o novo volume master (ex: 0.5 para 50%)
+        this.fxVolume = level;
+        
+        // 2. Chama sua função de ajuste para re-aplicar todos os volumes
         this.adjustVolumes();
     }
 
@@ -48,11 +58,16 @@ class SoundEffects {
     }
 
     adjustVolumes() {
-        this.hitSounds.forEach((sound) => (sound.volume = 0.2));
-        this.shootSounds.forEach((sound) => (sound.volume = 0.5));
-        this.explosionSound.volume = 0.2;
-        this.nextLevelSound.volume = 0.4;
-    }
+        const baseHitVolume = 0.2;
+        const baseShootVolume = 0.5;
+        const baseExplosionVolume = 0.2;
+        const baseNextLevelVolume = 0.4;
+
+        this.hitSounds.forEach((sound) => (sound.volume = baseHitVolume * this.fxVolume));
+        this.shootSounds.forEach((sound) => (sound.volume = baseShootVolume * this.fxVolume));
+        this.explosionSound.volume = baseExplosionVolume * this.fxVolume;
+        this.nextLevelSound.volume = baseNextLevelVolume * this.fxVolume;
+    }
 }
 
 export default SoundEffects;
