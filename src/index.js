@@ -576,6 +576,30 @@ const gameLoop = () => {
   requestAnimationFrame(gameLoop);
 };
 
+musicVolumeSlider.addEventListener("input", (e) => {
+    // 1. Atualiza a variável de volume
+    musicVolume = e.target.value / 100;
+
+    // 2. Atualiza o volume da música que está tocando
+    if (bgm) {
+        bgm.volume = musicVolume;
+    }
+
+    // 3. Atualiza o texto (ex: "10%")
+    musicVolumeLabel.textContent = `${e.target.value}%`;
+});
+
+fxVolumeSlider.addEventListener("input", (e) => {
+    // 1. Atualiza a variável de volume
+    fxVolume = e.target.value / 100;
+
+    // 2. Avisa a sua classe 'SoundEffects' do novo volume
+    soundEffects.setVolume(fxVolume); 
+
+    // 3. Atualiza o texto (ex: "75%")
+    fxVolumeLabel.textContent = `${e.target.value}%`;
+});
+
 // Listener do botão 'Resetar'
 resetSettingsBtn.addEventListener("click", () => {
     // 1. Reseta as variáveis de volume
@@ -687,7 +711,7 @@ buttonRestart.addEventListener("click", () => {
     // 2. Inicia o jogo novamente
     currentState = GameState.PLAYING;
     killsUi.style.display = "flex";
-    scoreUi.style.display = "block"; // <-- Eu também adicionei isso
+    scoreUi.style.display = "block"; // 
     startInvaderShooting();
 });
 
