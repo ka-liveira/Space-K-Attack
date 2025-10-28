@@ -9,7 +9,6 @@ import SoundEffects from "./classes/SoundEffects.js";
 import Boss from "./classes/Boss.js";
 import { PATH_BACKGROUND_IMAGE, PATH_BACKGROUND_IMAGE_2, PATH_BACKGROUND_IMAGE_3 } from "./utils/constants.js";
 
-
 const soundEffects = new SoundEffects();
 
 const startScreen = document.querySelector(".start-screen");
@@ -23,6 +22,7 @@ const killsInvadersElement = killsUi.querySelector(".kills-invaders > span");
 const killsBossElement = killsUi.querySelector(".kills-boss > span");
 
 const buttonPlay = document.querySelector(".button-play");
+const pauseButton = document.querySelector("#pause-button");
 const buttonRestart = document.querySelector(".button-restart");
 const settingsScreen = document.querySelector("#settings-screen");
 const instructionsScreen = document.querySelector("#instructions-screen");
@@ -443,6 +443,8 @@ const gameOver = () => {
     player.alive = false;
     currentState = GameState.GAME_OVER;
    
+    if (pauseButton) pauseButton.style.display = "none";
+
     // Em vez de 'append', nós ADICIONAMOS a classe '.show'
     if (gameOverScreen) {
         gameOverScreen.classList.add('show');
@@ -457,6 +459,8 @@ const resetGame = () => {
     // Reseta o jogador
     player.restart(canvas.width, canvas.height);
     
+    if (pauseButton) pauseButton.style.display = "none";
+
     // Esconde as UIs de jogo
     killsUi.style.display = "none";
     scoreUi.style.display = "none";
@@ -675,14 +679,6 @@ pauseResetSettingsBtn.addEventListener("click", handleResetSettings);
 // 4. Define o valor inicial dos sliders da pausa (senão eles começam em 0)
 updateVolumeDisplays(musicVolume * 100, fxVolume * 100);
 
-addEventListener ("keydown", (event) => {
-  const key = event.key.toLowerCase();
-
-  if (key === "a") keys.left.pressed = true;
-  if (key === "d") keys.right.pressed = true;
-  if (key === "enter" || key === ' ') keys.shoot.pressed = true;
-});    
-
 addEventListener ("keyup", (event) => {
   const key = event.key.toLowerCase();  
 
@@ -711,6 +707,9 @@ buttonPlay.addEventListener("click", () => {
 startScreen.style.display = "none";
 scoreUi.style.display = "block";
 killsUi.style.display = "flex";
+
+if (pauseButton) pauseButton.style.display = "flex";
+
 currentState = GameState.PLAYING;
 startInvaderShooting();
 
@@ -764,7 +763,10 @@ buttonRestart.addEventListener("click", () => {
     // 2. Inicia o jogo novamente
     currentState = GameState.PLAYING;
     killsUi.style.display = "flex";
-    scoreUi.style.display = "block"; // 
+    scoreUi.style.display = "block"; 
+
+    if (pauseButton) pauseButton.style.display = "flex";
+
     startInvaderShooting();
     if (bgm) bgm.play();
 });
@@ -800,6 +802,9 @@ buttonPauseRestart.addEventListener("click", () => {
   currentState = GameState.PLAYING;
   killsUi.style.display = "flex";
   scoreUi.style.display = "block"; 
+
+  if (pauseButton) pauseButton.style.display = "flex";
+
   startInvaderShooting();
   if (bgm) bgm.play(); // Toca a música
 });
@@ -812,6 +817,11 @@ buttonPauseQuit.addEventListener("click", () => {
   startScreen.style.display = "flex"; // Mostra o menu inicial
 });
 
+pauseButton.addEventListener("click", () => {
+    if (currentState === GameState.PLAYING) {
+        pauseGame();
+    }
+});
 
 iniciarFundo();
 gameLoop();

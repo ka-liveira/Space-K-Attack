@@ -7,6 +7,7 @@ export const INITIAL_FRAMES = 8;
 export const PATH_BACKGROUND_IMAGE = 'src/assets/images/fundo1.png'
 export const PATH_BACKGROUND_IMAGE_2 = 'src/assets/images/fundo2.png'
 export const PATH_BACKGROUND_IMAGE_3 = 'src/assets/images/fundo3.png'
+export const PATH_PAUSED_IMAGE = 'src/assets/images/paused.png'
 
 export const GameState = {
     START: 'START',
