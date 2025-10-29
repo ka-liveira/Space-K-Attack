@@ -63,11 +63,11 @@ class SoundEffects {
         const baseExplosionVolume = 0.2;
         const baseNextLevelVolume = 0.4;
 
-        this.hitSounds.forEach((sound) => (sound.volume = baseHitVolume * this.fxVolume));
-        this.shootSounds.forEach((sound) => (sound.volume = baseShootVolume * this.fxVolume));
-        this.explosionSound.volume = baseExplosionVolume * this.fxVolume;
-        this.nextLevelSound.volume = baseNextLevelVolume * this.fxVolume;
-    }
+    this.hitSounds.forEach((sound) => (sound.volume = baseHitVolume * this.fxVolume));
+    this.shootSounds.forEach((sound) => (sound.volume = baseShootVolume * this.fxVolume));
+    this.explosionSound.volume = baseExplosionVolume * this.fxVolume;
+    this.nextLevelSound.volume = baseNextLevelVolume * this.fxVolume;
+  }
 }
 
 export default SoundEffects;

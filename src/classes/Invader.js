@@ -1,5 +1,9 @@
 import { PATH_INVADER_IMAGE } from "../utils/constants.js";
 import Projectile  from "./Projectile.js";
+import PowerUp from "./PowerUp.js";
+
+// Chance global de cair poder (0.0 = nunca, 1.0 = sempre)
+export const POWER_DROP_RATE = 1.0; // 20% de chance
 
 class Invader { //define a classe Invader
        constructor(position, velocity) { // Construtor da classe que inicializa as propriedades do jogador.
@@ -70,5 +74,22 @@ hit(projectile) {
         projectile.position.y <= this.position.y + this.height
     );
 }
+
+// metodo para decidir se cai um poder
+    dropPower() {
+        const chance = Math.random();
+        if (chance <= POWER_DROP_RATE) {
+            // Cria o poder na posição do invasor
+            const power = new PowerUp({
+                x: this.position.x + this.width / 2,
+                y: this.position.y + this.height,
+            });
+
+            return power; // retorna o poder para ser adicionado no jogo
+        }
+        return null;
+    }
+
+
 }
 export default Invader; // Exporta a classe 'Player' como padrão para que possa ser importada em outros arquivos.

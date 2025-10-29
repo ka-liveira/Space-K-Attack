@@ -9,6 +9,9 @@ class Player { //define a classe Player
         this.velocity = 6; // Define a velocidade de movimento do jogador
         this.alive = true; // Define o estado de vida do jogador
         this.lives = 3; // Adiciona 3 vidas ao jogador
+        this.doubleShot = false;
+        this.shield = false;
+
 
         this.position = { // Cria um objeto 'position' para armazenar as coordenadas (x, y) do jogador.
             x: canvasWidth / 2 - this.width / 2,
@@ -35,6 +38,33 @@ class Player { //define a classe Player
 
     draw(ctx) { // Método 'draw' que recebe o contexto do canvas como parâmetro.
         ctx.drawImage(this.image, this.position.x, this.position.y, this.width, this.height); // Desenha a imagem do jogador no canvas na posição (x, y) com a largura e altura especificadas.
+    
+if (this.shield) {
+    const centerX = this.position.x + this.width / 2;
+    const centerY = this.position.y + this.height / 2;
+    const radius = Math.max(this.width, this.height) / 1.5;
+
+    // Gradiente radial azul-ciano mais opaco
+    const gradient = ctx.createRadialGradient(centerX, centerY, radius * 0.7, centerX, centerY, radius);
+    gradient.addColorStop(0, "rgba(0, 255, 255, 1.0)");  // mais visível
+    gradient.addColorStop(0.5, "rgba(0, 255, 255, 0.5)");
+    gradient.addColorStop(1, "rgba(0, 255, 255, 0)");
+
+    ctx.save();
+
+    // Pulsação mais lenta e suave
+    const pulse = Math.sin(Date.now() * 0.003) * 1.5 + 4; // variação de 2.5 a 5.5
+    ctx.lineWidth = pulse;
+
+    ctx.strokeStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.restore();
+}
+
+
     }
 
     // Novo método para desenhar as vidas na tela
@@ -51,14 +81,37 @@ class Player { //define a classe Player
         }
     }
 
-    shoot(Projectiles) { // Método 'shoot' que cria e retorna um novo projétil.
-        const p = new Projectile( // Cria uma nova instância do projétil
-            { x: this.position.x + this.width / 2 - 1, y: this.position.y + 2 }, // Posição inicial do projétil (centro superior do jogador)
-            -10, // Velocidade do projétil
-             '#F000E8'
-        );
-        Projectiles.push(p); // Adiciona o projétil ao array de projéteis
-    }
+    shoot(Projectiles) {
+  if (this.doubleShot) {
+    const offset = 15;
+
+    // Dois projéteis — um mais à esquerda e outro à direita
+    Projectiles.push(
+      new Projectile(
+        { x: this.position.x + offset, y: this.position.y },
+        -10,
+        '#F000E8'
+      )
+    );
+
+    Projectiles.push(
+      new Projectile(
+        { x: this.position.x + this.width - offset, y: this.position.y },
+        -10,
+        '#F000E8'
+      )
+    );
+  } else {
+    // Tiro único normal
+    const p = new Projectile(
+      { x: this.position.x + this.width / 2 - 1, y: this.position.y + 2 },
+      -10,
+      '#F000E8'
+    );
+    Projectiles.push(p);
+  }
+}
+
 
     // Este método verifica se o projétil atingiu o jogador.
     hit(projectile) {
@@ -72,6 +125,9 @@ class Player { //define a classe Player
 
     // Método para quando o jogador é atingido
     takeDamage() {
+        if (this.shield) {
+        return; // Não perde vida enquanto o escudo estiver ativo
+    }
         this.lives -= 1; // Diminui uma vida
         if (this.lives <= 0) {
             this.lives = 0; // Garante que as vidas não fiquem negativas

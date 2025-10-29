@@ -15,3 +15,11 @@ export const GameState = {
     GAME_OVER: 'GAME_OVER',
     PAUSED: 'PAUSED'
 }
+
+export const POWER_TYPES = ["speed", "double_shot", "shield"];
+
+export const POWER_IMAGES = {
+    speed: "src/assets/images/speed.png",
+    double_shot: "src/assets/images/projectils.png",
+    shield: "src/assets/images/protection.png"
+};

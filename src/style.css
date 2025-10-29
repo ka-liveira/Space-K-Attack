@@ -609,3 +609,40 @@ input[type="range"]::-moz-range-thumb {
      margin: 40px auto 0 auto; /* 40px acima, centralizado */
      /* width: 200px; /* Opcional: define largura fixa */
 }
+
+
+#powers-bar-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 100;
+    font-family: Arial, sans-serif;
+}
+
+.power-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.power-bar-name {
+    color: #fff;
+    font-size: 10px;
+}
+
+.power-bar {
+    width: 120px;
+    height: 15px;
+    background-color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.power-bar-inner {
+    height: 100%;
+    width: 100%;
+    transition: width 0.1s linear;
+}

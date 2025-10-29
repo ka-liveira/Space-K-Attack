@@ -7,6 +7,8 @@ import { GameState } from "./utils/constants.js";
 import Obstacle from "./classes/Obstacle.js"; // Importa a classe Obstacle do arquivo Obstacle.js
 import SoundEffects from "./classes/SoundEffects.js";
 import Boss from "./classes/Boss.js";
+import PowerUp from "./classes/PowerUp.js";
+
 import { PATH_BACKGROUND_IMAGE, PATH_BACKGROUND_IMAGE_2, PATH_BACKGROUND_IMAGE_3 } from "./utils/constants.js";
 
 const soundEffects = new SoundEffects();
@@ -142,12 +144,20 @@ killsBossElement.textContent = gameData.bossesKilled;
 const player = new Player(canvas.width, canvas.height); // Cria uma nova instância do jogador
 const grid = new Grid(3, 6); // Cria uma nova instância da grade de invasores
 
+const activePowers = {
+  speed: null,
+  double_shot: null,
+  shield: null
+};
 
 const playerProjectiles = [];
 const invaderProjectiles = [];
 const particles = [];
 const obstacles = [];
+const powers = [];
 
+let activePower = null;
+let powerTimeLeft = 0;
 let invaderShootInterval;
 let invaderShootTime = 1000;
 
@@ -210,6 +220,49 @@ if (gameData.score > gameData.high) {
  gameData.high = gameData.score;
  }
 };
+
+function activatePower(type) {
+  const duration = 10; // segundos
+
+  switch (type) {
+    case "speed":
+      if (!activePowers.speed) player.velocity *= 1.8;
+      activePowers.speed = duration;
+      break;
+
+    case "double_shot":
+      if (!activePowers.double_shot) player.doubleShot = true;
+      activePowers.double_shot = duration;
+      break;
+
+    case "shield":
+      if (!activePowers.shield) player.shield = true;
+      activePowers.shield = duration;
+      break;
+  }
+}
+function deactivatePower(type) {
+  switch (type) {
+    case "speed":
+      player.velocity /= 1.8;
+      break;
+    case "double_shot":
+      player.doubleShot = false;
+      break;
+    case "shield":
+      player.shield = false;
+      break;
+  }
+  activePowers[type] = null;
+  
+}
+function deactivateAllPowers() {
+  for (const type in activePowers) {
+    if (activePowers[type] !== null) {
+      deactivatePower(type);
+    }
+  }
+}
 
 function drawBossHealthBar(ctx) {
   if (!boss) return; // Garante que a função não execute se não houver chefe
@@ -316,6 +369,8 @@ const checkShootInvaders = () => {
     playerProjectiles.some((projectile, projectilesIndex) => {
       if (invader.hit(projectile)) {
         soundEffects.playHitSound();
+         const power = invader.dropPower();
+         if (power) powers.push(power); // adiciona o poder na lista de objetos do jogo
 
         // [ALTERADO] Usa a nova função de efeito com a paleta de invasores
                 createExplosionEffect(invader, INVADER_DEATH_PARTICLES);
@@ -573,7 +628,23 @@ const updateGame = () => {
 const gameLoop = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+// atualiza timers de cada poder
+for (const type in activePowers) {
+  if (activePowers[type] !== null) {
+    activePowers[type] -= 1 / 60;
+    if (activePowers[type] <= 0) {
+      deactivatePower(type);
+    }
+  }
+}
+
   if (currentState === GameState.PLAYING) {
+   if (!player.alive) {
+        deactivateAllPowers(); // remove todos os efeitos
+
+      gameOver();
+    }
+
     // 1. Se estiver jogando, roda a lógica de atualização
     updateGame();
   
@@ -602,6 +673,60 @@ const gameLoop = () => {
     grid.draw(ctx);
     grid.update(player.alive);
   }
+
+   // atualiza e desenha poderes
+  powers.forEach((power, index) => {
+    power.update();
+    power.draw(ctx);
+
+    // verificar se o jogador pegou o poder
+    if (power.collectedBy(player)) {
+      activatePower(power.type);
+      powers.splice(index, 1);
+    }
+
+  });
+
+const powersBarContainer = document.getElementById("powers-bar-container");
+
+// Limpa barras antigas
+powersBarContainer.innerHTML = "";
+
+// Define cores por poder
+const powerColors = {
+    shield: "#3498db",       // azul
+    double_shot: "#8e44ad",   // roxo
+    speed: "#f1c40f"          // amarelo
+};
+
+// Cria barra para cada poder ativo
+for (const type in activePowers) {
+    if (activePowers[type] !== null) {
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("power-bar-wrapper");
+
+        const nameDiv = document.createElement("div");
+        nameDiv.classList.add("power-bar-name");
+        nameDiv.textContent = type.toUpperCase();
+
+        const barDiv = document.createElement("div");
+        barDiv.classList.add("power-bar");
+
+        const innerDiv = document.createElement("div");
+        innerDiv.classList.add("power-bar-inner");
+
+        // Cor da barra baseada no tipo de poder
+        innerDiv.style.backgroundColor = powerColors[type] || "#ffff00"; // amarelo default
+        // Largura proporcional ao tempo restante
+        const percentage = Math.max(0, activePowers[type] / 10 * 100); // ajuste 10 para duração do poder
+        innerDiv.style.width = percentage + "%";
+
+        barDiv.appendChild(innerDiv);
+        wrapper.appendChild(nameDiv);
+        wrapper.appendChild(barDiv);
+        powersBarContainer.appendChild(wrapper);
+    }
+}
   
   // O loop continua rodando, não importa o estado
   requestAnimationFrame(gameLoop); 
