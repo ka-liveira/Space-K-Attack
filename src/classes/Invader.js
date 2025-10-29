@@ -3,7 +3,7 @@ import Projectile  from "./Projectile.js";
 import PowerUp from "./PowerUp.js";
 
 // Chance global de cair poder (0.0 = nunca, 1.0 = sempre)
-export const POWER_DROP_RATE = 1.0; // 20% de chance
+export const POWER_DROP_RATE = 0.2; // 20% de chance
 
 class Invader { //define a classe Invader
        constructor(position, velocity) { // Construtor da classe que inicializa as propriedades do jogador.
@@ -89,7 +89,5 @@ hit(projectile) {
         }
         return null;
     }
-
-
 }
 export default Invader; // Exporta a classe 'Player' como padrão para que possa ser importada em outros arquivos.

@@ -63,8 +63,6 @@ if (this.shield) {
 
     ctx.restore();
 }
-
-
     }
 
     // Novo método para desenhar as vidas na tela
