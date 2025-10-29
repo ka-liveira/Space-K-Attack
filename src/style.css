@@ -515,11 +515,97 @@ input[type="range"]::-moz-range-thumb {
 /* ...e coloca o :hover NA IMAGEM */
 #pause-button img {
   display: block; 
-  width: 50px; 
-  height: 50px; 
+  width: 70px; 
+  height: 70px; 
   transition: opacity 0.2s ease; /* Transição suave */
 }
 
 #pause-button:hover img {
   opacity: 0.7; /* Efeito de hover na imagem */
+}
+
+/* 1. Container Principal */
+.instructions-list {
+    display: flex;
+    flex-direction: column; /* Empilha as linhas (control-group) */
+    align-items: stretch; /* Faz as linhas ocuparem a largura disponível */
+    gap: 15px; /* Espaço VERTICAL entre cada linha */
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 90%; /* Largura relativa */
+    max-width: 420px; /* Largura máxima um pouco maior */
+    color: #fff;
+    /* Borda de teste removida */
+}
+
+/* 2. Grupo de Controle (Cada linha: Tecla | Ação) */
+.control-group {
+    display: flex; /* Coloca Tecla e Ação LADO A LADO */
+    align-items: center; /* Alinha verticalmente a tecla com o texto */
+    gap: 20px; /* Espaço HORIZONTAL entre tecla e ação */
+    width: 100%;
+    /* Borda de teste removida */
+}
+
+/* 3. Estilo Visual das Teclas (3D) */
+.key {
+    /* ----- Resets da Regra Global (Necessários) ----- */
+    position: static !important; bottom: auto !important; left: auto !important; transform: none !important; text-decoration: none !important;
+    /* ------------------------------------------- */
+
+    /* Dimensões e Fundo */
+    min-width: 55px;
+    height: 55px;
+    background-color: #f0f0f0; /* << VOLTOU para Cinza claro */
+    border: 1px solid #b0b0b0; /* << VOLTOU para Borda cinza médio */
+    border-radius: 6px;
+
+    /* Sombra 3D (Clara) */
+    box-shadow: 0 3px 0 #b0b0b0, /* << VOLTOU Sombra inferior cinza médio */
+                inset 0 1px 1px #fff, /* << VOLTOU Brilho interno branco */
+                0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra externa suave */
+
+    /* Texto */
+    color: #444; /* << VOLTOU para Texto ESCURO */
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    /* Alinhamento e Padding (mantidos) */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    margin: 0;
+    box-sizing: border-box;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* 4. Largura Específica da Tecla ESPAÇO */
+/* Seleciona o TERCEIRO .control-group (Espaço) e o .key dentro dele */
+.instructions-list .control-group:nth-of-type(3) .key {
+    min-width: 140px; /* Largura maior */
+}
+
+/* 5. Estilo do Texto da Ação (Descrição) */
+.action-text {
+    font-size: 1rem; /* Tamanho da descrição */
+    color: #0394fc; /* Sua cor azul */
+    text-transform: none; /* Texto normal (não maiúsculo) */
+    font-weight: normal; /* Peso normal */
+    letter-spacing: 0.5px;
+    margin: 0;
+    text-align: left; /* Alinha à esquerda */
+    flex-grow: 1; /* Ocupa o espaço restante */
+    /* !important removido */
+}
+
+/* --- FIM DOS ESTILOS DA LISTA --- */
+
+/* Garanta que o botão Voltar esteja centralizado */
+#instructions-screen .button-back-to-start {
+     display: block;
+     margin: 40px auto 0 auto; /* 40px acima, centralizado */
+     /* width: 200px; /* Opcional: define largura fixa */
 }
