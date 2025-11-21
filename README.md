@@ -55,7 +55,6 @@ Seu objetivo é sobreviver o máximo de levels possível eliminando ondas de roe
 
 ## Agradecimentos
 - [Tutorial de Game Dev](https://www.youtube.com/watch?v=RZ3D39UzqZs&t=2196s) - Por ensinar a criar o jogo do zero
-- Toda a comunidade de game dev indie por inspiração e suporte! 
 
 ---
 
