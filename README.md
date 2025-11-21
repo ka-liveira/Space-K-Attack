@@ -1,5 +1,7 @@
 # Space K-Attack 
-![Gameplay](src/assets/gif/space.gif)
+![Gameplay](src/assets/gif/space loop.gif)
+
+---
 
 ## Sobre o Projeto
 Space K-Attack é pura adrenalina felina em pixel art!
