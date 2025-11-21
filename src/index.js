@@ -147,7 +147,7 @@ const grid = new Grid(3, 6); // Cria uma nova instância da grade de invasores
 const activePowers = {
   speed: null,
   double_shot: null,
-  shield: null
+  shield: null,
 };
 
 const playerProjectiles = [];
@@ -235,12 +235,18 @@ function activatePower(type) {
       activePowers.double_shot = duration;
       break;
 
+    case "extra_life":
+        player.gainLife();
+    break;
+
     case "shield":
       if (!activePowers.shield) player.shield = true;
       activePowers.shield = duration;
       break;
   }
 }
+
+
 function deactivatePower(type) {
   switch (type) {
     case "speed":
@@ -369,7 +375,7 @@ const checkShootInvaders = () => {
     playerProjectiles.some((projectile, projectilesIndex) => {
       if (invader.hit(projectile)) {
         soundEffects.playHitSound();
-         const power = invader.dropPower();
+         const power = invader.dropPower(player);
          if (power) powers.push(power); // adiciona o poder na lista de objetos do jogo
 
         // [ALTERADO] Usa a nova função de efeito com a paleta de invasores
@@ -664,15 +670,11 @@ for (const type in activePowers) {
   
   } else if (currentState === GameState.GAME_OVER) {
     // 3. Lógica de Game Over (continua a mesma)
-    checkShootObstacles();
-    drawProjectiles();
     drawParticles();
+    drawProjectiles();
     drawObstacles();
-    clearProjectiles();
-    clearParticles();
     grid.draw(ctx);
-    grid.update(player.alive);
-  }
+}
 
    // atualiza e desenha poderes
   powers.forEach((power, index) => {
@@ -883,6 +885,9 @@ backToStartButtons.forEach(button => {
 // [ATUALIZADO]
 buttonRestart.addEventListener("click", () => {
     // 1. Chama a nova função de reset (que faz toda a limpeza)
+
+    deactivateAllPowers(); 
+
     resetGame(); 
 
     // 2. Inicia o jogo novamente

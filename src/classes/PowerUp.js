@@ -3,15 +3,40 @@ import { POWER_TYPES, POWER_IMAGES } from "../utils/constants.js";
 const POWER_SIZES = {
     speed: 45,
     double_shot: 50,
-    shield: 60
+    shield: 60,
+    extra_life: 45
 };
 
 class PowerUp {
-    constructor(position) {
+    constructor(position, player) {   // <<< RECEBE O PLAYER
         this.position = position;
         this.velocity = { x: 0, y: 3 };
 
-        this.type = POWER_TYPES[Math.floor(Math.random() * POWER_TYPES.length)];
+        const probabilities = {
+            speed: 0.4,
+            double_shot: 0.25,
+            shield: 0.25,
+            extra_life: 0.1
+        };
+
+        // função para sortear um tipo válido
+        const getValidType = () => {
+            const rand = Math.random();
+            let sum = 0;
+
+            for (const [type, chance] of Object.entries(probabilities)) {
+                sum += chance;
+                if (rand < sum) {
+                    // regra: se sortear vida extra mas o player tem 3 vidas
+                    if (type === "extra_life" && player.lives >= 3) {
+                        return getValidType(); // sorteia novamente
+                    }
+                    return type;
+                }
+            }
+        };
+
+        this.type = getValidType();
 
         // tamanho baseado no tipo
         this.size = POWER_SIZES[this.type] || 30;
@@ -26,7 +51,7 @@ class PowerUp {
     }
 
     draw(ctx) {
-        if (!this.image.complete) return; // espera carregar
+        if (!this.image.complete) return;
         ctx.drawImage(
             this.image,
             this.position.x - this.size / 2,
@@ -50,4 +75,4 @@ class PowerUp {
     }
 }
 
-export default PowerUp;
+export default PowerUp;

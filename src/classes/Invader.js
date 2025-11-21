@@ -3,7 +3,7 @@ import Projectile  from "./Projectile.js";
 import PowerUp from "./PowerUp.js";
 
 // Chance global de cair poder (0.0 = nunca, 1.0 = sempre)
-export const POWER_DROP_RATE = 0.2; // 20% de chance
+export const POWER_DROP_RATE = 0.25; // 20% de chance
 
 class Invader { //define a classe Invader
        constructor(position, velocity) { // Construtor da classe que inicializa as propriedades do jogador.
@@ -76,14 +76,14 @@ hit(projectile) {
 }
 
 // metodo para decidir se cai um poder
-    dropPower() {
+    dropPower(player) {
         const chance = Math.random();
         if (chance <= POWER_DROP_RATE) {
             // Cria o poder na posição do invasor
             const power = new PowerUp({
                 x: this.position.x + this.width / 2,
                 y: this.position.y + this.height,
-            });
+            }, player);
 
             return power; // retorna o poder para ser adicionado no jogo
         }

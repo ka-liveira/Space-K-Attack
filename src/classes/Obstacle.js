@@ -12,17 +12,24 @@ class Obstacle {
     }
 
     hit(projectile) {
-        const projectilePositionY = projectile.velocity < 0
-                ? projectile.position.y
-                : projectile.position.y + projectile.height;
+    const projLeft = projectile.position.x;
+    const projRight = projectile.position.x + projectile.width;
+    const projTop = projectile.position.y;
+    const projBottom = projectile.position.y + projectile.height;
 
-        return (
-            projectile.position.x >= this.position.x &&
-            projectile.position.x <= this.position.x + this.width &&
-            projectilePositionY >= this.position.y &&
-            projectilePositionY <= this.position.y + this.height
-        );
-    }
+    const obsLeft = this.position.x;
+    const obsRight = this.position.x + this.width;
+    const obsTop = this.position.y;
+    const obsBottom = this.position.y + this.height;
+
+    return (
+        projRight >= obsLeft &&
+        projLeft <= obsRight &&
+        projBottom >= obsTop &&
+        projTop <= obsBottom
+    );
+}
+
 }
 
 export default Obstacle;

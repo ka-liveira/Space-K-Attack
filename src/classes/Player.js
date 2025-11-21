@@ -65,6 +65,14 @@ if (this.shield) {
 }
     }
 
+    // Método para quando o jogador coleta o poder de vida
+gainLife() {
+    // Evita ultrapassar um número máximo de vidas (por exemplo, 3)
+    if (this.lives < 3) {
+        this.lives += 1;
+    }
+}
+
     // Novo método para desenhar as vidas na tela
     drawLives(ctx) {
         const lifeWidth = this.width / 2.1; // Define uma largura menor para o ícone de vida
@@ -142,6 +150,8 @@ if (this.shield) {
         };
     }
 }
+
+
 
 export default Player; // Exporta a classe 'Player' como padrão para que possa ser importada em outros arquivos.
 

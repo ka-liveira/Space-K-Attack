@@ -1,7 +1,7 @@
 export const PATH_PLAYER_IMAGE = 'src/assets/images/player.png';
 export const PATH_ENGINE_SPRITES = 'src/assets/images/engine_sprites.png';
 export const PATH_INVADER_IMAGE = 'src/assets/images/invader.png';
-export const PATH_BOSS_IMAGE = 'src/assets/images/boss.png';
+export const PATH_BOSS_IMAGE = 'src/assets/images/Boss.png';
 export const PATH_LIFE_IMAGE = 'src/assets/images/life.png';
 export const INITIAL_FRAMES = 8;
 export const PATH_BACKGROUND_IMAGE = 'src/assets/images/fundo1.png'
@@ -16,10 +16,11 @@ export const GameState = {
     PAUSED: 'PAUSED'
 }
 
-export const POWER_TYPES = ["speed", "double_shot", "shield"];
+export const POWER_TYPES = ["speed", "double_shot", "shield", "extra_life"];
 
 export const POWER_IMAGES = {
     speed: "src/assets/images/speed.png",
     double_shot: "src/assets/images/projectils.png",
-    shield: "src/assets/images/protection.png"
+    shield: "src/assets/images/protection.png",
+    extra_life:"src/assets/images/life.png"
 };
