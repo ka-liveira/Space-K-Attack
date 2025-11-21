@@ -1,5 +1,5 @@
 # Space K-Attack 
-![Gameplay](src/assets/gif/space loop.gif)
+![Gameplay](src/assets/gif/space.gif)
 
 ---
 
