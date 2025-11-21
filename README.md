@@ -12,7 +12,7 @@ A cada 5 levels aparece um Boss Roedor Intergaláctico pra te dar trabalho
 A cada 10 levels vem um MEGA-BOSS que fica FURIOSO quando perde 50% da vida (e aí meu amigo, segura o rabo!)
 
 Com pixel art caprichado, cheio de detalhes fofos, efeitos sonoros que grudam na cabeça e aquela sensação viciante de "só mais um level"... até você perceber que já enfrentou um exército INTEIRO de roedores espaciais e já é 3 da manhã. Ops! 🌙
-
+<br><br>
 
 ## Tecnologias Utilizadas
 - **HTML5** - Estrutura do jogo
@@ -25,13 +25,13 @@ Com pixel art caprichado, cheio de detalhes fofos, efeitos sonoros que grudam na
 - **[iLoveIMG](https://www.iloveimg.com/)** - Redimensionamento de imagens
 - **[Sfxr](https://www.youtube.com/watch?v=OuRvOCf9mJ4)** - Geração de efeitos sonoros
 - **[Pixel Art Starfields](https://space-spheremaps.itch.io/pixelart-starfields)** - Background espacial
-
+<br><br>
 
 ## 🕹️ Jogue Agora!
 **[CLIQUE AQUI PARA JOGAR](https://ka-liveira.github.io/Space-K-Attack)**
 
 Não precisa instalar nada! Basta clicar no link acima e começar a detonar roedores intergalácticos diretamente no seu navegador! 
-
+<br><br>
 
 ## Como Jogar
 
@@ -42,6 +42,7 @@ Não precisa instalar nada! Basta clicar no link acima e começar a detonar roed
 - **ENTER**: Dispara projéteis 
 - **Botão Esquerdo do Mouse**: Dispara projéteis 
 - **ESC**: Pausa o jogo 
+<br><br>
 
 ### Objetivo
 Seu objetivo é sobreviver o máximo de levels possível eliminando ondas de roedores intergalácticos! 
@@ -50,7 +51,7 @@ Seu objetivo é sobreviver o máximo de levels possível eliminando ondas de roe
 - **Enfrente Boss Roedores** a cada 5 levels
 - **Derrote os Mega-Boss** a cada 10 levels (cuidado quando eles ficarem furiosos!)
 - **Quanto mais longe você chegar**, maior sua pontuação! 
-
+<br><br>
 
 ## Agradecimentos
 - [Tutorial de Game Dev](https://www.youtube.com/watch?v=RZ3D39UzqZs&t=2196s) - Por ensinar a criar o jogo do zero
