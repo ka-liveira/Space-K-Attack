@@ -53,9 +53,8 @@ Seu objetivo é sobreviver o máximo de levels possível eliminando ondas de roe
 - **Quanto mais longe você chegar**, maior sua pontuação! 
 <br><br>
 
-## Agradecimentos
-- [Tutorial de Game Dev](https://www.youtube.com/watch?v=RZ3D39UzqZs&t=2196s) - Por ensinar a criar o jogo do zero
-
 ---
 
-com ❤️ [Kassandra Oliveira](https://github.com/ka-liveira)
+## Agradecimentos
+- [Tutorial de Game Dev](https://www.youtube.com/watch?v=RZ3D39UzqZs&t=2196s) - Por ensinar a criar o jogo do zero
+- com ❤️ [Kassandra Oliveira](https://github.com/ka-liveira)
