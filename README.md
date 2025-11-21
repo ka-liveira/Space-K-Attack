@@ -17,7 +17,7 @@ Com pixel art caprichado, cheio de detalhes fofos, efeitos sonoros que grudam na
 ## Tecnologias Utilizadas
 - **HTML5** - Estrutura do jogo
 - **CSS3** - Estilização e animações
-- **JavaScript Puro (Vanilla JS)** - Lógica do jogo e mecânicas
+- **JavaScript** - Lógica do jogo e mecânicas
 - **Canvas API** - Renderização dos gráficos
 
 ### Ferramentas de Desenvolvimento
