@@ -6,10 +6,7 @@
 ## Sobre o Projeto
 Space K-Attack é pura adrenalina felina em pixel art!
 Você é um gato galáctico desbravando a poeira cósmica do universo, e sua missão? Acabar com a invasão dos roedores intergalácticos que infestaram o cosmos!
-A cada level, a coisa esquenta: os roedores aparecem em grupos aleatórios (às vezes poucos, às vezes um ENXAME), ficam mais rápidos, mais atrevidos e definitivamente mais irritantes. Você acha que já pegou o jeito? ERRADO!
-
-A cada 5 levels aparece um Boss Roedor Intergaláctico pra te dar trabalho
-A cada 10 levels vem um MEGA-BOSS que fica FURIOSO quando perde 50% da vida (e aí meu amigo, segura o rabo!)
+A cada level, a coisa esquenta: os roedores aparecem em grupos aleatórios (às vezes poucos, às vezes um ENXAME), ficam mais rápidos, mais atrevidos e definitivamente mais irritantes. 
 <br><br>
 
 ## Tecnologias Utilizadas
