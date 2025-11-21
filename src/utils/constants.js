@@ -1,4 +1,6 @@
 export const PATH_PLAYER_IMAGE = 'src/assets/images/player.png';
+export const PATH_PLAYER_IMAGE_2 = 'src/assets/images/player2.png';
+export const PATH_PLAYER_IMAGE_3 = 'src/assets/images/player3.png';
 export const PATH_ENGINE_SPRITES = 'src/assets/images/engine_sprites.png';
 export const PATH_INVADER_IMAGE = 'src/assets/images/invader.png';
 export const PATH_BOSS_IMAGE = 'src/assets/images/Boss.png';

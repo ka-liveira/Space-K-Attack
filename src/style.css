@@ -8,43 +8,34 @@
 }
 
 body {
-    overflow: hidden; /* Evita barras de rolagem */
+    overflow: hidden; 
     color: white;
-
-    background-color: #000;;
+    background-color: #000;
 }
 
 .background-fader {
-    /* Faz o div ocupar a tela toda, fixo no fundo */
     position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-
-    /* Garante que fique atrás de todo o conteúdo do jogo */
     z-index: -10; 
-
-    /* Configurações da imagem de fundo */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    
-    /* A mágica da transição suave (fade) */
-    opacity: 0; /* Começa invisível por padrão */
-    transition: opacity 1.2s ease-in-out; /* Duração da transição */
+    opacity: 0; 
+    transition: opacity 1.2s ease-in-out; 
 }
 
 canvas {
-    /* Deixamos o canvas transparente para o fundo do 'body' aparecer */
     background-color: transparent; 
-    
-    /* Posiciona o canvas atrás da UI */
     position: absolute;
     top: 0;
     left: 0;
     z-index: -1;
 }
+
+/* --- TELAS (SCREENS) --- */
 
 .screen {
     width: 100%;
@@ -52,111 +43,69 @@ canvas {
     color: white;
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* <<< Alinha o conteúdo no topo */
+    justify-content: flex-start; 
     flex-direction: column;
     position: absolute;
     inset: 0;
-    
-    /* Adicione um espaçamento no topo para empurrar para baixo */
-    padding-top: 15vh; /* Experimente valores como 10vh, 20vh, etc. */
+    padding-top: 15vh; 
 }
 
-/* Estilos base e chamada da animação */
 .screen h1 {
   font-size: 3rem;
   color: #FFFFFF;
   margin-top: 70px;
   margin-bottom: 20px;
-  
   animation: glow-cycle-soft 6s ease-in-out infinite;
-
-  /* Estado inicial do brilho SUAVE para navegadores sem suporte à animação */
   text-shadow:
     0 0 10px rgba(240, 248, 255, 0.7),
     0 0 30px rgba(176, 196, 222, 0.6),
     0 0 60px rgba(70, 130, 180, 0.5);
 }
 
-/* Animação com brilho mais suave e difuso */
 @keyframes glow-cycle-soft {
-  /* Estado Inicial: Brilho Azul SUAVE */
   0%, 100% {
     text-shadow:
-      /* Menos camadas, maior desfoque e cores com transparência */
-      0 0 10px rgba(240, 248, 255, 0.7),   /* Luz interna com 70% de opacidade */
-      0 0 30px rgba(176, 196, 222, 0.6),   /* Luz média com 60% de opacidade */
-      0 0 60px rgba(70, 130, 180, 0.5);    /* Luz externa com 50% de opacidade */
+      0 0 10px rgba(240, 248, 255, 0.7),   
+      0 0 30px rgba(176, 196, 222, 0.6),  
+      0 0 60px rgba(70, 130, 180, 0.5);    
   }
-  
-  /* Meio da Animação: Brilho Branco/Cinza SUAVE */
   50% {
     text-shadow:
-      0 0 12px rgba(255, 255, 255, 0.7),      /* Luz interna branca com 70% de opacidade */
-      0 0 35px rgba(220, 220, 220, 0.5),      /* Luz média cinza com 50% de opacidade */
-      0 0 70px rgba(190, 190, 190, 0.4);    /* Luz externa cinza com 40% de opacidade */
+      0 0 12px rgba(255, 255, 255, 0.7),      
+      0 0 35px rgba(220, 220, 220, 0.5),      
+      0 0 70px rgba(190, 190, 190, 0.4);      
   }
 }
 
 .screen span {
-    /* Posiciona seu nome fixo na parte de baixo */
     position: absolute;
     bottom: 20px;
-
-    /* Mantém o estilo original */
     font-size: 0.6rem;
     color: #aaa;
     text-decoration: underline;
-
-    /* Garante que ele não ocupe espaço no fluxo normal */
     left: 50%;
     transform: translateX(-50%);
 }
 
+/* --- TELA INICIAL --- */
+
 .start-screen > div {
-    /* Define este container como um organizador de coluna */
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
 }
 
-/* 1. O estado ESCONDIDO (Substitua o .menu-screen antigo) */
-.menu-screen {
-   /* Seus estilos originais: */
-   background-color: rgba(0, 0, 0, 0.3);
-   z-index: 10;
-   padding-top: 0; /* Remove o espaçamento do topo herdado */
-   justify-content: center; /* Centraliza verticalmente o conteúdo */
+.start-screen.hidden { display: none !important; }
 
-   /* A MÁGICA (substitui 'display: none'): */
-   visibility: hidden;
-   opacity: 0;
-   
-   /* A transição */
-   transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
-}
-
-/* 2. O estado VISÍVEL (a classe que o JS vai adicionar) */
-.menu-screen.show {
-   visibility: visible; /* Torna visível */
-   opacity: 1;     /* Torna opaco */
-}
-
-.menu-screen p {
-    font-size: 1rem;
-    line-height: 1.6;
-}
-
-/* Container para os botões na tela inicial */
 .main-menu {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Espaçamento entre botões */
+    gap: 15px; 
     margin-top: 120px;
-    width: 200px; /* Largura fixa para os botões */
+    width: 200px; 
 }
 
-/* Estilo para TODOS os botões de menu na tela inicial */
 .main-menu button {
     border: none;
     padding: 12px 20px;
@@ -164,13 +113,93 @@ canvas {
     background-color: #ddd;
     font-size: 1rem;
     cursor: pointer;
-    color: black; /* Adicionado para garantir a legibilidade */
+    color: black; 
 }
 .main-menu button:hover {
     background-color: #fff;
 }
 
-/* Botão de voltar */
+/* --- MENU SCREENS --- */
+
+.menu-screen {
+   background-color: rgba(0, 0, 0, 0.3);
+   z-index: 10;
+   padding-top: 0; 
+   justify-content: center; 
+   visibility: hidden;
+   opacity: 0;
+   transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+}
+
+.menu-screen.show {
+   visibility: visible; 
+   opacity: 1;     
+}
+
+.menu-screen p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.menu-screen > div {
+   background-color: rgba(10, 25, 40, 0.9); 
+   padding: 20px 40px 30px 40px; 
+   border: 2px solid #090732;
+   border-radius: 10px; 
+   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 255, 255, 0.4);
+   margin-top: 0; 
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.menu-screen > div h1 {
+    margin-top: 10px; 
+}
+
+/* --- SELEÇÃO DE SKIN --- */
+
+.skins-container {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.skin-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.skin-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #F000E8; 
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 0 20px rgba(240, 0, 232, 0.5);
+}
+
+.skin-btn img {
+    width: 80px;
+    height: 80px;
+    image-rendering: pixelated;
+    margin-bottom: 10px;
+}
+
+.skin-btn p {
+    margin: 0;
+    font-size: 0.8rem; 
+    color: white;
+}
+
+/* --- BOTÕES GERAIS --- */
+
 .button-back-to-start {
     border: none;
     padding: 12px 20px;
@@ -180,16 +209,17 @@ canvas {
     font-size: 1rem;
     margin-top: 20px;
     cursor: pointer;
-}
-
-/* Centraliza o botão 'Exit' APENAS na tela de Game Over */
-.game-over .button-back-to-start {
-    display: block;
-    margin: 20px auto 0; /* 20px em cima, 'auto' nas laterais para centralizar */
+    color: black;
+    font-family: "Press Start 2P", sans-serif;
 }
 
 .button-back-to-start:hover {
-    background-color: #777;
+    background-color: #fff;
+}
+
+.game-over .button-back-to-start {
+    display: block;
+    margin: 20px auto 0; 
 }
 
 .button-restart {
@@ -201,53 +231,45 @@ canvas {
     margin: 20px auto 0;
     font-size: 1rem;
     cursor: pointer;
+    color: black;
+    font-family: "Press Start 2P", sans-serif;
 }
 
-.button-play:hover,
 .button-restart:hover {
     background-color: #fff;
 }
 
-/* 1. O estado ESCONDIDO (como ele começa) */
+/* --- GAME OVER --- */
+
 .game-over {
-  /* Garante a centralização do conteúdo (h1 e botão) */
   display: flex; 
   align-items: center;
   justify-content: center;
-
-  align-items: center;      /* Centraliza horizontalmente (no modo coluna) */
-  justify-content: center; /* FORÇA a centralização vertical */
-  padding-top: 0;          /* REMOVE o espaçamento do topo herdado da classe .screen */
-
-  /* Esconde o elemento sem removê-lo da página */
-  visibility: hidden; /* Começa invisível */
-  opacity: 0;         /* Começa transparente */
-  scale: 0;           /* Começa com tamanho zero */
-
-  /* Adiciona uma transição suave para o caso de a animação falhar */
+  padding-top: 0;      
+  visibility: hidden; 
+  opacity: 0;         
+  scale: 0;           
   transition: opacity 0.5s, visibility 0.5s;
 }
 
-/* 2. O estado VISÍVEL (a classe que o JavaScript vai adicionar) */
 .game-over.show {
-  visibility: visible; /* Torna visível */
-  opacity: 1;          /* Torna opaco */
-  
-  /* APLICA A ANIMAÇÃO DE ZOOM QUANDO A CLASSE .show É ADICIONADA */
-  animation: zoom 0.7s ease-out forwards; /* Duração ajustada para ser mais rápida */
+  visibility: visible; 
+  opacity: 1;          
+  animation: zoom 0.7s ease-out forwards; 
 }
 
-/* 3. Sua animação @keyframes (melhorada para incluir opacidade) */
 @keyframes zoom {
     from {
         scale: 0;
-        opacity: 0; /* Anima a opacidade também para um fade-in */
+        opacity: 0; 
     }
     to {
         scale: 1;
         opacity: 1;
     }
 }
+
+/* --- UI DE JOGO --- */
 
 .score-ui {
     position: fixed;
@@ -260,6 +282,7 @@ canvas {
     text-transform: uppercase;
     font-size: 1rem;
     display: none;
+    z-index: 5;
 }
 
 .score-ui > div {
@@ -270,43 +293,31 @@ canvas {
 }
 
 .kills-ui {
-    /* Posiciona fixo na tela */
     position: fixed;
-
-    /* O .score-ui tem 40px de padding. As vidas devem estar
-     logo abaixo disso (ex: y=80).
-     Vamos posicionar os contadores abaixo disso (y=100).
-    */
-    top: 60px;  /* Distância do topo */
-    left: 22px;  /* Distância da esquerda (alinhado com o score) */
-    
-    /* Começa escondido, assim como o score-ui */
+    top: 60px;  
+    left: 22px;  
     display: none; 
-    
-    /* Organiza os contadores em coluna */
     flex-direction: column;
-    align-items: flex-start; /* Alinha o texto à esquerda */
-    gap: 4px; /* Espaço entre as linhas */
-    
-    /* Garante que fique acima do canvas */
+    align-items: flex-start; 
+    gap: 4px; 
     z-index: 5; 
 }
 
-/* 2. O estilo do texto dos contadores */
 .kills-ui .kills-invaders,
 .kills-ui .kills-boss {
-    font-size: 0.75rem; /* Fonte um pouco menor */
+    font-size: 0.75rem; 
     text-transform: uppercase;
-    color: #ccc; /* Cinza-claro */
+    color: #ccc; 
 }
 
-/* --- Estilos do Menu de Opções --- */
+/* --- MENU DE OPÇÕES --- */
+
 .settings-menu {
     display: flex;
     flex-direction: column;
-    gap: 25px; /* Espaço entre os sliders */
+    gap: 25px; 
     margin: 40px 0;
-    width: 300px; /* Largura do menu de opções */
+    width: 300px; 
 }
 
 .setting-item {
@@ -316,36 +327,40 @@ canvas {
 }
 
 .setting-item label {
-    font-size: 1rem;
-    
+    font-size: 0.8rem; 
     display: flex;
-    justify-content: space-between; /* Joga "Música:" p/ esquerda e a "%" p/ direita */
-    align-items: center; /* Centraliza eles verticalmente */
+    justify-content: space-between; 
+    align-items: center;
 }
 
-/* Estilização básica do slider */
+.setting-item label span {
+    position: static;   
+    transform: none;
+    font-size: 0.8rem;
+    color: white;
+    text-decoration: none;
+}
+
 input[type="range"] {
-    -webkit-appearance: none; /* Remove o estilo padrão do Chrome */
+    -webkit-appearance: none; 
     appearance: none;
     width: 100%;
     height: 10px;
-    background: #555; /* Cor da barra do slider */
+    background: #555; 
     outline: none;
     border-radius: 5px;
 }
 
-/* Estilização do "pino" do slider (Chrome) */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 25px;
     height: 25px;
-    background: #ddd; /* Cor do pino */
+    background: #ddd; 
     cursor: pointer;
     border-radius: 50%;
 }
 
-/* Estilização do "pino" do slider (Firefox) */
 input[type="range"]::-moz-range-thumb {
     width: 25px;
     height: 25px;
@@ -354,55 +369,26 @@ input[type="range"]::-moz-range-thumb {
     border-radius: 50%;
 }
 
-/* 1. Alinha o texto (Música:) e a porcentagem (%) na mesma linha */
-.setting-item label {
-    font-size: 1rem;
-    display: flex;
-    justify-content: space-between; /* Joga o texto para a esquerda e a % para a direita */
-    align-items: center;
-}
-
-/* 2. Reseta o 'span' da porcentagem para ele não ir para o rodapé */
-.setting-item label span {
-    /* Reseta a regra global problemática (.screen span) */
-    position: static;   /* << A MÁGICA ESTÁ AQUI */
-    transform: none;
-    
-    /* Devolve o estilo de fonte normal (em vez do estilo 'Kassandra Oliveira') */
-    font-size: 1rem;
-    color: white;
-    text-decoration: none;
-}
-
-/* --- Estilos dos Botões de Opções (Versão Empilhada) --- */
-
-/* 1. Define o container dos botões */
 .settings-buttons-container {
     display: flex;
-    flex-direction: column; /* << A MÁGICA: Coloca os botões em coluna */
-    align-items: center;   /* << Centraliza os botões na horizontal */
-    
+    flex-direction: column; 
+    align-items: center;   
     gap: 15px; 
     margin-top: 30px;
-    
-    /* Centraliza o container */
-    width: 300px; /* Mesma largura dos sliders */
+    width: 300px; 
     margin-left: auto;
     margin-right: auto;
 }
 
-/* 2. Define uma largura fixa para os botões ficarem iguais */
 .settings-buttons-container button {
-    width: 200px; /* Largura fixa (pode ajustar se quiser) */
-    box-sizing: border-box; /* Garante que o padding não afete a largura */
+    width: 200px; 
+    box-sizing: border-box; 
 }
 
-/* 3. Remove a margem individual do botão 'Voltar' */
 #settings-screen .button-back-to-start {
     margin-top: 0;
 }
 
-/* 4. Estilo para o novo botão 'Resetar' */
 #reset-settings-btn {
     border: none;
     padding: 12px 20px;
@@ -418,38 +404,12 @@ input[type="range"]::-moz-range-thumb {
     background-color: #999;
 }
 
-.menu-screen > div {
-   background-color: rgba(10, 25, 40, 0.9); /* Um cinza-escuro suave */
-   padding: 20px 40px 30px 40px; 
-   
-   border: 2px solid #090732;
-   
-   /* Cantos arredondados */
-   border-radius: 10px; 
-   
-   /* Sombra suave para dar profundidade */
-   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
-   /* Brilho externo (glow) para o efeito de holograma */
-   box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-  
-   margin-top: 0; 
-}
+/* --- MENU DE PAUSA --- */
 
-/* Ajuste para o H1 dentro da nova caixa */
-.menu-screen > div h1 {
-    margin-top: 10px; /* Reduz a margem do título "Opções" */
-}
-
-/* --- [NOVO] Estilos do Menu de Pausa --- */
-
-/* 1. Garante que o overlay de pausa fique acima de TUDO (do score, etc.) */
 #pause-screen {
-  z-index: 20; /* Mais alto que o z-index: 10 do .menu-screen padrão */
-  
-  /* (O resto dos estilos de fade-in são herdados do .menu-screen) */
+  z-index: 20; 
 }
 
-/* 2. Estilo para o botão "Continuar" (para ficar igual ao "Play") */
 #button-resume {
   border: none;
   padding: 12px 20px;
@@ -464,7 +424,6 @@ input[type="range"]::-moz-range-thumb {
   background-color: #fff;
 }
 
-/* 3. Estilo para o botão "Resetar Sons" (para ficar igual ao "Resetar" original) */
 #pause-reset-settings-btn {
   border: none;
   padding: 10px 20px;
@@ -479,99 +438,84 @@ input[type="range"]::-moz-range-thumb {
   background-color: #999;
 }
 
-/* 4. Remove a margem do botão "Sair" (assim como fizemos no "Voltar") */
 #pause-screen .button-back-to-start {
   margin-top: 0;
 }
-
-/* 5. Remove a margem do botão "Restart" (para alinhar no menu) */
 #pause-screen .button-restart {
   margin: 0;
 }
 
-/* --- Estilo do Botão de Pausa (AGORA SÓ A IMAGEM) --- */
+/* --- [ATUALIZADO] BOTÃO DE PAUSA (SVG) --- */
 
 #pause-button {
-  display: none; /* Começa escondido (correto) */
+  display: none; /* JS ativa isso quando joga */
   position: fixed; 
   top: 20px; 
   right: 20px; 
   z-index: 10; 
   cursor: pointer; 
-
-  /* ----- MUDANÇAS PRINCIPAIS ----- */
-  background: transparent;  /* Remove o fundo */
-  border: none;             /* Garante que não tem borda */
-  border-radius: 0;         /* Remove o arredondamento */
-  padding: 0;               /* Remove o espaçamento */
-  /* ----------------------------- */
+  
+  background: transparent;
+  border: none; 
+  border-radius: 0; 
+  padding: 0; 
 }
 
-/* Remove o :hover do botão... */
-#pause-button:hover {
-  background-color: transparent; /* Garante que nada apareça */
+/* Removemos qualquer estilo antigo de 'img' e aplicamos ao 'svg' */
+#pause-button svg {
+  width: 35px;  /* Tamanho confortável */
+  height: 35px;
+  filter: drop-shadow(2px 2px 2px black); /* Sombra para destacar do fundo */
+  transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-/* ...e coloca o :hover NA IMAGEM */
-#pause-button img {
-  display: block; 
-  width: 70px; 
-  height: 70px; 
-  transition: opacity 0.2s ease; /* Transição suave */
+/* Efeito ao passar o mouse: Cresce e fica Neon */
+#pause-button:hover svg {
+  transform: scale(1.1); /* Aumenta 10% */
 }
 
-#pause-button:hover img {
-  opacity: 0.7; /* Efeito de hover na imagem */
+#pause-button:hover svg path {
+  fill: #00ffff; /* Muda a cor interna para Ciano/Neon */
+  filter: drop-shadow(0 0 5px #00ffff); /* Brilho neon */
+  transition: fill 0.2s ease;
 }
 
-/* 1. Container Principal */
+/* --- INSTRUÇÕES --- */
+
 .instructions-list {
     display: flex;
-    flex-direction: column; /* Empilha as linhas (control-group) */
-    align-items: stretch; /* Faz as linhas ocuparem a largura disponível */
-    gap: 15px; /* Espaço VERTICAL entre cada linha */
+    flex-direction: column; 
+    align-items: stretch; 
+    gap: 15px; 
     margin-top: 40px;
     margin-bottom: 40px;
-    width: 90%; /* Largura relativa */
-    max-width: 420px; /* Largura máxima um pouco maior */
+    width: 90%; 
+    max-width: 420px; 
     color: #fff;
-    /* Borda de teste removida */
 }
 
-/* 2. Grupo de Controle (Cada linha: Tecla | Ação) */
 .control-group {
-    display: flex; /* Coloca Tecla e Ação LADO A LADO */
-    align-items: center; /* Alinha verticalmente a tecla com o texto */
-    gap: 20px; /* Espaço HORIZONTAL entre tecla e ação */
+    display: flex; 
+    align-items: center; 
+    gap: 20px; 
     width: 100%;
-    /* Borda de teste removida */
 }
 
-/* 3. Estilo Visual das Teclas (3D) */
 .key {
-    /* ----- Resets da Regra Global (Necessários) ----- */
     position: static !important; bottom: auto !important; left: auto !important; transform: none !important; text-decoration: none !important;
-    /* ------------------------------------------- */
 
-    /* Dimensões e Fundo */
     min-width: 55px;
     height: 55px;
-    background-color: #f0f0f0; /* << VOLTOU para Cinza claro */
-    border: 1px solid #b0b0b0; /* << VOLTOU para Borda cinza médio */
+    background-color: #f0f0f0; 
+    border: 1px solid #b0b0b0; 
     border-radius: 6px;
+    box-shadow: 0 3px 0 #b0b0b0, inset 0 1px 1px #fff, 0 4px 6px rgba(0, 0, 0, 0.2);
 
-    /* Sombra 3D (Clara) */
-    box-shadow: 0 3px 0 #b0b0b0, /* << VOLTOU Sombra inferior cinza médio */
-                inset 0 1px 1px #fff, /* << VOLTOU Brilho interno branco */
-                0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra externa suave */
-
-    /* Texto */
-    color: #444; /* << VOLTOU para Texto ESCURO */
-    font-size: 1rem;
+    color: #444; 
+    font-size: 0.8rem; 
     font-weight: bold;
     text-transform: uppercase;
 
-    /* Alinhamento e Padding (mantidos) */
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -582,34 +526,28 @@ input[type="range"]::-moz-range-thumb {
     flex-shrink: 0;
 }
 
-/* 4. Largura Específica da Tecla ESPAÇO */
-/* Seleciona o TERCEIRO .control-group (Espaço) e o .key dentro dele */
 .instructions-list .control-group:nth-of-type(3) .key {
-    min-width: 140px; /* Largura maior */
+    min-width: 140px; 
 }
 
-/* 5. Estilo do Texto da Ação (Descrição) */
 .action-text {
-    font-size: 1rem; /* Tamanho da descrição */
-    color: #0394fc; /* Sua cor azul */
-    text-transform: none; /* Texto normal (não maiúsculo) */
-    font-weight: normal; /* Peso normal */
+    font-size: 0.8rem; 
+    color: #0394fc; 
+    text-transform: none; 
+    font-weight: normal; 
     letter-spacing: 0.5px;
     margin: 0;
-    text-align: left; /* Alinha à esquerda */
-    flex-grow: 1; /* Ocupa o espaço restante */
-    /* !important removido */
+    text-align: left; 
+    flex-grow: 1; 
+    line-height: 1.4;
 }
 
-/* --- FIM DOS ESTILOS DA LISTA --- */
-
-/* Garanta que o botão Voltar esteja centralizado */
 #instructions-screen .button-back-to-start {
      display: block;
-     margin: 40px auto 0 auto; /* 40px acima, centralizado */
-     /* width: 200px; /* Opcional: define largura fixa */
+     margin: 40px auto 0 auto; 
 }
 
+/* --- BARRA DE PODERES --- */
 
 #powers-bar-container {
     position: fixed;
@@ -619,7 +557,7 @@ input[type="range"]::-moz-range-thumb {
     flex-direction: column;
     gap: 8px;
     z-index: 100;
-    font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif; 
 }
 
 .power-bar-wrapper {
@@ -631,6 +569,7 @@ input[type="range"]::-moz-range-thumb {
 .power-bar-name {
     color: #fff;
     font-size: 10px;
+    font-family: "Press Start 2P", sans-serif;
 }
 
 .power-bar {
@@ -639,6 +578,7 @@ input[type="range"]::-moz-range-thumb {
     background-color: #333;
     border-radius: 5px;
     overflow: hidden;
+    border: 1px solid white;
 }
 
 .power-bar-inner {

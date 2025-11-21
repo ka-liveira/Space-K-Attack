@@ -10,42 +10,72 @@
     <div id="bg1" class="background-fader"></div>
     <div id="bg2" class="background-fader"></div>
 
-<section class="score-ui">
-    <div>
-        <span class="score">score: <span>0</span></span>
-        <span class="level">level: <span>1</span></span>
-        <span class="high">high: <span>0</span></span>
-    </div>
-</section>
+    <section class="score-ui">
+        <div>
+            <span class="score">score: <span>0</span></span>
+            <span class="level">level: <span>1</span></span>
+            <span class="high">high: <span>0</span></span>
+        </div>
+    </section>
 
     <section class="kills-ui">
         <span class="kills-invaders">Invasores: <span>0</span></span>
         <span class="kills-boss">Boss: <span>0</span></span>
     </section>
 
+    <!-- [ALTERADO] Botão de Pausa agora usa SVG inline para máxima qualidade -->
     <button id="pause-button" class="game-button">
-    <img src="src/assets/images/paused.png" alt="Pausar" width="32" height="32">
-</button>
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 4H6V20H10V4Z" fill="white"/>
+            <path d="M18 4H14V20H18V4Z" fill="white"/>
+        </svg>
+    </button>
 
+    <!-- TELA INICIAL -->
     <section class="start-screen screen">
-        <div> <h1>Space K'Attack</h1>
-
-       <div class="main-menu">
+        <div> 
+            <h1>Space K'Attack</h1>
+            <div class="main-menu">
                 <button class="button-play">Play</button>
                 <button id="options-btn">Opções</button> 
                 <button id="instructions-btn">Instruções</button>
             </div>
         </div>
-
         <span>Kassandra Oliveira</span>
     </section>
 
- <section id="settings-screen" class="screen menu-screen">
+    <!-- TELA: SELEÇÃO DE SKIN -->
+    <section id="skin-selection-screen" class="screen menu-screen">
+        <div>
+            <h1>Escolha seu Piloto</h1>
+            
+            <div class="skins-container" style="display: flex; gap: 20px; justify-content: center; margin-bottom: 20px;">
+                <button class="skin-btn" data-skin="player" style="background: none; border: 2px solid white; padding: 10px; cursor: pointer;">
+                    <img src="src/assets/images/player.png" alt="Gato 1" width="64" height="64">
+                    <p style="color: white; margin-top: 5px;">Gato 1</p>
+                </button>
+
+                <button class="skin-btn" data-skin="player2" style="background: none; border: 2px solid white; padding: 10px; cursor: pointer;">
+                    <img src="src/assets/images/player2.png" alt="Gato 2" width="64" height="64">
+                    <p style="color: white; margin-top: 5px;">Gato 2</p>
+                </button>
+
+                <button class="skin-btn" data-skin="player3" style="background: none; border: 2px solid white; padding: 10px; cursor: pointer;">
+                    <img src="src/assets/images/player3.png" alt="Gato 3" width="64" height="64">
+                    <p style="color: white; margin-top: 5px;">Gato 3</p>
+                </button>
+            </div>
+
+            <button class="button-back-to-start">Voltar</button>
+        </div>
+    </section>
+
+    <!-- TELA DE OPÇÕES -->
+    <section id="settings-screen" class="screen menu-screen">
         <div>
             <h1>Opções</h1>
             
             <div class="settings-menu">
-                
                 <div class="setting-item">
                     <label for="music-volume">Música: <span id="music-volume-label">10%</span></label>
                     <input type="range" id="music-volume" min="0" max="100" value="10">
@@ -55,12 +85,12 @@
                     <label for="fx-volume">Efeitos: <span id="fx-volume-label">75%</span></label>
                     <input type="range" id="fx-volume" min="0" max="100" value="75">
                 </div>
-
             </div>
             
             <div class="settings-buttons-container">
                 <button id="reset-settings-btn">Resetar</button>
-            <button class="button-back-to-start">Voltar</button>
+                <button class="button-back-to-start">Voltar</button>
+            </div>
         </div>
     </section>
 
@@ -68,43 +98,46 @@
         <div>
             <h1>Como Jogar</h1>
                 
-       <div class="instructions-list">
-    <div class="control-group">
-        <span class="key">A</span>
-        <p class="action-text">Move para a esquerda</p>
-    </div>
+            <div class="instructions-list">
+                <div class="control-group">
+                    <span class="key">A</span>
+                    <p class="action-text">Move para a esquerda</p>
+                </div>
 
-    <div class="control-group">
-        <span class="key">D</span>
-        <p class="action-text">Move para a direita</p>
-    </div>
+                <div class="control-group">
+                    <span class="key">D</span>
+                    <p class="action-text">Move para a direita</p>
+                </div>
 
-    <div class="control-group">
-        <span class="key">Espaço</span>
-        <p class="action-text">Dispara</p>
-    </div>
+                <div class="control-group">
+                    <span class="key">Espaço</span>
+                    <p class="action-text">Dispara</p>
+                </div>
 
-    <div class="control-group">
-        <span class="key">Enter</span>
-        <p class="action-text">Dispara</p>
-    </div>
+                <div class="control-group">
+                    <span class="key">Enter</span>
+                    <p class="action-text">Dispara</p>
+                </div>
 
-    <div class="control-group">
-        <span class="key">Click Esq. mouse</span>
-        <p class="action-text">Dispara</p>
-    </div>
+                <div class="control-group">
+                    <span class="key">Click Esq. mouse</span>
+                    <p class="action-text">Dispara</p>
+                </div>
 
-    <div class="control-group">
-        <span class="key">Esc</span>
-        <p class="action-text">Pausa o Jogo</p>
-    </div>
-</div>
+                <div class="control-group">
+                    <span class="key">Esc</span>
+                    <p class="action-text">Pausa o Jogo</p>
+                </div>
+            </div>
 
             <button class="button-back-to-start">Voltar</button>
         </div>
     </section>
 
-   <canvas></canvas>  <section class="game-over screen"> <div>
+    <canvas></canvas> 
+    
+    <section class="game-over screen"> 
+        <div>
             <h1>Game Over</h1>
             <button class="button-restart">Restart</button>
             <button class="button-back-to-start">Exit</button>
@@ -112,30 +145,30 @@
     </section>
 
     <section id="pause-screen" class="screen menu-screen">
-    <div>
-        <h1>Pausado</h1>
-        
-        <div class="settings-menu">
-            <div class="setting-item">
-                <label for="pause-music-volume">Música: <span id="pause-music-volume-label">10%</span></label>
-                <input type="range" id="pause-music-volume" min="0" max="100" value="10">
-            </div>
-            <div class="setting-item">
-                <label for="pause-fx-volume">Efeitos: <span id="pause-fx-volume-label">50%</span></label>
-                <input type="range" id="pause-fx-volume" min="0" max="100" value="50">
-            </div>
-        </div>
-        
-        <div class="settings-buttons-container">
-            <button id="pause-reset-settings-btn">Resetar</button>
-
-            <button id="button-resume">Continuar</button> 
-            <button id="button-pause-restart" class="button-restart">Restart</button> 
+        <div>
+            <h1>Pausado</h1>
             
-            <button id="button-pause-quit" class="button-back-to-start">Sair</button>
+            <div class="settings-menu">
+                <div class="setting-item">
+                    <label for="pause-music-volume">Música: <span id="pause-music-volume-label">10%</span></label>
+                    <input type="range" id="pause-music-volume" min="0" max="100" value="10">
+                </div>
+                <div class="setting-item">
+                    <label for="pause-fx-volume">Efeitos: <span id="pause-fx-volume-label">50%</span></label>
+                    <input type="range" id="pause-fx-volume" min="0" max="100" value="50">
+                </div>
+            </div>
+            
+            <div class="settings-buttons-container">
+                <button id="pause-reset-settings-btn">Resetar</button>
+
+                <button id="button-resume">Continuar</button> 
+                <button id="button-pause-restart" class="button-restart">Restart</button> 
+                
+                <button id="button-pause-quit" class="button-back-to-start">Sair</button>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <audio id="bgm" src="src/assets/audios/music.mp3" loop></audio>
 

@@ -1,10 +1,10 @@
-import Player from "./classes/Player.js"; // Importa a classe Player do arquivo Player.js
-import Projectile from "./classes/Projectile.js"; // Importa a classe Projectile do arquivo Projectile.js
-import Grid from "./classes/Grid.js"; // Importa a classe Grid do arquivo Grid.js
-import Invader from "./classes/Invader.js"; // Importa a classe Invader do arquivo Invader.js
-import Particle from "./classes/Particle.js"; // Importa a classe Particle do arquivo Particle.js
+import Player from "./classes/Player.js"; 
+import Projectile from "./classes/Projectile.js"; 
+import Grid from "./classes/Grid.js"; 
+import Invader from "./classes/Invader.js"; 
+import Particle from "./classes/Particle.js"; 
 import { GameState } from "./utils/constants.js";
-import Obstacle from "./classes/Obstacle.js"; // Importa a classe Obstacle do arquivo Obstacle.js
+import Obstacle from "./classes/Obstacle.js"; 
 import SoundEffects from "./classes/SoundEffects.js";
 import Boss from "./classes/Boss.js";
 import PowerUp from "./classes/PowerUp.js";
@@ -13,16 +13,18 @@ import { PATH_BACKGROUND_IMAGE, PATH_BACKGROUND_IMAGE_2, PATH_BACKGROUND_IMAGE_3
 
 const soundEffects = new SoundEffects();
 
+// Seletores de tela
 const startScreen = document.querySelector(".start-screen");
 const gameOverScreen = document.querySelector(".game-over");
 const scoreUi = document.querySelector(".score-ui");
 const scoreElement = scoreUi.querySelector(".score > span");
 const levelElement = scoreUi.querySelector(".level > span");
 const highElement = scoreUi.querySelector(".high > span");
-const killsUi = document.querySelector(".kills-ui"); // <-- Seleciona o novo container
+const killsUi = document.querySelector(".kills-ui"); 
 const killsInvadersElement = killsUi.querySelector(".kills-invaders > span");
 const killsBossElement = killsUi.querySelector(".kills-boss > span");
 
+// Botões e Menus
 const buttonPlay = document.querySelector(".button-play");
 const pauseButton = document.querySelector("#pause-button");
 const buttonRestart = document.querySelector(".button-restart");
@@ -32,8 +34,14 @@ const optionsBtn = document.querySelector("#options-btn");
 const instructionsBtn = document.querySelector("#instructions-btn");
 const backToStartButtons = document.querySelectorAll(".button-back-to-start");
 
-const bgm = document.querySelector("#bgm"); // Pega o áudio com id 'bgm' do HTML
+// --- NOVA LÓGICA DE SELEÇÃO DE SKIN ---
+const skinSelectionScreen = document.querySelector("#skin-selection-screen");
+const skinButtons = document.querySelectorAll(".skin-btn");
+// --------------------------------------
 
+const bgm = document.querySelector("#bgm"); 
+
+// Configurações de Áudio
 const musicVolumeSlider = document.querySelector("#music-volume");
 const musicVolumeLabel = document.querySelector("#music-volume-label");
 const fxVolumeSlider = document.querySelector("#fx-volume");
@@ -44,30 +52,26 @@ const pauseScreen = document.querySelector("#pause-screen");
 const buttonResume = document.querySelector("#button-resume");
 const buttonPauseRestart = document.querySelector("#button-pause-restart");
 const buttonPauseQuit = document.querySelector("#button-pause-quit");
-
 const pauseMusicVolumeSlider = document.querySelector("#pause-music-volume");
 const pauseMusicVolumeLabel = document.querySelector("#pause-music-volume-label");
 const pauseFxVolumeSlider = document.querySelector("#pause-fx-volume");
 const pauseFxVolumeLabel = document.querySelector("#pause-fx-volume-label");
 const pauseResetSettingsBtn = document.querySelector("#pause-reset-settings-btn");
 
+// Background Animado
 const bgDiv1 = document.querySelector("#bg1");
 const bgDiv2 = document.querySelector("#bg2");
 
-// 1. PRIMEIRO: Defina a lista de imagens.
-//    (Lembre-se de importar as constantes PATH_... no topo do seu arquivo)
 const fundosAnimados = [
     PATH_BACKGROUND_IMAGE,
     PATH_BACKGROUND_IMAGE_2,
     PATH_BACKGROUND_IMAGE_3
 ];
 
-// 2. SEGUNDO: Defina as variáveis de controle.
 let intervaloDoFundo;
 let bgAtivo = 1; 
 let indiceFundoAtual = 0;
 
-// 3. TERCEIRO: Defina as funções auxiliares.
 function precarregarImagens() {
     fundosAnimados.forEach(caminhoDaImagem => {
         const img = new Image();
@@ -76,73 +80,61 @@ function precarregarImagens() {
 }
 
 function trocarFundo() {
-    // Calcula o índice da PRÓXIMA imagem
     const proximoIndice = (indiceFundoAtual + 1) % fundosAnimados.length;
-
-    // Identifica qual div está na frente e qual está atrás
     const divAtivo = (bgAtivo === 1) ? bgDiv1 : bgDiv2;
     const divInativo = (bgAtivo === 1) ? bgDiv2 : bgDiv1;
 
-    // Define a PRÓXIMA imagem no div que está ESCONDIDO
     divInativo.style.backgroundImage = `url('${fundosAnimados[proximoIndice]}')`;
+    divAtivo.style.opacity = 0;   
+    divInativo.style.opacity = 1; 
 
-    // Inverte a opacidade para criar o efeito de fade
-    divAtivo.style.opacity = 0;   // Esconde o div antigo
-    divInativo.style.opacity = 1; // Mostra o novo div
-
-    // Atualiza as variáveis de controle para a próxima rodada
     indiceFundoAtual = proximoIndice;
-    bgAtivo = (bgAtivo === 1) ? 2 : 1; // Alterna entre 1 e 2
+    bgAtivo = (bgAtivo === 1) ? 2 : 1; 
 }
 
-// 4. QUARTO: Defina a função principal que inicia o processo.
 function iniciarFundo() {
-    precarregarImagens(); // Agora esta função já existe.
-    
-    // Define a primeira imagem no primeiro div e o torna visível
+    precarregarImagens(); 
     bgDiv1.style.backgroundImage = `url('${fundosAnimados[0]}')`;
     bgDiv1.style.opacity = 1;
-    
-    // Inicia o loop de troca
     intervaloDoFundo = setInterval(trocarFundo, 4000);
 }
 
-const canvas = document.querySelector("canvas"); // Seleciona o canvas
-const ctx = canvas.getContext("2d"); // Contexto 2D do canvas
+// Configuração Canvas
+const canvas = document.querySelector("canvas"); 
+const ctx = canvas.getContext("2d"); 
 
-canvas.width = innerWidth; // Define a largura do canvas
-canvas.height = innerHeight; // Define a altura do canvas
+canvas.width = innerWidth; 
+canvas.height = innerHeight; 
 
-ctx.imageSmoothingEnabled = false; // Desativa o suavização de imagem para um estilo pixelado
+ctx.imageSmoothingEnabled = false; 
 
 let currentState = GameState.START;
 
-// Define os volumes padrão
-const DEFAULT_MUSIC_VOLUME = 0.10; // 10%
-const DEFAULT_FX_VOLUME = 0.50;   // 50%
-
-// Define as variáveis de volume atual, começando com o padrão
+// Volumes
+const DEFAULT_MUSIC_VOLUME = 0.10; 
+const DEFAULT_FX_VOLUME = 0.50;   
 let musicVolume = DEFAULT_MUSIC_VOLUME;
 let fxVolume = DEFAULT_FX_VOLUME;
 
 const gameData = {
-score: 0,
-level: 0,
-high: 0,
-invadersKilled: 0,
-bossesKilled: 0
+    score: 0,
+    level: 0,
+    high: 0,
+    invadersKilled: 0,
+    bossesKilled: 0
 };
 
 const showGameData = () => {
-scoreElement.textContent = gameData.score;
-levelElement.textContent = gameData.level;
-highElement.textContent = gameData.high;
-killsInvadersElement.textContent = gameData.invadersKilled; 
-killsBossElement.textContent = gameData.bossesKilled;
+    scoreElement.textContent = gameData.score;
+    levelElement.textContent = gameData.level;
+    highElement.textContent = gameData.high;
+    killsInvadersElement.textContent = gameData.invadersKilled; 
+    killsBossElement.textContent = gameData.bossesKilled;
 };
 
-const player = new Player(canvas.width, canvas.height); // Cria uma nova instância do jogador
-const grid = new Grid(3, 6); // Cria uma nova instância da grade de invasores
+// Instanciação
+const player = new Player(canvas.width, canvas.height); 
+const grid = new Grid(3, 6); 
 
 const activePowers = {
   speed: null,
@@ -161,91 +153,85 @@ let powerTimeLeft = 0;
 let invaderShootInterval;
 let invaderShootTime = 1000;
 
-// [BOSS] Variáveis para controlar o chefe
 let boss = null;
 let bossFightActive = false;
 
-// Paletas de partículas para as explosões
+// Partículas
 const PLAYER_DEATH_PARTICLES = [
-{ color: '#cccccc', radius: 5 }, 
-{ color: '#FFD700', radius: 4 }, 
-{ color: '#87CEEB', radius: 3 }
+    { color: '#cccccc', radius: 5 }, 
+    { color: '#FFD700', radius: 4 }, 
+    { color: '#87CEEB', radius: 3 }
 ];
 
 const PLAYER_HIT_PARTICLES = [
     { color: 'lightgray',    radius: 4 },
-    { color: '#87CEEB', radius: 4 } // Azul céu, para combinar com o jogador
+    { color: '#87CEEB', radius: 4 } 
 ];
 
 const INVADER_DEATH_PARTICLES = [
-{ color: 'crimson', radius: 3 },
-{ color: '#ff4040', radius: 3 }
+    { color: 'crimson', radius: 3 },
+    { color: '#ff4040', radius: 3 }
 ];
 
 const BOSS_HIT_PARTICLES = [
-{ color: 'lightgray',  radius: 2 },
-{ color: 'crimson', radius: 3 }
+    { color: 'lightgray',  radius: 2 },
+    { color: 'crimson', radius: 3 }
 ];
 
 const BOSS_DEATH_PARTICLES = [
-{ color: 'crimson', radius: 14 },
-{ color: 'orange', radius: 12 },
-{ color: 'yellow', radius: 10 }
+    { color: 'crimson', radius: 14 },
+    { color: 'orange', radius: 12 },
+    { color: 'yellow', radius: 10 }
 ];
 
-const InitObstacles = () => { // Função para inicializar os obstáculos
-const x = canvas.width / 2 - 50;
-const y = canvas.height - 220;
-const offset = canvas.width * 0.15;
-const color = "white";
+const InitObstacles = () => { 
+    const x = canvas.width / 2 - 50;
+    const y = canvas.height - 220;
+    const offset = canvas.width * 0.15;
+    const color = "white";
 
-const obstacle1 = new Obstacle({ x: x - offset, y }, 150, 15, color);
-const obstacle2 = new Obstacle({ x: x + offset, y }, 150, 15, color);
+    const obstacle1 = new Obstacle({ x: x - offset, y }, 150, 15, color);
+    const obstacle2 = new Obstacle({ x: x + offset, y }, 150, 15, color);
 
-obstacles.push(obstacle1);
-obstacles.push(obstacle2);
+    obstacles.push(obstacle1);
+    obstacles.push(obstacle2);
 };
 InitObstacles();
 
-const keys = { // Objeto para rastrear o estado das teclas
-left: { pressed: false },
-right: { pressed: false },
-shoot: { pressed: false, released: true },
+const keys = { 
+    left: { pressed: false },
+    right: { pressed: false },
+    shoot: { pressed: false, released: true },
 };
 
 const incrementScore = (value) => {
-gameData.score += value;
-
-if (gameData.score > gameData.high) {
- gameData.high = gameData.score;
- }
+    gameData.score += value;
+    if (gameData.score > gameData.high) {
+     gameData.high = gameData.score;
+     }
 };
 
+// Poderes
 function activatePower(type) {
-  const duration = 10; // segundos
-
+  const duration = 10; 
   switch (type) {
     case "speed":
       if (!activePowers.speed) player.velocity *= 1.8;
       activePowers.speed = duration;
       break;
-
     case "double_shot":
       if (!activePowers.double_shot) player.doubleShot = true;
       activePowers.double_shot = duration;
       break;
-
     case "extra_life":
         player.gainLife();
     break;
-
     case "shield":
       if (!activePowers.shield) player.shield = true;
       activePowers.shield = duration;
       break;
   }
 }
-
 
 function deactivatePower(type) {
   switch (type) {
@@ -260,8 +246,8 @@ function deactivatePower(type) {
       break;
   }
   activePowers[type] = null;
-  
 }
+
 function deactivateAllPowers() {
   for (const type in activePowers) {
     if (activePowers[type] !== null) {
@@ -271,8 +257,7 @@ function deactivateAllPowers() {
 }
 
 function drawBossHealthBar(ctx) {
-  if (!boss) return; // Garante que a função não execute se não houver chefe
-  
+  if (!boss) return; 
   const barWidth = canvas.width * 0.4;
   const barHeight = 30;
   const barX = (canvas.width - barWidth) / 2;
@@ -281,10 +266,8 @@ function drawBossHealthBar(ctx) {
 
   ctx.fillStyle = '#444';
   ctx.fillRect(barX, barY, barWidth, barHeight);
-
   ctx.fillStyle = 'crimson';
   ctx.fillRect(barX, barY, barWidth * healthPercentage, barHeight);
-  
   ctx.strokeStyle = 'white';
   ctx.lineWidth = 2;
   ctx.strokeRect(barX, barY, barWidth, barHeight);
@@ -295,9 +278,8 @@ function drawBossHealthBar(ctx) {
   ctx.fillText('BOSS', barX + barWidth / 2, barY + barHeight / 2 + 7);
 }
 
-const drawObstacles = () => {
-  obstacles.forEach((obstacle) => obstacle.draw(ctx));
-};
+// Funções de Desenho e Limpeza
+const drawObstacles = () => obstacles.forEach((obstacle) => obstacle.draw(ctx));
 
 const drawProjectiles = () => {
   const projectiles = [...playerProjectiles, ...invaderProjectiles];
@@ -330,60 +312,40 @@ const clearParticles = () => {
   });
 };
 
-// [ALTERADO] Função createExplosion corrigida e melhorada
 const createExplosion = (position, radius, color) => {
-    // A quantidade de partículas será proporcional ao raio
     const particleCount = radius * 2;
-
     for (let i = 0; i < particleCount; i += 1) {
-        const particle = new Particle(
-            { // Posição
-                x: position.x,
-                y: position.y,
-            },
-            { // Velocidade aleatória
-                x: (Math.random() - 0.5) * 2,
-                y: (Math.random() - 0.5) * 2,
-            },
-            // O tamanho de cada partícula agora é aleatório, até o raio máximo
+        particles.push(new Particle(
+            { x: position.x, y: position.y },
+            { x: (Math.random() - 0.5) * 2, y: (Math.random() - 0.5) * 2 },
             Math.random() * radius,
-            color // Cor corrigida (sem aspas)
-        );
-
-        particles.push(particle);
+            color 
+        ));
     }
 };
 
-// [ALTERADO] Nova função reutilizável para criar os efeitos de explosão
 function createExplosionEffect(target, particleDefinitions) {
     const targetCenter = {
         x: target.position.x + target.width / 2,
         y: target.position.y + target.height / 2,
     };
-
     particleDefinitions.forEach(particle => {
-        createExplosion(
-            targetCenter,
-            particle.radius,
-            particle.color
-        );
+        createExplosion(targetCenter, particle.radius, particle.color);
     });
 }
 
+// Colisões
 const checkShootInvaders = () => {
   grid.invaders.forEach((invader, invaderIndex) => {
     playerProjectiles.some((projectile, projectilesIndex) => {
       if (invader.hit(projectile)) {
         soundEffects.playHitSound();
          const power = invader.dropPower(player);
-         if (power) powers.push(power); // adiciona o poder na lista de objetos do jogo
+         if (power) powers.push(power); 
 
-        // [ALTERADO] Usa a nova função de efeito com a paleta de invasores
-                createExplosionEffect(invader, INVADER_DEATH_PARTICLES);
-        
+        createExplosionEffect(invader, INVADER_DEATH_PARTICLES);
         incrementScore(10);
         gameData.invadersKilled += 1;
-
         grid.invaders.splice(invaderIndex, 1);
         playerProjectiles.splice(projectilesIndex, 1);
       }
@@ -396,12 +358,8 @@ const checkShootBoss = () => {
   playerProjectiles.some((projectile, projectilesIndex) => {
     if (boss.hit(projectile)) {
       soundEffects.playHitSound();
-
-            // [ALTERADO] Usa a nova função com a paleta de dano do chefe
-            // Criamos um "alvo falso" na posição do projétil para o efeito acontecer no local do impacto
-            const hitMarker = { position: projectile.position, width: 0, height: 0 };
-            createExplosionEffect(hitMarker, BOSS_HIT_PARTICLES);
-
+      const hitMarker = { position: projectile.position, width: 0, height: 0 };
+      createExplosionEffect(hitMarker, BOSS_HIT_PARTICLES);
       incrementScore(50);
       boss.takeDamage(10);
       playerProjectiles.splice(projectilesIndex, 1);
@@ -414,7 +372,6 @@ const checkShootPlayer = () => {
     if (player.hit(projectile)) {
       soundEffects.playExplosionSound();
       invaderProjectiles.splice(index, 1);
-
       createExplosionEffect(player, PLAYER_HIT_PARTICLES);
       player.takeDamage();
     }
@@ -429,7 +386,6 @@ const checkShootObstacles = () => {
         return true;
       }
     });
-
     invaderProjectiles.some((projectile, index) => {
       if (obstacle.hit(projectile)) {
         invaderProjectiles.splice(index, 1);
@@ -440,19 +396,12 @@ const checkShootObstacles = () => {
 };
 
 const startInvaderShooting = () => {
-    // Limpa qualquer timer antigo para evitar que múltiplos rodem ao mesmo tempo
-    if (invaderShootInterval) {
-        clearInterval(invaderShootInterval);
-    }
+    if (invaderShootInterval) clearInterval(invaderShootInterval);
 
-    // Cria um novo timer com o tempo atualizado
     invaderShootInterval = setInterval(() => {
-        // Só atira se não for uma luta de chefe e o jogo estiver rodando
         if (!bossFightActive && currentState === GameState.PLAYING) {
             const invader = grid.getRandomInvader();
-            if (invader) {
-                invader.shoot(invaderProjectiles);
-            }
+            if (invader) invader.shoot(invaderProjectiles);
         }
     }, invaderShootTime);
 };
@@ -463,116 +412,68 @@ const spawnGrid = () => {
     gameData.level += 1;
 
     if (gameData.level > 0 && gameData.level % 3 === 0) {
-            // Define um limite para não ficar impossível (ex: mínimo de 250ms)
-            if (invaderShootTime > 250) {
-                invaderShootTime -= 100; // Diminui o tempo em 100ms
-                startInvaderShooting(); // Reinicia o timer com a nova velocidade
-                console.log(`Nível ${gameData.level}! Frequência de tiro aumentada. Intervalo: ${invaderShootTime}ms`);
-            }
+        if (invaderShootTime > 250) {
+            invaderShootTime -= 100; 
+            startInvaderShooting(); 
         }
-
-    if (gameData.level > 0 && gameData.level % 3 === 0) {
-            grid.invadersVelocity += 0.5; // Adiciona 0.5 à velocidade atual
-        }
-
-  if (gameData.level > 0 && gameData.level % 5 === 0) {
-            let bossHealth; // 1. Declara uma variável para a vida do chefe
-
-            // 2. Verifica se o nível é um múltiplo de 10
-            if (gameData.level % 10 === 0) {
-                bossHealth = 1000; // Níveis 10, 20, 30... chefe tem 1000 de vida
-            } else {
-                bossHealth = 500; // Níveis 5, 15, 25... chefe tem 500 de vida
-            }
-
-            bossFightActive = true;
-            // 3. Passa a vida calculada ao criar o novo chefe
-            boss = new Boss(canvas.width, canvas.height, bossHealth);
-
-        } else {
-            // Lógica para níveis normais (continua a mesma)
-            grid.rows = Math.round(Math.random() * 4 + 1);
-            grid.cols = Math.round(Math.random() * 4 + 1);
-            grid.restart();
-  };
-}
-};
-
-// [ALTERADO] Função gameOver agora usa a nova lógica e paleta do jogador
-const gameOver = () => {
-    // Primeiro, altera o estado do jogo e do jogador
-    player.alive = false;
-    currentState = GameState.GAME_OVER;
-   
-    if (pauseButton) pauseButton.style.display = "none";
-
-    // Em vez de 'append', nós ADICIONAMOS a classe '.show'
-    if (gameOverScreen) {
-        gameOverScreen.classList.add('show');
     }
 
-    // Depois, cria o efeito visual da morte
+    if (gameData.level > 0 && gameData.level % 3 === 0) {
+        grid.invadersVelocity += 0.5; 
+    }
+
+    if (gameData.level > 0 && gameData.level % 5 === 0) {
+        const bossHealth = (gameData.level % 10 === 0) ? 1000 : 500;
+        bossFightActive = true;
+        boss = new Boss(canvas.width, canvas.height, bossHealth);
+    } else {
+        grid.rows = Math.round(Math.random() * 4 + 1);
+        grid.cols = Math.round(Math.random() * 4 + 1);
+        grid.restart();
+    }
+  }
+};
+
+const gameOver = () => {
+    player.alive = false;
+    currentState = GameState.GAME_OVER;
+    if (pauseButton) pauseButton.style.display = "none";
+    if (gameOverScreen) gameOverScreen.classList.add('show');
     createExplosionEffect(player, PLAYER_DEATH_PARTICLES);
 };
 
-// [NOVA FUNÇÃO PARA RESETAR O JOGO]
 const resetGame = () => {
-    // Reseta o jogador
     player.restart(canvas.width, canvas.height);
-    
     if (pauseButton) pauseButton.style.display = "none";
 
-    // Esconde as UIs de jogo
     killsUi.style.display = "none";
     scoreUi.style.display = "none";
 
-    // Reseta a grade de inimigos
     grid.restart();
     grid.invadersVelocity = 1;
-
-    // Limpa o chefe e a luta
     boss = null; 
     bossFightActive = false;
-
-    // Limpa todos os projéteis e partículas da tela
     invaderProjectiles.length = 0; 
     playerProjectiles.length = 0;
     particles.length = 0;
-
-    // Reseta os dados do jogo
     gameData.score = 0;
     gameData.level = 1;
     gameData.invadersKilled = 0;
     gameData.bossesKilled = 0;
-
-    // Reseta a velocidade de tiro
     invaderShootTime = 1000;
     
-    // Para qualquer timer de tiro que estiver rodando
-    if (invaderShootInterval) {
-        clearInterval(invaderShootInterval);
-    }
-
-// Para e reseta a música de fundo
+    if (invaderShootInterval) clearInterval(invaderShootInterval);
     if (bgm) {
         bgm.pause();
-        bgm.currentTime = 0; // Volta para o começo
+        bgm.currentTime = 0; 
     }
-
-    // Esconde a tela de Game Over
-    if (gameOverScreen) {
-        gameOverScreen.classList.remove('show');
-    }
+    if (gameOverScreen) gameOverScreen.classList.remove('show');
 };
 
-// [NOVO] Função que RODA A LÓGICA DO JOGO
 const updateGame = () => {
-  if (!player.alive) {
-   gameOver();
-  }
+  if (!player.alive) gameOver();
 
   showGameData();
-
   drawParticles();
   drawProjectiles();
   drawObstacles();
@@ -582,7 +483,6 @@ const updateGame = () => {
 
   clearProjectiles();
   clearParticles();
-
   checkShootPlayer();
   checkShootObstacles();
   
@@ -593,7 +493,7 @@ const updateGame = () => {
     checkShootBoss();
     drawBossHealthBar(ctx);
    } else if (boss) {
-         createExplosionEffect(boss, BOSS_DEATH_PARTICLES);
+    createExplosionEffect(boss, BOSS_DEATH_PARTICLES);
     bossFightActive = false;
     boss = null;
     incrementScore(1000);
@@ -634,28 +534,20 @@ const updateGame = () => {
 const gameLoop = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-// atualiza timers de cada poder
-for (const type in activePowers) {
-  if (activePowers[type] !== null) {
-    activePowers[type] -= 1 / 60;
-    if (activePowers[type] <= 0) {
-      deactivatePower(type);
+  for (const type in activePowers) {
+    if (activePowers[type] !== null) {
+      activePowers[type] -= 1 / 60;
+      if (activePowers[type] <= 0) deactivatePower(type);
     }
   }
-}
 
   if (currentState === GameState.PLAYING) {
-   if (!player.alive) {
-        deactivateAllPowers(); // remove todos os efeitos
-
-      gameOver();
+    if (!player.alive) {
+        deactivateAllPowers(); 
+        gameOver();
     }
-
-    // 1. Se estiver jogando, roda a lógica de atualização
     updateGame();
-  
   } else if (currentState === GameState.PAUSED) {
-    // 2. Se estiver pausado, SÓ desenha as coisas (sem atualizar)
     drawParticles();
     drawProjectiles();
     drawObstacles();
@@ -667,110 +559,76 @@ for (const type in activePowers) {
     } else {
       grid.draw(ctx);
     }
-  
   } else if (currentState === GameState.GAME_OVER) {
-    // 3. Lógica de Game Over (continua a mesma)
     drawParticles();
     drawProjectiles();
     drawObstacles();
     grid.draw(ctx);
-}
+  }
 
-   // atualiza e desenha poderes
   powers.forEach((power, index) => {
     power.update();
     power.draw(ctx);
-
-    // verificar se o jogador pegou o poder
     if (power.collectedBy(player)) {
       activatePower(power.type);
       powers.splice(index, 1);
     }
-
   });
 
-const powersBarContainer = document.getElementById("powers-bar-container");
+  const powersBarContainer = document.getElementById("powers-bar-container");
+  powersBarContainer.innerHTML = "";
+  const powerColors = { shield: "#3498db", double_shot: "#8e44ad", speed: "#f1c40f" };
 
-// Limpa barras antigas
-powersBarContainer.innerHTML = "";
-
-// Define cores por poder
-const powerColors = {
-    shield: "#3498db",       // azul
-    double_shot: "#8e44ad",   // roxo
-    speed: "#f1c40f"          // amarelo
-};
-
-// Cria barra para cada poder ativo
-for (const type in activePowers) {
+  for (const type in activePowers) {
     if (activePowers[type] !== null) {
         const wrapper = document.createElement("div");
         wrapper.classList.add("power-bar-wrapper");
-
         const nameDiv = document.createElement("div");
         nameDiv.classList.add("power-bar-name");
         nameDiv.textContent = type.toUpperCase();
-
         const barDiv = document.createElement("div");
         barDiv.classList.add("power-bar");
-
         const innerDiv = document.createElement("div");
         innerDiv.classList.add("power-bar-inner");
-
-        // Cor da barra baseada no tipo de poder
-        innerDiv.style.backgroundColor = powerColors[type] || "#ffff00"; // amarelo default
-        // Largura proporcional ao tempo restante
-        const percentage = Math.max(0, activePowers[type] / 10 * 100); // ajuste 10 para duração do poder
+        innerDiv.style.backgroundColor = powerColors[type] || "#ffff00"; 
+        const percentage = Math.max(0, activePowers[type] / 10 * 100); 
         innerDiv.style.width = percentage + "%";
-
         barDiv.appendChild(innerDiv);
         wrapper.appendChild(nameDiv);
         wrapper.appendChild(barDiv);
         powersBarContainer.appendChild(wrapper);
     }
-}
-  
-  // O loop continua rodando, não importa o estado
+  }
   requestAnimationFrame(gameLoop); 
 };
 
 const pauseGame = () => {
-  // Só pausa se estiver jogando
   if (currentState !== GameState.PLAYING) return; 
-
   currentState = GameState.PAUSED;
   pauseScreen.classList.add("show");
-  clearInterval(invaderShootInterval); // PARA o timer de tiro
-  if (bgm) bgm.pause(); // Pausa a música
+  clearInterval(invaderShootInterval); 
+  if (bgm) bgm.pause(); 
 };
 
 const resumeGame = () => {
-  // Só continua se estiver pausado
   if (currentState !== GameState.PAUSED) return; 
-
   currentState = GameState.PLAYING;
   pauseScreen.classList.remove("show");
-  startInvaderShooting(); // REINICIA o timer de tiro
-  if (bgm) bgm.play(); // Volta a música
+  startInvaderShooting(); 
+  if (bgm) bgm.play(); 
 };
 
 const updateVolumeDisplays = (musicVal, fxVal) => {
-  // Atualiza os sliders
   musicVolumeSlider.value = musicVal;
   pauseMusicVolumeSlider.value = musicVal;
-  
   fxVolumeSlider.value = fxVal;
   pauseFxVolumeSlider.value = fxVal;
-
-  // Atualiza os labels (%)
   musicVolumeLabel.textContent = `${musicVal}%`;
   pauseMusicVolumeLabel.textContent = `${musicVal}%`;
-  
   fxVolumeLabel.textContent = `${fxVal}%`;
   pauseFxVolumeLabel.textContent = `${fxVal}%`;
 };
 
-// 2. Funções "Handler" que aplicam a lógica
 const handleMusicVolumeChange = (value) => {
   musicVolume = value / 100;
   if (bgm) bgm.volume = musicVolume;
@@ -786,41 +644,31 @@ const handleFxVolumeChange = (value) => {
 const handleResetSettings = () => {
   musicVolume = DEFAULT_MUSIC_VOLUME;
   fxVolume = DEFAULT_FX_VOLUME;
-  
   if (bgm) bgm.volume = musicVolume;
   soundEffects.setVolume(fxVolume);
-  
   updateVolumeDisplays(DEFAULT_MUSIC_VOLUME * 100, DEFAULT_FX_VOLUME * 100);
 };
 
-// 3. Adiciona os listeners para os DOIS menus
 musicVolumeSlider.addEventListener("input", (e) => handleMusicVolumeChange(e.target.value));
 pauseMusicVolumeSlider.addEventListener("input", (e) => handleMusicVolumeChange(e.target.value));
-
 fxVolumeSlider.addEventListener("input", (e) => handleFxVolumeChange(e.target.value));
 pauseFxVolumeSlider.addEventListener("input", (e) => handleFxVolumeChange(e.target.value));
-
 resetSettingsBtn.addEventListener("click", handleResetSettings);
 pauseResetSettingsBtn.addEventListener("click", handleResetSettings);
-
-// 4. Define o valor inicial dos sliders da pausa (senão eles começam em 0)
 updateVolumeDisplays(musicVolume * 100, fxVolume * 100);
 
 addEventListener ("keyup", (event) => {
   const key = event.key.toLowerCase();  
-
   if (key === "a") keys.left.pressed = false;
-if (key === "d") keys.right.pressed = false;
-
-if (key === "enter" || key === ' ') {
-keys.shoot.pressed = false;
-keys.shoot.released = true; }
+  if (key === "d") keys.right.pressed = false;
+  if (key === "enter" || key === ' ') {
+    keys.shoot.pressed = false;
+    keys.shoot.released = true; 
+  }
 });
 
 addEventListener("mousedown", (event) => {
-    if (event.button === 0) {
-        keys.shoot.pressed = true;
-    }
+    if (event.button === 0) keys.shoot.pressed = true;
 });
 
 addEventListener("mouseup", (event) => {
@@ -830,92 +678,85 @@ addEventListener("mouseup", (event) => {
     }
 });
 
+// ----------------------------------------------------
+// LÓGICA DE INTERAÇÃO DE TELAS E BOTÕES
+// ----------------------------------------------------
+
+// 1. Botão Play (Tela Principal) -> Abre Seleção de Skin
 buttonPlay.addEventListener("click", () => {
-startScreen.style.display = "none";
-scoreUi.style.display = "block";
-killsUi.style.display = "flex";
-
-if (pauseButton) pauseButton.style.display = "flex";
-
-currentState = GameState.PLAYING;
-startInvaderShooting();
-
-// Inicia a música de fundo
-    if (bgm) {
-        bgm.volume = musicVolume; // Define o volume (0.0 = mudo, 1.0 = máximo)
-        bgm.play();
-    }
+    startScreen.style.display = "none"; 
+    skinSelectionScreen.classList.add("show"); 
 });
 
-// 1. Botão "Opções" (CORRIGIDO)
+// 2. Botões de Seleção de Skin -> Iniciam o Jogo
+skinButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        const selectedSkin = btn.getAttribute("data-skin"); // Ex: "player", "player2", "player3"
+
+        // Atualiza a imagem usando o novo método da classe Player
+        const newPath = `src/assets/images/${selectedSkin}.png`;
+        player.updateSkin(newPath);
+
+        // Inicia o jogo
+        skinSelectionScreen.classList.remove("show");
+        scoreUi.style.display = "block";
+        killsUi.style.display = "flex";
+
+        if (pauseButton) pauseButton.style.display = "flex";
+
+        currentState = GameState.PLAYING;
+        startInvaderShooting();
+
+        if (bgm) {
+            bgm.volume = musicVolume; 
+            bgm.play();
+        }
+    });
+});
+
 optionsBtn.addEventListener("click", () => {
-  startScreen.style.display = "none"; // Esconde a tela inicial
-  settingsScreen.classList.add("show"); // <-- MUDANÇA AQUI
+  startScreen.style.display = "none"; 
+  settingsScreen.classList.add("show"); 
 });
 
-// 2. Botão "Instruções" (CORRIGIDO)
 instructionsBtn.addEventListener("click", () => {
-  startScreen.style.display = "none";   // Esconde a tela inicial
-  instructionsScreen.classList.add("show"); // <-- MUDANÇA AQUI
+  startScreen.style.display = "none";   
+  instructionsScreen.classList.add("show"); 
 });
 
-// 3. Botões de "Voltar" (e agora "Exit")
 backToStartButtons.forEach(button => {
     button.addEventListener("click", () => {
-        // 1. Sempre mostra a tela inicial
         startScreen.style.display = "flex"; 
 
-        // 2. Verifica se o botão estava num menu (Opções/Instruções)
         const parentMenu = button.closest(".menu-screen");
-        if (parentMenu) {
-            parentMenu.classList.remove("show");
-        }
+        if (parentMenu) parentMenu.classList.remove("show");
 
-        // 3. (NOVO) Verifica se o botão estava na tela de Game Over
         const parentGameOver = button.closest(".game-over");
         if (parentGameOver) {
-            // Chama o reset para limpar o jogo
             resetGame(); 
-            // Define o estado do jogo como "menu inicial"
             currentState = GameState.START; 
         }
     });
 });
 
-// [ATUALIZADO]
 buttonRestart.addEventListener("click", () => {
-    // 1. Chama a nova função de reset (que faz toda a limpeza)
-
     deactivateAllPowers(); 
-
     resetGame(); 
-
-    // 2. Inicia o jogo novamente
     currentState = GameState.PLAYING;
     killsUi.style.display = "flex";
     scoreUi.style.display = "block"; 
-
     if (pauseButton) pauseButton.style.display = "flex";
-
     startInvaderShooting();
     if (bgm) bgm.play();
 });
 
 addEventListener ("keydown", (event) => {
   const key = event.key.toLowerCase();
-
-  // Tecla de Pausa
   if (key === "escape") {
-    if (currentState === GameState.PLAYING) {
-      pauseGame();
-    } else if (currentState === GameState.PAUSED) {
-      resumeGame();
-    }
+    if (currentState === GameState.PLAYING) pauseGame();
+    else if (currentState === GameState.PAUSED) resumeGame();
   }
-
-  // Não deixa o jogador se mover se o jogo não estiver rodando
   if (currentState !== GameState.PLAYING) return; 
-
   if (key === "a") keys.left.pressed = true;
   if (key === "d") keys.right.pressed = true;
   if (key === "enter" || key === ' ') keys.shoot.pressed = true;
@@ -923,34 +764,26 @@ addEventListener ("keydown", (event) => {
 
 buttonResume.addEventListener("click", resumeGame);
 
-// 2. Botão "Restart" (dentro da pausa)
 buttonPauseRestart.addEventListener("click", () => {
-  pauseScreen.classList.remove("show"); // Esconde o menu de pausa
-  resetGame(); // Reseta o jogo
-  
-  // Reinicia o jogo (igual ao outro botão Restart)
+  pauseScreen.classList.remove("show"); 
+  resetGame(); 
   currentState = GameState.PLAYING;
   killsUi.style.display = "flex";
   scoreUi.style.display = "block"; 
-
   if (pauseButton) pauseButton.style.display = "flex";
-
   startInvaderShooting();
-  if (bgm) bgm.play(); // Toca a música
+  if (bgm) bgm.play(); 
 });
 
-// 3. Botão "Sair" (dentro da pausa)
 buttonPauseQuit.addEventListener("click", () => {
-  pauseScreen.classList.remove("show"); // Esconde o menu de pausa
-  resetGame(); // Reseta o jogo
+  pauseScreen.classList.remove("show"); 
+  resetGame(); 
   currentState = GameState.START;
-  startScreen.style.display = "flex"; // Mostra o menu inicial
+  startScreen.style.display = "flex"; 
 });
 
 pauseButton.addEventListener("click", () => {
-    if (currentState === GameState.PLAYING) {
-        pauseGame();
-    }
+    if (currentState === GameState.PLAYING) pauseGame();
 });
 
 iniciarFundo();

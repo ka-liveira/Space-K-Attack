@@ -81,18 +81,22 @@ class Boss {
         // 1. Movimento Horizontal (Patrulha)
         this.position.x += this.velocity.x;
 
-        // Inverte a direção se atingir as bordas da tela
-        if (this.position.x <= 0 || this.position.x + this.width >= this.canvasWidth) {
-            this.velocity.x *= -1; // Inverte a direção
-        }
+        // Lógica de Movimento em Ciclo:
+        // Direita -> Desce | Esquerda -> Sobe
 
-        // Movimento especial quando raivoso
-        if (this.enraged) {
-            // Pequeno mergulho aleatório (opcional)
-            if (Math.random() < 0.01) {
-                this.position.y += 50;
-                setTimeout(() => { this.position.y -= 50; }, 500);
-            }
+        const verticalStep = 80; // Tamanho da "linha" que ele sobe/desce
+
+        // Borda Direita
+        if (this.position.x + this.width >= this.canvasWidth) {
+            this.velocity.x = -Math.abs(this.velocity.x); // Força direção para esquerda
+            this.position.x = this.canvasWidth - this.width; // Corrige para não ficar preso fora da tela
+            this.position.y += verticalStep; // Desce uma linha
+        }
+        // Borda Esquerda
+        else if (this.position.x <= 0) {
+            this.velocity.x = Math.abs(this.velocity.x); // Força direção para direita
+            this.position.x = 0; // Corrige para não ficar preso fora da tela
+            this.position.y -= verticalStep; // Sobe uma linha (volta à posição original)
         }
 
         // 2. Lógica de Ataque
@@ -176,8 +180,9 @@ class Boss {
 
     enterRageMode() {
         this.enraged = true;
-        this.velocity.x *= 1.5;   // Fica mais rápido
+        this.velocity.x *= 1.5;   // Fica mais rápido horizontalmente
         this.attackCooldown /= 2; // Atira 2x mais rápido
+        // Não alteramos position.x ou position.y aqui, garantindo que não haja spawn/teleporte.
     }
 
     hit(projectile) {
