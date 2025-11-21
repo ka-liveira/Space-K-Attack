@@ -535,6 +535,8 @@ const gameOver = () => {
 };
 
 const resetGame = () => {
+    deactivateAllPowers();
+
     player.restart(canvas.width, canvas.height);
     if (pauseButton) pauseButton.style.display = "none";
 

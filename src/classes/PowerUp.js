@@ -75,4 +75,4 @@ class PowerUp {
     }
 }
 
-export default PowerUp;
+export default PowerUp;
