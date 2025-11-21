@@ -11,21 +11,6 @@ A cada 10 levels vem um MEGA-BOSS que fica FURIOSO quando perde 50% da vida (e a
 
 Com pixel art caprichado, cheio de detalhes fofos, efeitos sonoros que grudam na cabeça e aquela sensação viciante de "só mais um level"... até você perceber que já enfrentou um exército INTEIRO de roedores espaciais e já é 3 da manhã. Ops! 🌙
 
-### Características
-- 🐱 **Gato Galáctico Protagonista** - Porque heróis espaciais felinos são tudo!
-- 🎨 **Pixel Art Caprichado** - Cada detalhe desenhado com amor (e pixels)
-- 🐭 **Roedores Intergalácticos Aleatórios** - Nunca sabem quantos virão ou de onde
-- ⚡ **Dificuldade Progressiva** - Cada level fica mais rápido e desafiador
-- 👾 **Chefões Épicos** - Boss a cada 5 levels e Mega-Boss a cada 10 levels
-- 😡 **Modo Furioso dos Mega-Boss** - Ficam loucos ao chegarem em 50% de vida
-- 💊 **Sistema de Power-Ups**:
-  - ❤️ **Vida Extra** - Roedores dropam vida ao serem derrotados
-  - 🚀 **Velocidade** - Movimente-se mais rápido pelo cosmos
-  - 🛡️ **Proteção** - Escudo temporário contra ataques
-  - 🔫 **Disparos Duplos** - Dobre seu poder de fogo!
-- 🔊 **Efeitos Sonoros Charmosos** - Barulhinhos que vão grudar na sua cabeça
-- 🎯 **"Só Mais Um Level"** - Gameplay viciante que te faz perder a noção do tempo
-
 
 ## Tecnologias Utilizadas
 - **HTML5** - Estrutura do jogo
@@ -65,7 +50,7 @@ Seu objetivo é sobreviver o máximo de levels possível eliminando ondas de roe
 - **Quanto mais longe você chegar**, maior sua pontuação! 
 
 
-## 🙏 Agradecimentos
+## Agradecimentos
 - [Tutorial de Game Dev](https://www.youtube.com/watch?v=RZ3D39UzqZs&t=2196s) - Por ensinar a criar o jogo do zero
 - Toda a comunidade de game dev indie por inspiração e suporte! 
 
