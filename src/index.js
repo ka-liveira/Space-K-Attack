@@ -79,7 +79,7 @@ let intervaloDoFundo;
 let bgAtivo = 1; 
 let indiceFundoAtual = 0;
 
-// Dados das bandeiras para atualizar o botão principal
+// Dados das bandeiras
 const FLAG_DATA = {
     'pt': { src: "https://flagcdn.com/w40/br.png", label: "PT" },
     'en': { src: "https://flagcdn.com/w40/us.png", label: "EN" },
@@ -88,33 +88,27 @@ const FLAG_DATA = {
 
 // --- LÓGICA DO MENU CUSTOMIZADO ---
 
-// Abre e fecha o menu
 window.toggleLangMenu = () => {
     if (langOptionsList) {
         langOptionsList.classList.toggle("open");
     }
 };
 
-// Chamado ao clicar em uma opção
 window.changeGameLanguage = (lang) => {
     setLanguage(lang);
     
-    // Atualiza visual do botão principal com a bandeira correta
     if (FLAG_DATA[lang]) {
         if(currentFlagImg) currentFlagImg.src = FLAG_DATA[lang].src;
         if(currentLangText) currentLangText.innerText = FLAG_DATA[lang].label;
     }
 
-    // Fecha o menu após selecionar
     if (langOptionsList) {
         langOptionsList.classList.remove("open");
     }
 };
 
-// Fecha o menu se clicar fora dele (Melhoria de UX)
 window.addEventListener('click', (e) => {
     const container = document.getElementById('language-custom-menu');
-    // Se o clique não foi dentro do container do menu, fecha a lista
     if (container && !container.contains(e.target)) {
         if (langOptionsList) langOptionsList.classList.remove("open");
     }
@@ -123,19 +117,16 @@ window.addEventListener('click', (e) => {
 function drawScore() {
     ctx.fillStyle = 'white';
     ctx.font = '20px Arial';
-    // Em vez de escrever "Pontuação: ", use t('SCORE')
     ctx.fillText(`${t('SCORE')}: ${score}`, 10, 30);
 }
 
 function drawGameOver() {
     ctx.fillStyle = 'red';
     ctx.font = '50px Arial';
-    // Usa a chave 'GAME_OVER'
     ctx.fillText(t('GAME_OVER'), canvas.width/2 - 150, canvas.height/2);
     
     ctx.fillStyle = 'white';
     ctx.font = '20px Arial';
-    // Usa a chave 'RESTART'
     ctx.fillText(t('RESTART'), canvas.width/2 - 120, canvas.height/2 + 50);
 }
 
@@ -170,10 +161,41 @@ function iniciarFundo() {
 const canvas = document.querySelector("canvas"); 
 const ctx = canvas.getContext("2d"); 
 
-canvas.width = innerWidth; 
-canvas.height = innerHeight; 
+// Inicia com o tamanho atual
+canvas.width = window.innerWidth; 
+canvas.height = window.innerHeight; 
 
 ctx.imageSmoothingEnabled = false; 
+
+// --- SISTEMA DE REDIMENSIONAMENTO ROBUSTO ---
+
+function handleResize() {
+    // 1. Atualiza o tamanho do canvas
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.imageSmoothingEnabled = false;
+
+    // 2. Avisa o Jogador (se existir) para se ajustar
+    if (player && typeof player.resize === 'function') {
+        player.resize(canvas.width, canvas.height);
+    }
+
+    // 3. Avisa o Chefe (se existir)
+    if (boss && typeof boss.resize === 'function') {
+        boss.resize(canvas.width, canvas.height);
+    }
+
+    // 4. Avisa os Inimigos (Grid)
+    if (grid && typeof grid.resize === 'function') {
+        grid.resize(canvas.width, canvas.height);
+    }
+
+    // 5. Reposiciona os obstáculos
+    obstacles.length = 0;
+    InitObstacles();
+}
+
+window.addEventListener('resize', handleResize);
 
 let currentState = GameState.START;
 
@@ -602,6 +624,13 @@ const updateGame = () => {
 };
 
 const gameLoop = () => {
+  // [CORREÇÃO FINAL] Verificação automática a cada quadro
+  // Se a largura/altura da janela for diferente do canvas, redimensiona na hora.
+  // Isso corrige o atraso do F11 sem precisar de F5.
+  if (canvas.width !== window.innerWidth || canvas.height !== window.innerHeight) {
+      handleResize();
+  }
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   for (const type in activePowers) {

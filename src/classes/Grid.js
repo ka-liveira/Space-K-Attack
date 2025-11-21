@@ -81,6 +81,13 @@ class Grid {
         }
     }
 }
+
+    // [ADICIONAR ESTE MÉTODO NO FINAL DA CLASSE]
+    resize(width, height) {
+        this.canvasWidth = width;
+        this.canvasHeight = height;
+    }
+
 }
 
 export default Grid;

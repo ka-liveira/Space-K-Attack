@@ -139,7 +139,19 @@ class Player {
             x: canvasWidth / 2 - this.width / 2,
             y: canvasHeight - this.height - 30
         };
-        // Obs: Não resetamos a imagem aqui para manter a skin escolhida
+    }
+
+    updateSkin(newSrc) {
+        this.image.src = newSrc;
+    }
+
+    resize(width, height) {
+        this.canvasWidth = width;
+        this.canvasHeight = height;
+        // Garante que o player não fique fora da tela se ela diminuir
+        if (this.position.x + this.width > this.canvasWidth) {
+            this.position.x = this.canvasWidth - this.width;
+        }
     }
 }
 

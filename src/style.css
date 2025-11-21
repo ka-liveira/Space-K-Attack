@@ -8,9 +8,11 @@
 }
 
 body {
-    overflow: hidden; 
+    overflow: hidden; /* Remove barras de rolagem */
     color: white;
-    background-color: #000;
+    background-color: #000; /* Fundo preto */
+    margin: 0;
+    padding: 0;
 }
 
 .background-fader {
@@ -29,9 +31,13 @@ body {
 
 canvas {
     background-color: transparent; 
+    display: block; /* Remove espaços extras */
     position: absolute;
     top: 0;
     left: 0;
+    /* [CORREÇÃO] Garante que o canvas ocupe a tela inteira sempre */
+    width: 100vw;
+    height: 100vh;
     z-index: -1;
 }
 
@@ -103,7 +109,7 @@ canvas {
     flex-direction: column;
     gap: 15px; 
     margin-top: 120px;
-    width: 200px; 
+    width: 240px; 
 }
 
 .main-menu button {
@@ -154,16 +160,19 @@ canvas {
 }
 
 .menu-screen > div h1 {
-    margin-top: 10px; 
+     margin-top: 50px; /* Aumentei bastante para descer a frase */
+    margin-bottom: 20px;
+    text-align: center; /* Garante centralização horizontal */
+    width: 100%; /* Ocupa largura total para centralizar corretamente */
 }
 
 /* --- SELEÇÃO DE SKIN --- */
 
 .skins-container {
     display: flex;
-    gap: 30px;
+    gap: 1s00px;
     justify-content: center;
-    margin: 40px 0;
+    margin: 50px 0;
 }
 
 .skin-btn {
@@ -173,7 +182,7 @@ canvas {
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(255, 255, 255, 0.3);
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 15px;
     transition: all 0.3s ease;
     cursor: pointer;
 }
@@ -186,15 +195,15 @@ canvas {
 }
 
 .skin-btn img {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     image-rendering: pixelated;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .skin-btn p {
     margin: 0;
-    font-size: 0.8rem; 
+    font-size: 1rem; 
     color: white;
 }
 
@@ -445,10 +454,10 @@ input[type="range"]::-moz-range-thumb {
   margin: 0;
 }
 
-/* --- [ATUALIZADO] BOTÃO DE PAUSA (SVG) --- */
+/* --- BOTÃO DE PAUSA (SVG) --- */
 
 #pause-button {
-  display: none; /* JS ativa isso quando joga */
+  display: none; 
   position: fixed; 
   top: 20px; 
   right: 20px; 
@@ -461,22 +470,20 @@ input[type="range"]::-moz-range-thumb {
   padding: 0; 
 }
 
-/* Removemos qualquer estilo antigo de 'img' e aplicamos ao 'svg' */
 #pause-button svg {
-  width: 35px;  /* Tamanho confortável */
+  width: 35px; 
   height: 35px;
-  filter: drop-shadow(2px 2px 2px black); /* Sombra para destacar do fundo */
+  filter: drop-shadow(2px 2px 2px black);
   transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-/* Efeito ao passar o mouse: Cresce e fica Neon */
 #pause-button:hover svg {
-  transform: scale(1.1); /* Aumenta 10% */
+  transform: scale(1.1);
 }
 
 #pause-button:hover svg path {
-  fill: #00ffff; /* Muda a cor interna para Ciano/Neon */
-  filter: drop-shadow(0 0 5px #00ffff); /* Brilho neon */
+  fill: #00ffff; 
+  filter: drop-shadow(0 0 5px #00ffff); 
   transition: fill 0.2s ease;
 }
 
@@ -587,94 +594,159 @@ input[type="range"]::-moz-range-thumb {
     transition: width 0.1s linear;
 }
 
-        /* Container principal no canto inferior direito */
-        .language-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            font-family: 'Arial', sans-serif;
-            /* [ALTERADO] Reduzi a largura e o tamanho da fonte */
-            width: 120px; 
-            font-size: 12px;
-            user-select: none; /* Evita selecionar texto ao clicar */
-        }
+/* --- MENU DE IDIOMA --- */
 
-        /* O botão que aparece sempre (idioma selecionado) */
-        .lang-selected {
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            /* [ALTERADO] Reduzi o espaçamento interno (padding) */
-            padding: 6px 10px;
-            border: 1px solid #444;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: background 0.3s;
-        }
+.language-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-family: 'Arial', sans-serif;
+    width: 120px; 
+    font-size: 12px;
+    user-select: none; 
+}
 
-        .lang-selected:hover {
-            background-color: black;
-            border-color: #888;
-        }
+.lang-selected {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 10px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.3s;
+}
 
-        /* A lista de opções (escondida por padrão) */
-        .lang-options {
-            display: none; /* Escondido inicialmente */
-            position: absolute;
-            bottom: 100%; /* Aparece ACIMA do botão */
-            left: 0;
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            border: 1px solid #444;
-            border-radius: 5px;
-            margin-bottom: 5px;
-            list-style: none;
-            padding: 0;
-        }
+.lang-selected:hover {
+    background-color: black;
+    border-color: #888;
+}
 
-        /* Classe para mostrar a lista quando clicar */
-        .lang-options.open {
-            display: block;
-        }
+.lang-options {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 1px solid #444;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    list-style: none;
+    padding: 0;
+}
 
-        /* Cada item da lista */
-        .lang-option {
-            /* [ALTERADO] Reduzi o espaçamento interno */
-            padding: 6px 10px;
-            display: flex;
-            align-items: center;
-            color: #ccc;
-            cursor: pointer;
-            border-bottom: 1px solid #333;
-        }
+.lang-options.open {
+    display: block;
+}
 
-        .lang-option:last-child {
-            border-bottom: none;
-        }
+.lang-option {
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    color: #ccc;
+    cursor: pointer;
+    border-bottom: 1px solid #333;
+}
 
-        .lang-option:hover {
-            background-color: #333;
-            color: white;
-        }
+.lang-option:last-child {
+    border-bottom: none;
+}
 
-        /* Estilo das imagens das bandeiras */
-        .flag-img {
-            /* [ALTERADO] Reduzi o tamanho da imagem */
-            width: 18px;
-            height: auto;
-            margin-right: 8px;
-            border-radius: 2px;
-            box-shadow: 0 0 2px rgba(0,0,0,0.5);
-        }
+.lang-option:hover {
+    background-color: #333;
+    color: white;
+}
 
-        /* Setinha animada */
-        .arrow {
-            font-size: 10px; /* [ALTERADO] Diminuí a seta um pouco */
-            transition: transform 0.3s;
-        }
-        .lang-options.open + .lang-selected .arrow {
-            transform: rotate(180deg);
-        }
+.flag-img {
+    width: 18px;
+    height: auto;
+    margin-right: 8px;
+    border-radius: 2px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+.arrow {
+    font-size: 10px;
+    transition: transform 0.3s;
+}
+
+.lang-options.open + .lang-selected .arrow {
+    transform: rotate(180deg);
+}
+
+/* --- RESPONSIVIDADE --- */
+
+@media (max-width: 768px) {
+    .score-ui, .kills-ui {
+        font-size: 0.8rem; 
+        padding: 5px;
+    }
+    
+    .kills-ui {
+        flex-direction: column; 
+        align-items: flex-end;
+        gap: 5px;
+    }
+
+    .screen h1 {
+        font-size: 2.5rem; 
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .main-menu, .settings-menu, .skins-container {
+        width: 90%;
+        max-width: 400px;
+    }
+
+    button {
+        padding: 12px 20px;
+        font-size: 1rem;
+        touch-action: manipulation; 
+    }
+
+    .skins-container {
+        gap: 10px;
+    }
+
+    .skin-btn img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .instructions-list {
+        max-height: 50vh;
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+
+    .language-container {
+        bottom: 10px;
+        right: 10px;
+        width: 110px;
+    }
+}
+
+@media (max-width: 480px) {
+    .screen h1 {
+        font-size: 1.8rem;
+    }
+
+    .main-menu button, 
+    .settings-buttons-container button {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .skins-container {
+        flex-wrap: wrap;
+    }
+
+    .score-ui {
+        font-size: 0.7rem;
+    }
+}

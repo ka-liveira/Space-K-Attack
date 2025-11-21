@@ -204,6 +204,11 @@ class Boss {
             projectile.position.x + projectile.width >= hitboxX
         );
     }
+
+      resize(newWidth, newHeight) {
+        this.canvasWidth = newWidth;
+        this.canvasHeight = newHeight;
+    }
 }
 
 export default Boss;
