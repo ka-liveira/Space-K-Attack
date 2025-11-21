@@ -10,8 +10,6 @@ A cada level, a coisa esquenta: os roedores aparecem em grupos aleatórios (às 
 
 A cada 5 levels aparece um Boss Roedor Intergaláctico pra te dar trabalho
 A cada 10 levels vem um MEGA-BOSS que fica FURIOSO quando perde 50% da vida (e aí meu amigo, segura o rabo!)
-
-Com pixel art caprichado, cheio de detalhes fofos, efeitos sonoros que grudam na cabeça e aquela sensação viciante de "só mais um level"... até você perceber que já enfrentou um exército INTEIRO de roedores espaciais e já é 3 da manhã. Ops! 🌙
 <br><br>
 
 ## Tecnologias Utilizadas
@@ -27,10 +25,10 @@ Com pixel art caprichado, cheio de detalhes fofos, efeitos sonoros que grudam na
 - **[Pixel Art Starfields](https://space-spheremaps.itch.io/pixelart-starfields)** - Background espacial
 <br><br>
 
-## 🕹️ Jogue Agora!
+## Jogue Agora!
 **[CLIQUE AQUI PARA JOGAR](https://ka-liveira.github.io/Space-K-Attack)**
 
-Não precisa instalar nada! Basta clicar no link acima e começar a detonar roedores intergalácticos diretamente no seu navegador! 
+Não precisa instalar nada! Basta clicar no link acima e começar a detonar roedores intergalácticos. 
 <br><br>
 
 ## Como Jogar
@@ -57,4 +55,4 @@ Seu objetivo é sobreviver o máximo de levels possível eliminando ondas de roe
 
 ## Agradecimentos
 - [Tutorial de Game Dev](https://www.youtube.com/watch?v=RZ3D39UzqZs&t=2196s) - Por ensinar a criar o jogo do zero
-- com ❤️ [Kassandra Oliveira](https://github.com/ka-liveira)
+com ❤️ [Kassandra Oliveira](https://github.com/ka-liveira)
