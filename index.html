@@ -23,7 +23,7 @@
         <span class="kills-boss">Boss: <span>0</span></span>
     </section>
 
-    <!-- [ALTERADO] Botão de Pausa agora usa SVG inline para máxima qualidade -->
+    <!-- Botão de Pausa -->
     <button id="pause-button" class="game-button">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10 4H6V20H10V4Z" fill="white"/>
@@ -47,7 +47,7 @@
     <!-- TELA: SELEÇÃO DE SKIN -->
     <section id="skin-selection-screen" class="screen menu-screen">
         <div>
-            <h1>Escolha seu Piloto</h1>
+            <h1>Escolha seu Jogador</h1>
             
             <div class="skins-container" style="display: flex; gap: 20px; justify-content: center; margin-bottom: 20px;">
                 <button class="skin-btn" data-skin="player" style="background: none; border: 2px solid white; padding: 10px; cursor: pointer;">
@@ -169,6 +169,31 @@
             </div>
         </div>
     </section>
+
+    <!-- [ALTERADO] Menu de Idioma Customizado com Imagens -->
+    <div class="language-container" id="language-custom-menu">
+        <!-- Lista de opções (fica em cima) -->
+        <ul class="lang-options" id="lang-options-list">
+            <li class="lang-option" onclick="window.changeGameLanguage('pt')">
+                <img src="https://flagcdn.com/w40/br.png" class="flag-img" alt="PT"> PT
+            </li>
+            <li class="lang-option" onclick="window.changeGameLanguage('en')">
+                <img src="https://flagcdn.com/w40/us.png" class="flag-img" alt="EN"> EN
+            </li>
+            <li class="lang-option" onclick="window.changeGameLanguage('es')">
+                <img src="https://flagcdn.com/w40/es.png" class="flag-img" alt="ES"> ES
+            </li>
+        </ul>
+
+        <!-- Botão selecionado (fica embaixo) -->
+        <div class="lang-selected" onclick="window.toggleLangMenu()">
+            <div style="display: flex; align-items: center;">
+                <img id="current-flag-img" src="https://flagcdn.com/w40/br.png" class="flag-img">
+                <span id="current-lang-text">PT</span>
+            </div>
+            <span class="arrow">▼</span>
+        </div>
+    </div>
 
     <audio id="bgm" src="src/assets/audios/music.mp3" loop></audio>
 

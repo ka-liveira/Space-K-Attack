@@ -8,6 +8,7 @@ import Obstacle from "./classes/Obstacle.js";
 import SoundEffects from "./classes/SoundEffects.js";
 import Boss from "./classes/Boss.js";
 import PowerUp from "./classes/PowerUp.js";
+import { t, setLanguage } from './utils/translations.js';
 
 import { PATH_BACKGROUND_IMAGE, PATH_BACKGROUND_IMAGE_2, PATH_BACKGROUND_IMAGE_3 } from "./utils/constants.js";
 
@@ -33,6 +34,12 @@ const instructionsScreen = document.querySelector("#instructions-screen");
 const optionsBtn = document.querySelector("#options-btn");
 const instructionsBtn = document.querySelector("#instructions-btn");
 const backToStartButtons = document.querySelectorAll(".button-back-to-start");
+
+// --- SELETOR DE IDIOMA (Menu Customizado) ---
+const languageContainer = document.querySelector(".language-container");
+const langOptionsList = document.getElementById("lang-options-list");
+const currentFlagImg = document.getElementById("current-flag-img");
+const currentLangText = document.getElementById("current-lang-text");
 
 // --- NOVA LÓGICA DE SELEÇÃO DE SKIN ---
 const skinSelectionScreen = document.querySelector("#skin-selection-screen");
@@ -71,6 +78,66 @@ const fundosAnimados = [
 let intervaloDoFundo;
 let bgAtivo = 1; 
 let indiceFundoAtual = 0;
+
+// Dados das bandeiras para atualizar o botão principal
+const FLAG_DATA = {
+    'pt': { src: "https://flagcdn.com/w40/br.png", label: "PT" },
+    'en': { src: "https://flagcdn.com/w40/us.png", label: "EN" },
+    'es': { src: "https://flagcdn.com/w40/es.png", label: "ES" }
+};
+
+// --- LÓGICA DO MENU CUSTOMIZADO ---
+
+// Abre e fecha o menu
+window.toggleLangMenu = () => {
+    if (langOptionsList) {
+        langOptionsList.classList.toggle("open");
+    }
+};
+
+// Chamado ao clicar em uma opção
+window.changeGameLanguage = (lang) => {
+    setLanguage(lang);
+    
+    // Atualiza visual do botão principal com a bandeira correta
+    if (FLAG_DATA[lang]) {
+        if(currentFlagImg) currentFlagImg.src = FLAG_DATA[lang].src;
+        if(currentLangText) currentLangText.innerText = FLAG_DATA[lang].label;
+    }
+
+    // Fecha o menu após selecionar
+    if (langOptionsList) {
+        langOptionsList.classList.remove("open");
+    }
+};
+
+// Fecha o menu se clicar fora dele (Melhoria de UX)
+window.addEventListener('click', (e) => {
+    const container = document.getElementById('language-custom-menu');
+    // Se o clique não foi dentro do container do menu, fecha a lista
+    if (container && !container.contains(e.target)) {
+        if (langOptionsList) langOptionsList.classList.remove("open");
+    }
+});
+
+function drawScore() {
+    ctx.fillStyle = 'white';
+    ctx.font = '20px Arial';
+    // Em vez de escrever "Pontuação: ", use t('SCORE')
+    ctx.fillText(`${t('SCORE')}: ${score}`, 10, 30);
+}
+
+function drawGameOver() {
+    ctx.fillStyle = 'red';
+    ctx.font = '50px Arial';
+    // Usa a chave 'GAME_OVER'
+    ctx.fillText(t('GAME_OVER'), canvas.width/2 - 150, canvas.height/2);
+    
+    ctx.fillStyle = 'white';
+    ctx.font = '20px Arial';
+    // Usa a chave 'RESTART'
+    ctx.fillText(t('RESTART'), canvas.width/2 - 120, canvas.height/2 + 50);
+}
 
 function precarregarImagens() {
     fundosAnimados.forEach(caminhoDaImagem => {
@@ -440,6 +507,9 @@ const gameOver = () => {
     if (pauseButton) pauseButton.style.display = "none";
     if (gameOverScreen) gameOverScreen.classList.add('show');
     createExplosionEffect(player, PLAYER_DEATH_PARTICLES);
+    
+    // [LÓGICA] Esconde as bandeiras se morrer
+    if (languageContainer) languageContainer.style.display = "none";
 };
 
 const resetGame = () => {
@@ -608,6 +678,9 @@ const pauseGame = () => {
   pauseScreen.classList.add("show");
   clearInterval(invaderShootInterval); 
   if (bgm) bgm.pause(); 
+  
+  // [LÓGICA] Esconde no Pause
+  if (languageContainer) languageContainer.style.display = "none";
 };
 
 const resumeGame = () => {
@@ -616,6 +689,9 @@ const resumeGame = () => {
   pauseScreen.classList.remove("show");
   startInvaderShooting(); 
   if (bgm) bgm.play(); 
+
+  // [LÓGICA] Mantém escondido ao voltar do pause
+  if (languageContainer) languageContainer.style.display = "none";
 };
 
 const updateVolumeDisplays = (musicVal, fxVal) => {
@@ -691,7 +767,7 @@ buttonPlay.addEventListener("click", () => {
 // 2. Botões de Seleção de Skin -> Iniciam o Jogo
 skinButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-        const selectedSkin = btn.getAttribute("data-skin"); // Ex: "player", "player2", "player3"
+        const selectedSkin = btn.getAttribute("data-skin"); 
 
         // Atualiza a imagem usando o novo método da classe Player
         const newPath = `src/assets/images/${selectedSkin}.png`;
@@ -711,6 +787,9 @@ skinButtons.forEach(btn => {
             bgm.volume = musicVolume; 
             bgm.play();
         }
+
+        // [LÓGICA] ESCONDE A BANDEIRA AO INICIAR
+        if (languageContainer) languageContainer.style.display = "none";
     });
 });
 
@@ -736,6 +815,9 @@ backToStartButtons.forEach(button => {
             resetGame(); 
             currentState = GameState.START; 
         }
+
+        // [LÓGICA] MOSTRA A BANDEIRA AO VOLTAR PARA A TELA INICIAL
+        if (languageContainer) languageContainer.style.display = "block";
     });
 });
 
@@ -748,6 +830,9 @@ buttonRestart.addEventListener("click", () => {
     if (pauseButton) pauseButton.style.display = "flex";
     startInvaderShooting();
     if (bgm) bgm.play();
+
+    // [LÓGICA] GARANTE QUE ESTÁ ESCONDIDA NO REINÍCIO
+    if (languageContainer) languageContainer.style.display = "none";
 });
 
 addEventListener ("keydown", (event) => {
@@ -773,6 +858,9 @@ buttonPauseRestart.addEventListener("click", () => {
   if (pauseButton) pauseButton.style.display = "flex";
   startInvaderShooting();
   if (bgm) bgm.play(); 
+  
+  // [LÓGICA] Esconde ao reiniciar pelo pause
+  if (languageContainer) languageContainer.style.display = "none";
 });
 
 buttonPauseQuit.addEventListener("click", () => {
@@ -780,6 +868,9 @@ buttonPauseQuit.addEventListener("click", () => {
   resetGame(); 
   currentState = GameState.START;
   startScreen.style.display = "flex"; 
+
+  // [LÓGICA] Mostra ao sair para o menu principal
+  if (languageContainer) languageContainer.style.display = "block";
 });
 
 pauseButton.addEventListener("click", () => {

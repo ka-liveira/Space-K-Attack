@@ -586,3 +586,95 @@ input[type="range"]::-moz-range-thumb {
     width: 100%;
     transition: width 0.1s linear;
 }
+
+        /* Container principal no canto inferior direito */
+        .language-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            font-family: 'Arial', sans-serif;
+            /* [ALTERADO] Reduzi a largura e o tamanho da fonte */
+            width: 120px; 
+            font-size: 12px;
+            user-select: none; /* Evita selecionar texto ao clicar */
+        }
+
+        /* O botão que aparece sempre (idioma selecionado) */
+        .lang-selected {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            /* [ALTERADO] Reduzi o espaçamento interno (padding) */
+            padding: 6px 10px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.3s;
+        }
+
+        .lang-selected:hover {
+            background-color: black;
+            border-color: #888;
+        }
+
+        /* A lista de opções (escondida por padrão) */
+        .lang-options {
+            display: none; /* Escondido inicialmente */
+            position: absolute;
+            bottom: 100%; /* Aparece ACIMA do botão */
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            border: 1px solid #444;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            list-style: none;
+            padding: 0;
+        }
+
+        /* Classe para mostrar a lista quando clicar */
+        .lang-options.open {
+            display: block;
+        }
+
+        /* Cada item da lista */
+        .lang-option {
+            /* [ALTERADO] Reduzi o espaçamento interno */
+            padding: 6px 10px;
+            display: flex;
+            align-items: center;
+            color: #ccc;
+            cursor: pointer;
+            border-bottom: 1px solid #333;
+        }
+
+        .lang-option:last-child {
+            border-bottom: none;
+        }
+
+        .lang-option:hover {
+            background-color: #333;
+            color: white;
+        }
+
+        /* Estilo das imagens das bandeiras */
+        .flag-img {
+            /* [ALTERADO] Reduzi o tamanho da imagem */
+            width: 18px;
+            height: auto;
+            margin-right: 8px;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0,0,0,0.5);
+        }
+
+        /* Setinha animada */
+        .arrow {
+            font-size: 10px; /* [ALTERADO] Diminuí a seta um pouco */
+            transition: transform 0.3s;
+        }
+        .lang-options.open + .lang-selected .arrow {
+            transform: rotate(180deg);
+        }
