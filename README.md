@@ -1,6 +1,4 @@
 # Space K-Attack 
-Um gato galáctico, um universo de pixel art e um MONTE de roedores intergalácticos pra detonar. Prepare-se para dizer "só mais um level" até o sol nascer!
-
 ![Gameplay](src/assets/gif/space.gif)
 
 ## Sobre o Projeto
