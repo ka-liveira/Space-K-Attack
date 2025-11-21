@@ -167,6 +167,72 @@ canvas.height = window.innerHeight;
 
 ctx.imageSmoothingEnabled = false; 
 
+// --- SISTEMA DE ANIMAÇÃO DA TELA INICIAL (Start Screen) ---
+const startStars = [];
+let startScreenTimer = 0;
+
+function initStartScreenAnimation() {
+    startStars.length = 0; // Limpa array antigo
+    // Cria 150 estrelas para garantir densidade
+    for (let i = 0; i < 150; i++) {
+        startStars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 2 + 1, // Estrelas um pouco maiores (1 a 3px)
+            speed: Math.random() * 2 + 0.5,
+            alpha: Math.random() * 0.5 + 0.5 // Brilho mínimo de 0.5
+        });
+    }
+}
+
+function drawStartScreenAnimation() {
+    // 1. Desenha estrelas (Chuva Espacial)
+    startStars.forEach(star => {
+        ctx.save();
+        ctx.globalAlpha = star.alpha;
+        ctx.fillStyle = "white";
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        // Movimento Vertical
+        star.y += star.speed;
+        
+        // Reset quando sai da tela (efeito infinito)
+        if (star.y > canvas.height) {
+            star.y = -10; // Começa logo acima da tela
+            star.x = Math.random() * canvas.width;
+        }
+    });
+
+    // 2. Desenha a Nave Flutuando
+    // Só desenha se o player existir e a imagem estiver carregada
+    if (player && player.image && player.image.complete) {
+        startScreenTimer++;
+        // Movimento suave de "boiar"
+        const hoverOffset = Math.sin(startScreenTimer * 0.05) * 15; 
+        
+        // Posição: Centralizado horizontalmente, um pouco para baixo verticalmente
+        const drawX = canvas.width / 2 - player.width / 2;
+        const drawY = (canvas.height / 2) + 80 + hoverOffset; // +80 para ficar abaixo do título/menu
+
+        ctx.drawImage(player.image, drawX, drawY, player.width, player.height);
+        
+        // Efeito visual de motor (fogo laranja)
+        ctx.fillStyle = `rgba(255, 165, 0, ${Math.abs(Math.sin(startScreenTimer * 0.1)) + 0.2})`;
+        ctx.beginPath();
+        // Triângulo invertido saindo da nave
+        ctx.moveTo(drawX + player.width / 2 - 10, drawY + player.height);
+        ctx.lineTo(drawX + player.width / 2 + 10, drawY + player.height);
+        ctx.lineTo(drawX + player.width / 2, drawY + player.height + 30 + Math.random() * 10);
+        ctx.fill();
+    }
+}
+
+// Inicializa as estrelas na primeira execução
+initStartScreenAnimation();
+
 // --- SISTEMA DE REDIMENSIONAMENTO ROBUSTO ---
 
 function handleResize() {

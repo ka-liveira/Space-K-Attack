@@ -1,204 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="src/style.css">
-    <title>Space Invaders</title>
+    <meta charset="UTF-8"> <!-- codificação de caracteres UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- responsividade mobile -->
+    <link rel="stylesheet" href="src/style.css"> <!-- importa folha de estilos -->
+    <title>Space Invaders</title> <!-- título da página -->
 </head>
 <body>
-    <div id="bg1" class="background-fader"></div>
-    <div id="bg2" class="background-fader"></div>
+    <!-- background animado com transição -->
+    <div id="bg1" class="background-fader"></div> <!-- camada de fundo 1 -->
+    <div id="bg2" class="background-fader"></div> <!-- camada de fundo 2 -->
 
+    <!-- UI de pontuação (exibida durante o jogo) -->
     <section class="score-ui">
         <div>
-            <span class="score">score: <span>0</span></span>
-            <span class="level">level: <span>1</span></span>
-            <span class="high">high: <span>0</span></span>
+            <span class="score">score: <span>0</span></span> <!-- pontuação atual -->
+            <span class="level">level: <span>1</span></span> <!-- nível atual -->
+            <span class="high">high: <span>0</span></span> <!-- maior pontuação -->
         </div>
     </section>
 
+    <!-- UI de abates (contador de mortes) -->
     <section class="kills-ui">
-        <span class="kills-invaders">Invasores: <span>0</span></span>
-        <span class="kills-boss">Boss: <span>0</span></span>
+        <span class="kills-invaders">Invasores: <span>0</span></span> <!-- total de invasores mortos -->
+        <span class="kills-boss">Boss: <span>0</span></span> <!-- total de bosses mortos -->
     </section>
 
-    <!-- Botão de Pausa -->
+    <!-- botão de pause (exibido durante o jogo) -->
     <button id="pause-button" class="game-button">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 4H6V20H10V4Z" fill="white"/>
-            <path d="M18 4H14V20H18V4Z" fill="white"/>
+            <path d="M10 4H6V20H10V4Z" fill="white"/> <!-- barra esquerda do ícone -->
+            <path d="M18 4H14V20H18V4Z" fill="white"/> <!-- barra direita do ícone -->
         </svg>
     </button>
 
-    <!-- TELA INICIAL -->
+    <!-- tela inicial (menu principal) -->
     <section class="start-screen screen">
         <div> 
-            <h1>Space K'Attack</h1>
+            <h1>Space K'Attack</h1> <!-- título do jogo -->
             <div class="main-menu">
-                <button class="button-play">Play</button>
-                <button id="options-btn">Opções</button> 
-                <button id="instructions-btn">Instruções</button>
+                <button class="button-play">Play</button> <!-- inicia seleção de personagem -->
+                <button id="options-btn">Opções</button> <!-- abre menu de configurações -->
+                <button id="instructions-btn">Instruções</button> <!-- abre tela de controles -->
             </div>
         </div>
-        <span>Kassandra Oliveira</span>
+        <span>Kassandra Oliveira</span> <!-- créditos do desenvolvedor -->
     </section>
 
-    <!-- TELA: SELEÇÃO DE SKIN -->
+    <!-- tela de seleção de personagem -->
     <section id="skin-selection-screen" class="screen menu-screen">
         <div>
-            <h1>Escolha seu Jogador</h1>
+            <h1>Escolha seu Jogador</h1> <!-- título da tela -->
             
             <div class="skins-container" style="display: flex; gap: 20px; justify-content: center; margin-bottom: 20px;">
+                <!-- botão do gato 1 -->
                 <button class="skin-btn" data-skin="player" style="background: none; border: 2px solid white; padding: 10px; cursor: pointer;">
-                    <img src="src/assets/images/player.png" alt="Gato 1" width="64" height="64">
-                    <p style="color: white; margin-top: 5px;">Gato 1</p>
+                    <img src="src/assets/images/player.png" alt="Gato 1" width="64" height="64"> <!-- sprite do personagem -->
+                    <p style="color: white; margin-top: 5px;">Gato 1</p> <!-- nome do personagem -->
                 </button>
 
+                <!-- botão do gato 2 -->
                 <button class="skin-btn" data-skin="player2" style="background: none; border: 2px solid white; padding: 10px; cursor: pointer;">
-                    <img src="src/assets/images/player2.png" alt="Gato 2" width="64" height="64">
-                    <p style="color: white; margin-top: 5px;">Gato 2</p>
+                    <img src="src/assets/images/player2.png" alt="Gato 2" width="64" height="64"> <!-- sprite do personagem -->
+                    <p style="color: white; margin-top: 5px;">Gato 2</p> <!-- nome do personagem -->
                 </button>
 
+                <!-- botão do gato 3 -->
                 <button class="skin-btn" data-skin="player3" style="background: none; border: 2px solid white; padding: 10px; cursor: pointer;">
-                    <img src="src/assets/images/player3.png" alt="Gato 3" width="64" height="64">
-                    <p style="color: white; margin-top: 5px;">Gato 3</p>
+                    <img src="src/assets/images/player3.png" alt="Gato 3" width="64" height="64"> <!-- sprite do personagem -->
+                    <p style="color: white; margin-top: 5px;">Gato 3</p> <!-- nome do personagem -->
                 </button>
             </div>
 
-            <button class="button-back-to-start">Voltar</button>
+            <button class="button-back-to-start">Voltar</button> <!-- volta ao menu principal -->
         </div>
     </section>
 
-    <!-- TELA DE OPÇÕES -->
+    <!-- tela de configurações -->
     <section id="settings-screen" class="screen menu-screen">
         <div>
-            <h1>Opções</h1>
+            <h1>Opções</h1> <!-- título da tela -->
             
             <div class="settings-menu">
+                <!-- controle de volume da música -->
                 <div class="setting-item">
-                    <label for="music-volume">Música: <span id="music-volume-label">10%</span></label>
-                    <input type="range" id="music-volume" min="0" max="100" value="10">
+                    <label for="music-volume">Música: <span id="music-volume-label">10%</span></label> <!-- label e valor atual -->
+                    <input type="range" id="music-volume" min="0" max="100" value="10"> <!-- slider de volume -->
                 </div>
                 
+                <!-- controle de volume dos efeitos sonoros -->
                 <div class="setting-item">
-                    <label for="fx-volume">Efeitos: <span id="fx-volume-label">75%</span></label>
-                    <input type="range" id="fx-volume" min="0" max="100" value="75">
+                    <label for="fx-volume">Efeitos: <span id="fx-volume-label">75%</span></label> <!-- label e valor atual -->
+                    <input type="range" id="fx-volume" min="0" max="100" value="75"> <!-- slider de volume -->
                 </div>
             </div>
             
             <div class="settings-buttons-container">
-                <button id="reset-settings-btn">Resetar</button>
-                <button class="button-back-to-start">Voltar</button>
+                <button id="reset-settings-btn">Resetar</button> <!-- restaura configurações padrão -->
+                <button class="button-back-to-start">Voltar</button> <!-- volta ao menu principal -->
             </div>
         </div>
     </section>
 
+    <!-- tela de instruções (controles do jogo) -->
     <section id="instructions-screen" class="screen menu-screen">
         <div>
-            <h1>Como Jogar</h1>
+            <h1>Como Jogar</h1> <!-- título da tela -->
                 
             <div class="instructions-list">
+                <!-- tecla A -->
                 <div class="control-group">
-                    <span class="key">A</span>
-                    <p class="action-text">Move para a esquerda</p>
+                    <span class="key">A</span> <!-- visual da tecla -->
+                    <p class="action-text">Move para a esquerda</p> <!-- descrição da ação -->
                 </div>
-
+                <!-- tecla D -->
                 <div class="control-group">
-                    <span class="key">D</span>
-                    <p class="action-text">Move para a direita</p>
+                    <span class="key">D</span> <!-- visual da tecla -->
+                    <p class="action-text">Move para a direita</p> <!-- descrição da ação -->
                 </div>
-
+                <!-- tecla Espaço -->
                 <div class="control-group">
-                    <span class="key">Espaço</span>
-                    <p class="action-text">Dispara</p>
+                    <span class="key">Espaço</span> <!-- visual da tecla -->
+                    <p class="action-text">Dispara</p> <!-- descrição da ação -->
                 </div>
-
+                <!-- tecla Enter -->
                 <div class="control-group">
-                    <span class="key">Enter</span>
-                    <p class="action-text">Dispara</p>
+                    <span class="key">Enter</span> <!-- visual da tecla -->
+                    <p class="action-text">Dispara</p> <!-- descrição da ação -->
                 </div>
-
+                <!-- clique do mouse -->
                 <div class="control-group">
-                    <span class="key">Click Esq. mouse</span>
-                    <p class="action-text">Dispara</p>
+                    <span class="key">Click Esq. mouse</span> <!-- visual da tecla -->
+                    <p class="action-text">Dispara</p> <!-- descrição da ação -->
                 </div>
-
+                <!-- tecla Esc -->
                 <div class="control-group">
-                    <span class="key">Esc</span>
-                    <p class="action-text">Pausa o Jogo</p>
+                    <span class="key">Esc</span> <!-- visual da tecla -->
+                    <p class="action-text">Pausa o Jogo</p> <!-- descrição da ação -->
                 </div>
             </div>
 
-            <button class="button-back-to-start">Voltar</button>
+            <button class="button-back-to-start">Voltar</button> <!-- volta ao menu principal -->
         </div>
     </section>
 
-    <canvas></canvas> 
+    <canvas></canvas> <!-- área de desenho do jogo -->
     
+    <!-- tela de game over -->
     <section class="game-over screen"> 
         <div>
-            <h1>Game Over</h1>
-            <button class="button-restart">Restart</button>
-            <button class="button-back-to-start">Exit</button>
+            <h1>Game Over</h1> <!-- título da tela -->
+            <button class="button-restart">Restart</button> <!-- reinicia o jogo -->
+            <button class="button-back-to-start">Exit</button> <!-- volta ao menu principal -->
         </div>
     </section>
 
+    <!-- tela de pause -->
     <section id="pause-screen" class="screen menu-screen">
         <div>
-            <h1>Pausado</h1>
+            <h1>Pausado</h1> <!-- título da tela -->
             
             <div class="settings-menu">
+                <!-- controle de volume da música (no pause) -->
                 <div class="setting-item">
-                    <label for="pause-music-volume">Música: <span id="pause-music-volume-label">10%</span></label>
-                    <input type="range" id="pause-music-volume" min="0" max="100" value="10">
+                    <label for="pause-music-volume">Música: <span id="pause-music-volume-label">10%</span></label> <!-- label e valor -->
+                    <input type="range" id="pause-music-volume" min="0" max="100" value="10"> <!-- slider de volume -->
                 </div>
+                <!-- controle de volume dos efeitos (no pause) -->
                 <div class="setting-item">
-                    <label for="pause-fx-volume">Efeitos: <span id="pause-fx-volume-label">50%</span></label>
-                    <input type="range" id="pause-fx-volume" min="0" max="100" value="50">
+                    <label for="pause-fx-volume">Efeitos: <span id="pause-fx-volume-label">50%</span></label> <!-- label e valor -->
+                    <input type="range" id="pause-fx-volume" min="0" max="100" value="50"> <!-- slider de volume -->
                 </div>
             </div>
             
             <div class="settings-buttons-container">
-                <button id="pause-reset-settings-btn">Resetar</button>
-
-                <button id="button-resume">Continuar</button> 
-                <button id="button-pause-restart" class="button-restart">Restart</button> 
-                
-                <button id="button-pause-quit" class="button-back-to-start">Sair</button>
+                <button id="pause-reset-settings-btn">Resetar</button> <!-- restaura configurações padrão -->
+                <button id="button-resume">Continuar</button> <!-- retoma o jogo -->
+                <button id="button-pause-restart" class="button-restart">Restart</button> <!-- reinicia o jogo -->
+                <button id="button-pause-quit" class="button-back-to-start">Sair</button> <!-- volta ao menu principal -->
             </div>
         </div>
     </section>
 
-    <!-- [ALTERADO] Menu de Idioma Customizado com Imagens -->
+    <!-- menu de seleção de idioma -->
     <div class="language-container" id="language-custom-menu">
-        <!-- Lista de opções (fica em cima) -->
-        <ul class="lang-options" id="lang-options-list">
+        <ul class="lang-options" id="lang-options-list"> <!-- lista de idiomas disponíveis -->
+            <!-- opção português -->
             <li class="lang-option" onclick="window.changeGameLanguage('pt')">
-                <img src="https://flagcdn.com/w40/br.png" class="flag-img" alt="PT"> PT
+                <img src="https://flagcdn.com/w40/br.png" class="flag-img" alt="PT"> PT <!-- bandeira e código -->
             </li>
+            <!-- opção inglês -->
             <li class="lang-option" onclick="window.changeGameLanguage('en')">
-                <img src="https://flagcdn.com/w40/us.png" class="flag-img" alt="EN"> EN
+                <img src="https://flagcdn.com/w40/us.png" class="flag-img" alt="EN"> EN <!-- bandeira e código -->
             </li>
+            <!-- opção espanhol -->
             <li class="lang-option" onclick="window.changeGameLanguage('es')">
-                <img src="https://flagcdn.com/w40/es.png" class="flag-img" alt="ES"> ES
+                <img src="https://flagcdn.com/w40/es.png" class="flag-img" alt="ES"> ES <!-- bandeira e código -->
             </li>
         </ul>
 
-        <!-- Botão selecionado (fica embaixo) -->
+        <!-- idioma selecionado (botão principal) -->
         <div class="lang-selected" onclick="window.toggleLangMenu()">
             <div style="display: flex; align-items: center;">
-                <img id="current-flag-img" src="https://flagcdn.com/w40/br.png" class="flag-img">
-                <span id="current-lang-text">PT</span>
+                <img id="current-flag-img" src="https://flagcdn.com/w40/br.png" class="flag-img"> <!-- bandeira atual -->
+                <span id="current-lang-text">PT</span> <!-- código do idioma atual -->
             </div>
-            <span class="arrow">▼</span>
+            <span class="arrow">▼</span> <!-- seta indicadora -->
         </div>
     </div>
 
-    <audio id="bgm" src="src/assets/audios/music.mp3" loop></audio>
+    <audio id="bgm" src="src/assets/audios/music.mp3" loop></audio> <!-- música de fundo em loop -->
 
-    <script type="module" src="src/index.js"></script>
+    <script type="module" src="src/index.js"></script> <!-- script principal do jogo -->
 
-    <div id="powers-bar-container"> </div>
+    <div id="powers-bar-container"> </div> <!-- container das barras de power-ups ativos -->
 </body>
 </html>

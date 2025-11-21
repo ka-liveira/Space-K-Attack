@@ -7,58 +7,56 @@ import { PATH_BOSS_IMAGE } from "../utils/constants.js";
 class Boss {
     constructor(canvasWidth, canvasHeight, initialHealth) {
         // --- Dimensões e Posição ---
-        this.scale = 5;
-        this.baseWidth = 64;
-        this.baseHeight = 64;
+        this.scale = 5; // escala de tamanho do sprite
+        this.baseWidth = 64; // largura base do sprite
+        this.baseHeight = 64; // altura base do sprite
 
-        this.width = this.baseWidth * this.scale;
-        this.height = this.baseHeight * this.scale;
+        this.width = this.baseWidth * this.scale; // largura final renderizada
+        this.height = this.baseHeight * this.scale; // altura final renderizada
 
         this.hitboxPadding = {
-            x: 16, // 16 pixels de margem na horizontal
-            y: 17  // 17 pixels de margem na vertical
+            x: 16, // margem horizontal da hitbox
+            y: 17  // margem vertical da hitbox
         };
 
         this.position = {
-            x: canvasWidth / 2 - this.width / 2, // Começa centralizado no topo
-            y: 150
+            x: canvasWidth / 2 - this.width / 2, // posição inicial X (centralizado)
+            y: 150 // posição inicial Y (topo da tela)
         };
 
-        // Referência às dimensões do canvas para a lógica de movimento
-        this.canvasWidth = canvasWidth;
-        this.canvasHeight = canvasHeight;
+        this.canvasWidth = canvasWidth; // largura do canvas para limites
+        this.canvasHeight = canvasHeight; // altura do canvas para limites
 
         // --- Atributos do Chefe ---
-        this.health = initialHealth; // Vida inicial
-        this.maxHealth = initialHealth; //vida máxima
-        this.alive = true;
-        this.velocity = { x: 3, y: 2 }; // Velocidade de movimento
+        this.health = initialHealth; // vida atual do boss
+        this.maxHealth = initialHealth; // vida máxima do boss
+        this.alive = true; // status de vida do boss
+        this.velocity = { x: 3, y: 2 }; // velocidade de movimento horizontal e vertical
 
         // --- Lógica de Ataque ---
-        this.attackCooldown = 60; // Atira a cada 60 frames (1 segundo a 60FPS)
-        this.framesCounter = 0;
+        this.attackCooldown = 60; // intervalo entre ataques em frames
+        this.framesCounter = 0; // contador de frames para cooldown
 
         // --- [NOVO] Atributos do Modo Fúria ---
-        this.enraged = false;       // Começa calmo
-        this.fireParticles = [];  // Array para as partículas de fogo
+        this.enraged = false; // indica se está em modo fúria
+        this.fireParticles = []; // array de partículas de fogo ao redor do boss
 
         // --- Carregamento da Imagem ---
-        this.image = this._getImage(PATH_BOSS_IMAGE);
+        this.image = this._getImage(PATH_BOSS_IMAGE); // sprite do boss
     }
 
-    _getImage(path) {
+    _getImage(path) { // carrega imagem do boss
         const image = new Image();
         image.src = path;
         return image;
     }
 
-    draw(ctx) {
+    draw(ctx) { // renderiza o boss e efeitos visuais
         if (!this.alive) return;
 
         if (this.enraged) {
-            // Cria novas partículas
+            // Cria novas partículas de fogo
             for (let i = 0; i < 3; i++) {
-                // Certifique-se que a classe 'FireParticle' existe
                 this.fireParticles.push(new FireParticle(this.position.x + this.width / 2, this.position.y + this.height));
             }
 
@@ -67,7 +65,7 @@ class Boss {
                 const p = this.fireParticles[i];
                 p.update();
                 p.draw(ctx);
-                if (p.alpha <= 0) this.fireParticles.splice(i, 1); // remove partículas "mortas"
+                if (p.alpha <= 0) this.fireParticles.splice(i, 1); // remove partículas transparentes
             }
         }
 
@@ -75,83 +73,77 @@ class Boss {
         ctx.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
     }
 
-    update(projectiles) {
+    update(projectiles) { // atualiza posição e lógica de ataque
         if (!this.alive) return;
 
         // 1. Movimento Horizontal (Patrulha)
         this.position.x += this.velocity.x;
 
-        // Lógica de Movimento em Ciclo:
-        // Direita -> Desce | Esquerda -> Sobe
-
-        const verticalStep = 80; // Tamanho da "linha" que ele sobe/desce
+        const verticalStep = 80; // distância vertical ao mudar de direção
 
         // Borda Direita
         if (this.position.x + this.width >= this.canvasWidth) {
-            this.velocity.x = -Math.abs(this.velocity.x); // Força direção para esquerda
-            this.position.x = this.canvasWidth - this.width; // Corrige para não ficar preso fora da tela
-            this.position.y += verticalStep; // Desce uma linha
+            this.velocity.x = -Math.abs(this.velocity.x); // inverte para esquerda
+            this.position.x = this.canvasWidth - this.width; // ajusta posição na borda
+            this.position.y += verticalStep; // desce uma linha
         }
         // Borda Esquerda
         else if (this.position.x <= 0) {
-            this.velocity.x = Math.abs(this.velocity.x); // Força direção para direita
-            this.position.x = 0; // Corrige para não ficar preso fora da tela
-            this.position.y -= verticalStep; // Sobe uma linha (volta à posição original)
+            this.velocity.x = Math.abs(this.velocity.x); // inverte para direita
+            this.position.x = 0; // ajusta posição na borda
+            this.position.y -= verticalStep; // sobe uma linha
         }
 
         // 2. Lógica de Ataque
         this.framesCounter++;
 
         if (this.framesCounter >= this.attackCooldown) {
-            this.shoot(projectiles); // Atira
-            this.framesCounter = 0; // Reinicia o contador para o próximo tiro
+            this.shoot(projectiles); // dispara projéteis
+            this.framesCounter = 0; // reseta contador de cooldown
         }
     }
 
-    shoot(projectiles) {
-        // [CORRIGIDO] Define o ponto de origem do tiro
-        const shootX = this.position.x + this.width / 2 - 5;
-        const shootY = this.position.y + this.height / 1.5;
+    shoot(projectiles) { // dispara projéteis do boss
+        const shootX = this.position.x + this.width / 2 - 5; // posição X do tiro
+        const shootY = this.position.y + this.height / 1.5; // posição Y do tiro
 
-        // Tiro normal (verde) - dispara sempre
+        // Tiro normal (verde)
         const p = new Projectile(
             {
                 x: shootX,
                 y: shootY
             },
-            7, // Velocidade do projétil (para baixo)
-            '#ADFF2F'
+            7, // velocidade do projétil
+            '#ADFF2F' // cor verde
         );
         projectiles.push(p);
 
-        // [CORRIGIDO] Tiro de fúria (vermelho) - dispara ADICIONALMENTE
+        // Tiro de fúria (vermelho) - dispara adicionalmente
         if (this.enraged) {
-            const types = ['normal', 'spread'];
-            const type = types[Math.floor(Math.random() * types.length)];
+            const types = ['normal', 'spread']; // tipos de ataque especial
+            const type = types[Math.floor(Math.random() * types.length)]; // escolhe tipo aleatório
 
             if (type === 'normal') {
                 const pRage = new Projectile(
-                    { x: shootX, y: shootY + 20 }, // +20 para não sobrepor
-                    7,
-                    '#ff0000' // Cor vermelha
+                    { x: shootX, y: shootY + 20 }, // offset vertical para não sobrepor
+                    7, // velocidade
+                    '#ff0000' // cor vermelha
                 );
                 projectiles.push(pRage);
             }
             else if (type === 'spread') {
-                const numProjectiles = 5;
-                const spreadAngle = 60;
-                const startAngle = -spreadAngle / 2;
+                const numProjectiles = 5; // quantidade de projéteis no spread
+                const spreadAngle = 60; // ângulo total do leque
+                const startAngle = -spreadAngle / 2; // ângulo inicial
 
                 for (let i = 0; i < numProjectiles; i++) {
-                    const angle = startAngle + (spreadAngle / (numProjectiles - 1)) * i;
-                    const rad = angle * (Math.PI / 180);
+                    const angle = startAngle + (spreadAngle / (numProjectiles - 1)) * i; // calcula ângulo de cada projétil
+                    const rad = angle * (Math.PI / 180); // converte para radianos
 
-                    // [CORRIGIDO] Usando shootX/shootY em vez de centerX/centerY
-                    // Assume que seu Projectile.js aceita um objeto de velocidade {dx, dy}
                     const pSpread = new Projectile(
                         { x: shootX, y: shootY },
-                        { dx: Math.sin(rad) * 7, dy: Math.cos(rad) * 7 },
-                        '#ff0000' // Cor vermelha
+                        { dx: Math.sin(rad) * 7, dy: Math.cos(rad) * 7 }, // velocidade vetorial
+                        '#ff0000' // cor vermelha
                     );
                     projectiles.push(pSpread);
                 }
@@ -159,44 +151,39 @@ class Boss {
         }
     }
 
-    takeDamage(damageAmount) {
-        // Só toma dano se estiver vivo
+    takeDamage(damageAmount) { // aplica dano ao boss
         if (!this.alive) return;
 
-        this.health -= damageAmount;
+        this.health -= damageAmount; // reduz vida
 
-        // [CORREÇÃO DE LÓGICA]
-        // 1. Checa se deve entrar em fúria (com 50% de vida)
+        // Ativa modo fúria ao chegar em 50% de vida
         if (!this.enraged && this.health <= this.maxHealth / 2) {
             this.enterRageMode();
         }
 
-        // 2. DEPOIS, checa se morreu
+        // Verifica morte
         if (this.health <= 0) {
-            this.health = 0;
-            this.alive = false;
+            this.health = 0; // garante que não fica negativo
+            this.alive = false; // marca como morto
         }
     }
 
-    enterRageMode() {
-        this.enraged = true;
-        this.velocity.x *= 1.5;   // Fica mais rápido horizontalmente
-        this.attackCooldown /= 2; // Atira 2x mais rápido
-        // Não alteramos position.x ou position.y aqui, garantindo que não haja spawn/teleporte.
+    enterRageMode() { // ativa o modo fúria do boss
+        this.enraged = true; // marca como enfurecido
+        this.velocity.x *= 1.5; // aumenta velocidade em 50%
+        this.attackCooldown /= 2; // atira 2x mais rápido
     }
 
-    hit(projectile) {
-        // Calcula o padding dinamicamente baseado na escala
-        const paddingX = this.hitboxPadding.x * this.scale;
-        const paddingY = this.hitboxPadding.y * this.scale;
+    hit(projectile) { // detecta colisão com projétil do jogador
+        const paddingX = this.hitboxPadding.x * this.scale; // padding horizontal escalado
+        const paddingY = this.hitboxPadding.y * this.scale; // padding vertical escalado
 
-        // O resto do cálculo da hitbox continua igual
-        const hitboxX = this.position.x + paddingX;
-        const hitboxY = this.position.y + paddingY;
-        const hitboxWidth = this.width - (paddingX * 2);
-        const hitboxHeight = this.height - (paddingY * 2);
+        const hitboxX = this.position.x + paddingX; // posição X da hitbox ajustada
+        const hitboxY = this.position.y + paddingY; // posição Y da hitbox ajustada
+        const hitboxWidth = this.width - (paddingX * 2); // largura da hitbox
+        const hitboxHeight = this.height - (paddingY * 2); // altura da hitbox
 
-        // Lógica de colisão de retângulo simples
+        // Retorna true se houver colisão
         return (
             projectile.position.y <= hitboxY + hitboxHeight &&
             projectile.position.y + projectile.height >= hitboxY &&
@@ -205,9 +192,9 @@ class Boss {
         );
     }
 
-      resize(newWidth, newHeight) {
-        this.canvasWidth = newWidth;
-        this.canvasHeight = newHeight;
+    resize(newWidth, newHeight) { // atualiza dimensões do canvas
+        this.canvasWidth = newWidth; // nova largura
+        this.canvasHeight = newHeight; // nova altura
     }
 }
 

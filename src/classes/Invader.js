@@ -1,52 +1,47 @@
 import { PATH_INVADER_IMAGE } from "../utils/constants.js";
-import Projectile  from "./Projectile.js";
+import Projectile from "./Projectile.js";
 import PowerUp from "./PowerUp.js";
 
-// Chance global de cair poder (0.0 = nunca, 1.0 = sempre)
-export const POWER_DROP_RATE = 0.25; // 20% de chance
+export const POWER_DROP_RATE = 0.25; // chance de 25% de dropar power-up
 
-class Invader { //define a classe Invader
-       constructor(position, velocity) { // Construtor da classe que inicializa as propriedades do jogador.
-        this.position = position 
-        this.velocity = velocity
+class Invader {
+    constructor(position, velocity) { // inicializa invasor com posição e velocidade
+        this.position = position; // posição X e Y do invasor
+        this.velocity = velocity; // velocidade de movimento
 
-       // --- AJUSTE DE TAMANHO PARA 50x38 ---
-        const scale = 2; // Mude este valor para o tamanho que desejar.
+        const scale = 2; // escala de tamanho do sprite
+        const originalWidth = 50; // largura base da imagem
+        const originalHeight = 38; // altura base da imagem
 
-        const originalWidth = 50;  // Largura original da imagem
-        const originalHeight = 38; // Altura original da imagem
-
-        // Calcula o novo tamanho mantendo a proporção
-        this.width = originalWidth * scale;  // Exemplo com scale = 2.2 -> 110px
-        this.height = originalHeight * scale; // Exemplo com scale = 2.2 -> 83.6px
-        // ------------------------------------
+        this.width = originalWidth * scale; // largura final renderizada
+        this.height = originalHeight * scale; // altura final renderizada
         
-        this.image = this.getImage(PATH_INVADER_IMAGE);
+        this.image = this.getImage(PATH_INVADER_IMAGE); // sprite do invasor
     }
 
-  getImage(path) { // Método 'getImage' que retorna a imagem do jogador.
-    const image = new Image();
-    image.src = path;
-    return image;
-}
+    getImage(path) { // carrega imagem do invasor
+        const image = new Image();
+        image.src = path;
+        return image;
+    }
 
-  moveLeft() { // Método 'moveLeft' que move o jogador para a esquerda.
-    this.position.x -= this.velocity;
-}
+    moveLeft() { // move invasor para esquerda
+        this.position.x -= this.velocity;
+    }
 
-  moveRight() { // Método 'moveRight' que move o jogador para a direita.
-    this.position.x += this.velocity;
-}    
+    moveRight() { // move invasor para direita
+        this.position.x += this.velocity;
+    }
 
-   moveDown() { // Método 'moveDown' que move o jogador para baixo.
-    this.position.y += this.height;
-} 
+    moveDown() { // move invasor para baixo
+        this.position.y += this.height;
+    }
 
-   incrementVelocity(boost) { // Método 'incrementVelocity' que aumenta a velocidade do invasor.
-       this.velocity += boost;
-   }
+    incrementVelocity(boost) { // aumenta velocidade do invasor
+        this.velocity += boost;
+    }
 
-        draw(ctx) {
+    draw(ctx) { // renderiza o invasor na tela
         ctx.drawImage(
             this.image,
             this.position.x,
@@ -54,40 +49,41 @@ class Invader { //define a classe Invader
             this.width,
             this.height
         );
-     }
+    }
 
-  shoot(Projectiles) { // Método 'shoot' que cria e retorna um novo projétil.
-    const p = new Projectile( // Cria uma nova instância do projétil
-        { x: this.position.x + this.width / 2 - 1, 
-          y: this.position.y + this.height }, // Posição inicial do projétil (centro superior do jogador)
-        10, // Velocidade do projétil
-        '#ff4040' 
-    );
-    Projectiles.push(p); // Adiciona o projétil ao array de projéteis
-}
+    shoot(Projectiles) { // dispara projétil para baixo
+        const p = new Projectile(
+            { 
+                x: this.position.x + this.width / 2 - 1, // posição X centralizada
+                y: this.position.y + this.height // posição Y abaixo do invasor
+            },
+            10, // velocidade do projétil
+            '#ff4040' // cor vermelha
+        );
+        Projectiles.push(p); // adiciona projétil ao array
+    }
 
-hit(projectile) {
-    return (
-        projectile.position.x >= this.position.x &&
-        projectile.position.x <= this.position.x + this.width &&
-        projectile.position.y >= this.position.y &&
-        projectile.position.y <= this.position.y + this.height
-    );
-}
+    hit(projectile) { // detecta colisão com projétil
+        return (
+            projectile.position.x >= this.position.x &&
+            projectile.position.x <= this.position.x + this.width &&
+            projectile.position.y >= this.position.y &&
+            projectile.position.y <= this.position.y + this.height
+        );
+    }
 
-// metodo para decidir se cai um poder
-    dropPower(player) {
-        const chance = Math.random();
+    dropPower(player) { // decide se dropa power-up ao morrer
+        const chance = Math.random(); // número aleatório entre 0 e 1
         if (chance <= POWER_DROP_RATE) {
-            // Cria o poder na posição do invasor
             const power = new PowerUp({
-                x: this.position.x + this.width / 2,
-                y: this.position.y + this.height,
+                x: this.position.x + this.width / 2, // posição X centralizada
+                y: this.position.y + this.height, // posição Y abaixo do invasor
             }, player);
 
-            return power; // retorna o poder para ser adicionado no jogo
+            return power; // retorna power-up criado
         }
-        return null;
+        return null; // não dropa nada
     }
 }
-export default Invader; // Exporta a classe 'Player' como padrão para que possa ser importada em outros arquivos.
+
+export default Invader;

@@ -1,82 +1,81 @@
-@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"); /* importa fonte pixel art */
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Press Start 2P", sans-serif;
+    margin: 0; /* remove margem padrão */
+    padding: 0; /* remove padding padrão */
+    box-sizing: border-box; /* inclui borda e padding no tamanho total */
+    font-family: "Press Start 2P", sans-serif; /* fonte pixel art global */
 }
 
 body {
-    overflow: hidden; /* Remove barras de rolagem */
-    color: white;
-    background-color: #000; /* Fundo preto */
+    overflow: hidden; /* esconde barras de rolagem */
+    color: white; /* cor de texto padrão */
+    background-color: #000; /* fundo preto */
     margin: 0;
     padding: 0;
 }
 
 .background-fader {
-    position: fixed;
-    width: 100%;
-    height: 100%;
+    position: fixed; /* fixa na tela */
+    width: 100%; /* largura total */
+    height: 100%; /* altura total */
     top: 0;
     left: 0;
-    z-index: -10; 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0; 
-    transition: opacity 1.2s ease-in-out; 
+    z-index: -10; /* atrás de tudo */
+    background-size: cover; /* cobre toda a área */
+    background-position: center; /* centraliza imagem */
+    background-repeat: no-repeat; /* não repete imagem */
+    opacity: 0; /* invisível inicialmente */
+    transition: opacity 1.2s ease-in-out; /* transição suave entre fundos */
 }
 
 canvas {
-    background-color: transparent; 
-    display: block; /* Remove espaços extras */
-    position: absolute;
+    background-color: transparent; /* fundo transparente */
+    display: block;
+    position: absolute; /* posicionamento absoluto */
     top: 0;
     left: 0;
-    /* [CORREÇÃO] Garante que o canvas ocupe a tela inteira sempre */
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
+    width: 100vw; /* largura da viewport */
+    height: 100vh; /* altura da viewport */
+    z-index: -1; /* atrás das UI */
 }
 
 /* --- TELAS (SCREENS) --- */
 
 .screen {
-    width: 100%;
-    height: 100dvh;
-    color: white;
+    width: 100%; /* largura total */
+    height: 100dvh; /* altura dinâmica da viewport */
+    color: white; /* texto branco */
     display: flex;
-    align-items: center;
-    justify-content: flex-start; 
-    flex-direction: column;
-    position: absolute;
-    inset: 0;
-    padding-top: 15vh; 
+    align-items: center; /* centraliza verticalmente */
+    justify-content: flex-start; /* alinha no topo */
+    flex-direction: column; /* coluna vertical */
+    position: absolute; /* posicionamento absoluto */
+    inset: 0; /* ocupa toda a tela */
+    padding-top: 15vh; /* margem superior */
 }
 
 .screen h1 {
-  font-size: 3rem;
-  color: #FFFFFF;
-  margin-top: 70px;
-  margin-bottom: 20px;
-  animation: glow-cycle-soft 6s ease-in-out infinite;
-  text-shadow:
+  font-size: 3rem; /* tamanho do título */
+  color: #FFFFFF; /* cor branca */
+  margin-top: 70px; /* margem superior */
+  margin-bottom: 20px; /* margem inferior */
+  animation: glow-cycle-soft 6s ease-in-out infinite; /* animação de brilho */
+  text-shadow: /* sombras azuladas */
     0 0 10px rgba(240, 248, 255, 0.7),
     0 0 30px rgba(176, 196, 222, 0.6),
     0 0 60px rgba(70, 130, 180, 0.5);
 }
 
-@keyframes glow-cycle-soft {
+@keyframes glow-cycle-soft { /* animação de pulsação do brilho */
   0%, 100% {
-    text-shadow:
+    text-shadow: /* brilho azulado */
       0 0 10px rgba(240, 248, 255, 0.7),   
       0 0 30px rgba(176, 196, 222, 0.6),  
       0 0 60px rgba(70, 130, 180, 0.5);    
   }
   50% {
-    text-shadow:
+    text-shadow: /* brilho mais claro */
       0 0 12px rgba(255, 255, 255, 0.7),      
       0 0 35px rgba(220, 220, 220, 0.5),      
       0 0 70px rgba(190, 190, 190, 0.4);      
@@ -84,669 +83,669 @@ canvas {
 }
 
 .screen span {
-    position: absolute;
-    bottom: 20px;
-    font-size: 0.6rem;
-    color: #aaa;
-    text-decoration: underline;
-    left: 50%;
-    transform: translateX(-50%);
+    position: absolute; /* posicionamento absoluto */
+    bottom: 20px; /* distância do fundo */
+    font-size: 0.6rem; /* tamanho pequeno */
+    color: #aaa; /* cor cinza */
+    text-decoration: underline; /* sublinhado */
+    left: 50%; /* centraliza horizontalmente */
+    transform: translateX(-50%); /* ajuste fino da centralização */
 }
 
 /* --- TELA INICIAL --- */
 
 .start-screen > div {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center; /* centraliza conteúdo */
+    flex-direction: column; /* disposição vertical */
+    align-items: center; /* centraliza itens */
 }
 
-.start-screen.hidden { display: none !important; }
+.start-screen.hidden { display: none !important; } /* esconde completamente */
 
 .main-menu {
     display: flex;
-    flex-direction: column;
-    gap: 15px; 
-    margin-top: 120px;
-    width: 240px; 
+    flex-direction: column; /* botões em coluna */
+    gap: 15px; /* espaçamento entre botões */
+    margin-top: 120px; /* margem superior */
+    width: 240px; /* largura fixa */
 }
 
 .main-menu button {
-    border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
-    background-color: #ddd;
-    font-size: 1rem;
-    cursor: pointer;
-    color: black; 
+    border: none; /* sem borda */
+    padding: 12px 20px; /* espaçamento interno */
+    border-radius: 5px; /* bordas arredondadas */
+    background-color: #ddd; /* fundo cinza claro */
+    font-size: 1rem; /* tamanho da fonte */
+    cursor: pointer; /* cursor de clique */
+    color: black; /* texto preto */
 }
 .main-menu button:hover {
-    background-color: #fff;
+    background-color: #fff; /* fundo branco no hover */
 }
 
 /* --- MENU SCREENS --- */
 
 .menu-screen {
-   background-color: rgba(0, 0, 0, 0.3);
-   z-index: 10;
-   padding-top: 0; 
-   justify-content: center; 
-   visibility: hidden;
-   opacity: 0;
-   transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+   background-color: rgba(0, 0, 0, 0.3); /* overlay escuro semitransparente */
+   z-index: 10; /* acima do jogo */
+   padding-top: 0;
+   justify-content: center; /* centraliza verticalmente */
+   visibility: hidden; /* invisível inicialmente */
+   opacity: 0; /* transparente */
+   transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out; /* transição suave */
 }
 
 .menu-screen.show {
-   visibility: visible; 
-   opacity: 1;     
+   visibility: visible; /* torna visível */
+   opacity: 1; /* opaco */
 }
 
 .menu-screen p {
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 1rem; /* tamanho do texto */
+    line-height: 1.6; /* altura da linha */
 }
 
 .menu-screen > div {
-   background-color: rgba(10, 25, 40, 0.9); 
-   padding: 20px 40px 30px 40px; 
-   border: 2px solid #090732;
-   border-radius: 10px; 
-   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 255, 255, 0.4);
-   margin-top: 0; 
+   background-color: rgba(10, 25, 40, 0.9); /* fundo azul escuro */
+   padding: 20px 40px 30px 40px; /* espaçamento interno */
+   border: 2px solid #090732; /* borda azul escura */
+   border-radius: 10px; /* bordas arredondadas */
+   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 255, 255, 0.4); /* sombras */
+   margin-top: 0;
    display: flex;
-   flex-direction: column;
-   align-items: center;
+   flex-direction: column; /* disposição vertical */
+   align-items: center; /* centraliza itens */
 }
 
 .menu-screen > div h1 {
-     margin-top: 50px; /* Aumentei bastante para descer a frase */
-    margin-bottom: 20px;
-    text-align: center; /* Garante centralização horizontal */
-    width: 100%; /* Ocupa largura total para centralizar corretamente */
+     margin-top: 50px; /* margem superior para descer título */
+    margin-bottom: 20px; /* margem inferior */
+    text-align: center; /* centraliza texto */
+    width: 100%; /* largura total */
 }
 
 /* --- SELEÇÃO DE SKIN --- */
 
 .skins-container {
     display: flex;
-    gap: 1s00px;
-    justify-content: center;
-    margin: 50px 0;
+    gap: 100px; /* espaçamento entre cards */
+    justify-content: center; /* centraliza cards */
+    margin: 50px 0; /* margem vertical */
 }
 
 .skin-btn {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    padding: 20px;
-    border-radius: 15px;
-    transition: all 0.3s ease;
-    cursor: pointer;
+    flex-direction: column; /* disposição vertical */
+    align-items: center; /* centraliza conteúdo */
+    background: rgba(255, 255, 255, 0.1); /* fundo branco translúcido */
+    border: 2px solid rgba(255, 255, 255, 0.3); /* borda branca translúcida */
+    padding: 20px; /* espaçamento interno */
+    border-radius: 15px; /* bordas arredondadas */
+    transition: all 0.3s ease; /* transição suave */
+    cursor: pointer; /* cursor de clique */
 }
 
 .skin-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: #F000E8; 
-    transform: translateY(-10px) scale(1.05);
-    box-shadow: 0 0 20px rgba(240, 0, 232, 0.5);
+    background: rgba(255, 255, 255, 0.2); /* fundo mais claro no hover */
+    border-color: #F000E8; /* borda rosa */
+    transform: translateY(-10px) scale(1.05); /* levanta e aumenta */
+    box-shadow: 0 0 20px rgba(240, 0, 232, 0.5); /* brilho rosa */
 }
 
 .skin-btn img {
-    width: 120px;
-    height: 120px;
-    image-rendering: pixelated;
-    margin-bottom: 15px;
+    width: 120px; /* largura da imagem */
+    height: 120px; /* altura da imagem */
+    image-rendering: pixelated; /* renderização pixel art */
+    margin-bottom: 15px; /* margem inferior */
 }
 
 .skin-btn p {
-    margin: 0;
-    font-size: 1rem; 
-    color: white;
+    margin: 0; /* remove margem */
+    font-size: 1rem; /* tamanho do texto */
+    color: white; /* texto branco */
 }
 
 /* --- BOTÕES GERAIS --- */
 
 .button-back-to-start {
-    border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
-    background-color: #ddd;
+    border: none; /* sem borda */
+    padding: 12px 20px; /* espaçamento interno */
+    border-radius: 5px; /* bordas arredondadas */
+    background-color: #ddd; /* fundo cinza claro */
     display: block;
-    font-size: 1rem;
-    margin-top: 20px;
-    cursor: pointer;
-    color: black;
-    font-family: "Press Start 2P", sans-serif;
+    font-size: 1rem; /* tamanho do texto */
+    margin-top: 20px; /* margem superior */
+    cursor: pointer; /* cursor de clique */
+    color: black; /* texto preto */
+    font-family: "Press Start 2P", sans-serif; /* fonte pixel art */
 }
 
 .button-back-to-start:hover {
-    background-color: #fff;
+    background-color: #fff; /* fundo branco no hover */
 }
 
 .game-over .button-back-to-start {
     display: block;
-    margin: 20px auto 0; 
+    margin: 20px auto 0; /* centraliza horizontalmente */
 }
 
 .button-restart {
-    border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
-    background-color: #ddd;
+    border: none; /* sem borda */
+    padding: 12px 20px; /* espaçamento interno */
+    border-radius: 5px; /* bordas arredondadas */
+    background-color: #ddd; /* fundo cinza claro */
     display: block;
-    margin: 20px auto 0;
-    font-size: 1rem;
-    cursor: pointer;
-    color: black;
-    font-family: "Press Start 2P", sans-serif;
+    margin: 20px auto 0; /* centraliza horizontalmente */
+    font-size: 1rem; /* tamanho do texto */
+    cursor: pointer; /* cursor de clique */
+    color: black; /* texto preto */
+    font-family: "Press Start 2P", sans-serif; /* fonte pixel art */
 }
 
 .button-restart:hover {
-    background-color: #fff;
+    background-color: #fff; /* fundo branco no hover */
 }
 
 /* --- GAME OVER --- */
 
 .game-over {
-  display: flex; 
-  align-items: center;
-  justify-content: center;
-  padding-top: 0;      
-  visibility: hidden; 
-  opacity: 0;         
-  scale: 0;           
-  transition: opacity 0.5s, visibility 0.5s;
+  display: flex;
+  align-items: center; /* centraliza verticalmente */
+  justify-content: center; /* centraliza horizontalmente */
+  padding-top: 0;
+  visibility: hidden; /* invisível inicialmente */
+  opacity: 0; /* transparente */
+  scale: 0; /* escala zero */
+  transition: opacity 0.5s, visibility 0.5s; /* transição suave */
 }
 
 .game-over.show {
-  visibility: visible; 
-  opacity: 1;          
-  animation: zoom 0.7s ease-out forwards; 
+  visibility: visible; /* torna visível */
+  opacity: 1; /* opaco */
+  animation: zoom 0.7s ease-out forwards; /* animação de zoom */
 }
 
-@keyframes zoom {
+@keyframes zoom { /* animação de crescimento */
     from {
-        scale: 0;
-        opacity: 0; 
+        scale: 0; /* começa pequeno */
+        opacity: 0; /* transparente */
     }
     to {
-        scale: 1;
-        opacity: 1;
+        scale: 1; /* tamanho normal */
+        opacity: 1; /* opaco */
     }
 }
 
 /* --- UI DE JOGO --- */
 
 .score-ui {
-    position: fixed;
-    top: 0;
-    left: 0;
-    color: #fff;
-    width: 100%;
-    text-align: center;
-    padding: 40px;
-    text-transform: uppercase;
-    font-size: 1rem;
-    display: none;
-    z-index: 5;
+    position: fixed; /* fixa na tela */
+    top: 0; /* no topo */
+    left: 0; /* na esquerda */
+    color: #fff; /* texto branco */
+    width: 100%; /* largura total */
+    text-align: center; /* centraliza texto */
+    padding: 40px; /* espaçamento interno */
+    text-transform: uppercase; /* texto em maiúsculas */
+    font-size: 1rem; /* tamanho do texto */
+    display: none; /* escondido inicialmente */
+    z-index: 5; /* acima do canvas */
 }
 
 .score-ui > div {
     display: flex;
-    justify-content: space-between;
-    max-width: 600px;
-    margin: 0 auto;
+    justify-content: space-between; /* espaça itens uniformemente */
+    max-width: 600px; /* largura máxima */
+    margin: 0 auto; /* centraliza */
 }
 
 .kills-ui {
-    position: fixed;
-    top: 60px;  
-    left: 22px;  
-    display: none; 
-    flex-direction: column;
-    align-items: flex-start; 
-    gap: 4px; 
-    z-index: 5; 
+    position: fixed; /* fixa na tela */
+    top: 60px; /* distância do topo */
+    left: 22px; /* distância da esquerda */
+    display: none; /* escondido inicialmente */
+    flex-direction: column; /* disposição vertical */
+    align-items: flex-start; /* alinha à esquerda */
+    gap: 4px; /* espaçamento entre itens */
+    z-index: 5; /* acima do canvas */
 }
 
 .kills-ui .kills-invaders,
 .kills-ui .kills-boss {
-    font-size: 0.75rem; 
-    text-transform: uppercase;
-    color: #ccc; 
+    font-size: 0.75rem; /* tamanho do texto */
+    text-transform: uppercase; /* texto em maiúsculas */
+    color: #ccc; /* cor cinza claro */
 }
 
 /* --- MENU DE OPÇÕES --- */
 
 .settings-menu {
     display: flex;
-    flex-direction: column;
-    gap: 25px; 
-    margin: 40px 0;
-    width: 300px; 
+    flex-direction: column; /* disposição vertical */
+    gap: 25px; /* espaçamento entre itens */
+    margin: 40px 0; /* margem vertical */
+    width: 300px; /* largura fixa */
 }
 
 .setting-item {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: column; /* disposição vertical */
+    gap: 10px; /* espaçamento entre label e slider */
 }
 
 .setting-item label {
-    font-size: 0.8rem; 
+    font-size: 0.8rem; /* tamanho do texto */
     display: flex;
-    justify-content: space-between; 
-    align-items: center;
+    justify-content: space-between; /* label à esquerda, valor à direita */
+    align-items: center; /* centraliza verticalmente */
 }
 
 .setting-item label span {
-    position: static;   
-    transform: none;
-    font-size: 0.8rem;
-    color: white;
-    text-decoration: none;
+    position: static; /* posicionamento normal */
+    transform: none; /* sem transformação */
+    font-size: 0.8rem; /* tamanho do texto */
+    color: white; /* texto branco */
+    text-decoration: none; /* sem sublinhado */
 }
 
 input[type="range"] {
-    -webkit-appearance: none; 
+    -webkit-appearance: none; /* remove estilo padrão */
     appearance: none;
-    width: 100%;
-    height: 10px;
-    background: #555; 
-    outline: none;
-    border-radius: 5px;
+    width: 100%; /* largura total */
+    height: 10px; /* altura do slider */
+    background: #555; /* fundo cinza escuro */
+    outline: none; /* remove contorno */
+    border-radius: 5px; /* bordas arredondadas */
 }
 
 input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
+    -webkit-appearance: none; /* remove estilo padrão */
     appearance: none;
-    width: 25px;
-    height: 25px;
-    background: #ddd; 
-    cursor: pointer;
-    border-radius: 50%;
+    width: 25px; /* largura do controle */
+    height: 25px; /* altura do controle */
+    background: #ddd; /* fundo cinza claro */
+    cursor: pointer; /* cursor de clique */
+    border-radius: 50%; /* forma circular */
 }
 
 input[type="range"]::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    background: #ddd;
-    cursor: pointer;
-    border-radius: 50%;
+    width: 25px; /* largura do controle (Firefox) */
+    height: 25px; /* altura do controle */
+    background: #ddd; /* fundo cinza claro */
+    cursor: pointer; /* cursor de clique */
+    border-radius: 50%; /* forma circular */
 }
 
 .settings-buttons-container {
     display: flex;
-    flex-direction: column; 
-    align-items: center;   
-    gap: 15px; 
-    margin-top: 30px;
-    width: 300px; 
-    margin-left: auto;
+    flex-direction: column; /* disposição vertical */
+    align-items: center; /* centraliza itens */
+    gap: 15px; /* espaçamento entre botões */
+    margin-top: 30px; /* margem superior */
+    width: 300px; /* largura fixa */
+    margin-left: auto; /* centraliza horizontalmente */
     margin-right: auto;
 }
 
 .settings-buttons-container button {
-    width: 200px; 
-    box-sizing: border-box; 
+    width: 200px; /* largura fixa dos botões */
+    box-sizing: border-box; /* inclui borda no tamanho */
 }
 
 #settings-screen .button-back-to-start {
-    margin-top: 0;
+    margin-top: 0; /* remove margem superior */
 }
 
 #reset-settings-btn {
-    border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
-    background-color: #777; 
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    font-family: "Press Start 2P", sans-serif;
+    border: none; /* sem borda */
+    padding: 12px 20px; /* espaçamento interno */
+    border-radius: 5px; /* bordas arredondadas */
+    background-color: #777; /* fundo cinza médio */
+    color: white; /* texto branco */
+    font-size: 1rem; /* tamanho do texto */
+    cursor: pointer; /* cursor de clique */
+    font-family: "Press Start 2P", sans-serif; /* fonte pixel art */
 }
 
 #reset-settings-btn:hover {
-    background-color: #999;
+    background-color: #999; /* fundo mais claro no hover */
 }
 
 /* --- MENU DE PAUSA --- */
 
 #pause-screen {
-  z-index: 20; 
+  z-index: 20; /* acima de tudo */
 }
 
 #button-resume {
-  border: none;
-  padding: 12px 20px;
-  border-radius: 5px;
-  background-color: #ddd;
-  font-size: 1rem;
-  cursor: pointer;
-  color: black;
-  font-family: "Press Start 2P", sans-serif;
+  border: none; /* sem borda */
+  padding: 12px 20px; /* espaçamento interno */
+  border-radius: 5px; /* bordas arredondadas */
+  background-color: #ddd; /* fundo cinza claro */
+  font-size: 1rem; /* tamanho do texto */
+  cursor: pointer; /* cursor de clique */
+  color: black; /* texto preto */
+  font-family: "Press Start 2P", sans-serif; /* fonte pixel art */
 }
 #button-resume:hover {
-  background-color: #fff;
+  background-color: #fff; /* fundo branco no hover */
 }
 
 #pause-reset-settings-btn {
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  background-color: #777; 
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-  font-family: "Press Start 2P", sans-serif;
+  border: none; /* sem borda */
+  padding: 10px 20px; /* espaçamento interno */
+  border-radius: 5px; /* bordas arredondadas */
+  background-color: #777; /* fundo cinza médio */
+  color: white; /* texto branco */
+  font-size: 1rem; /* tamanho do texto */
+  cursor: pointer; /* cursor de clique */
+  font-family: "Press Start 2P", sans-serif; /* fonte pixel art */
 }
 #pause-reset-settings-btn:hover {
-  background-color: #999;
+  background-color: #999; /* fundo mais claro no hover */
 }
 
 #pause-screen .button-back-to-start {
-  margin-top: 0;
+  margin-top: 0; /* remove margem superior */
 }
 #pause-screen .button-restart {
-  margin: 0;
+  margin: 0; /* remove margem */
 }
 
 /* --- BOTÃO DE PAUSA (SVG) --- */
 
 #pause-button {
-  display: none; 
-  position: fixed; 
-  top: 20px; 
-  right: 20px; 
-  z-index: 10; 
-  cursor: pointer; 
+  display: none; /* escondido inicialmente */
+  position: fixed; /* fixa na tela */
+  top: 20px; /* distância do topo */
+  right: 20px; /* distância da direita */
+  z-index: 10; /* acima do jogo */
+  cursor: pointer; /* cursor de clique */
   
-  background: transparent;
-  border: none; 
-  border-radius: 0; 
-  padding: 0; 
+  background: transparent; /* fundo transparente */
+  border: none; /* sem borda */
+  border-radius: 0;
+  padding: 0;
 }
 
 #pause-button svg {
-  width: 35px; 
-  height: 35px;
-  filter: drop-shadow(2px 2px 2px black);
-  transition: transform 0.2s ease, filter 0.2s ease;
+  width: 35px; /* largura do ícone */
+  height: 35px; /* altura do ícone */
+  filter: drop-shadow(2px 2px 2px black); /* sombra */
+  transition: transform 0.2s ease, filter 0.2s ease; /* transição suave */
 }
 
 #pause-button:hover svg {
-  transform: scale(1.1);
+  transform: scale(1.1); /* aumenta no hover */
 }
 
 #pause-button:hover svg path {
-  fill: #00ffff; 
-  filter: drop-shadow(0 0 5px #00ffff); 
-  transition: fill 0.2s ease;
+  fill: #00ffff; /* cor ciano no hover */
+  filter: drop-shadow(0 0 5px #00ffff); /* brilho ciano */
+  transition: fill 0.2s ease; /* transição de cor */
 }
 
 /* --- INSTRUÇÕES --- */
 
 .instructions-list {
     display: flex;
-    flex-direction: column; 
-    align-items: stretch; 
-    gap: 15px; 
-    margin-top: 40px;
-    margin-bottom: 40px;
-    width: 90%; 
-    max-width: 420px; 
-    color: #fff;
+    flex-direction: column; /* disposição vertical */
+    align-items: stretch; /* estica itens */
+    gap: 15px; /* espaçamento entre controles */
+    margin-top: 40px; /* margem superior */
+    margin-bottom: 40px; /* margem inferior */
+    width: 90%; /* largura relativa */
+    max-width: 420px; /* largura máxima */
+    color: #fff; /* texto branco */
 }
 
 .control-group {
-    display: flex; 
-    align-items: center; 
-    gap: 20px; 
-    width: 100%;
+    display: flex; /* disposição horizontal */
+    align-items: center; /* centraliza verticalmente */
+    gap: 20px; /* espaçamento entre tecla e descrição */
+    width: 100%; /* largura total */
 }
 
 .key {
-    position: static !important; bottom: auto !important; left: auto !important; transform: none !important; text-decoration: none !important;
+    position: static !important; bottom: auto !important; left: auto !important; transform: none !important; text-decoration: none !important; /* sobrescreve estilos herdados */
 
-    min-width: 55px;
-    height: 55px;
-    background-color: #f0f0f0; 
-    border: 1px solid #b0b0b0; 
-    border-radius: 6px;
-    box-shadow: 0 3px 0 #b0b0b0, inset 0 1px 1px #fff, 0 4px 6px rgba(0, 0, 0, 0.2);
+    min-width: 55px; /* largura mínima */
+    height: 55px; /* altura fixa */
+    background-color: #f0f0f0; /* fundo cinza claro */
+    border: 1px solid #b0b0b0; /* borda cinza */
+    border-radius: 6px; /* bordas arredondadas */
+    box-shadow: 0 3px 0 #b0b0b0, inset 0 1px 1px #fff, 0 4px 6px rgba(0, 0, 0, 0.2); /* efeito 3D de tecla */
 
-    color: #444; 
-    font-size: 0.8rem; 
-    font-weight: bold;
-    text-transform: uppercase;
+    color: #444; /* texto cinza escuro */
+    font-size: 0.8rem; /* tamanho do texto */
+    font-weight: bold; /* texto em negrito */
+    text-transform: uppercase; /* texto em maiúsculas */
 
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 10px;
+    align-items: center; /* centraliza verticalmente */
+    justify-content: center; /* centraliza horizontalmente */
+    padding: 0 10px; /* espaçamento interno */
     margin: 0;
-    box-sizing: border-box;
-    white-space: nowrap;
-    flex-shrink: 0;
+    box-sizing: border-box; /* inclui borda no tamanho */
+    white-space: nowrap; /* não quebra linha */
+    flex-shrink: 0; /* não encolhe */
 }
 
 .instructions-list .control-group:nth-of-type(3) .key {
-    min-width: 140px; 
+    min-width: 140px; /* tecla "Espaço" mais larga */
 }
 
 .action-text {
-    font-size: 0.8rem; 
-    color: #0394fc; 
-    text-transform: none; 
-    font-weight: normal; 
-    letter-spacing: 0.5px;
+    font-size: 0.8rem; /* tamanho do texto */
+    color: #0394fc; /* cor azul */
+    text-transform: none; /* texto normal (não maiúsculo) */
+    font-weight: normal; /* peso normal */
+    letter-spacing: 0.5px; /* espaçamento entre letras */
     margin: 0;
-    text-align: left; 
-    flex-grow: 1; 
-    line-height: 1.4;
+    text-align: left; /* alinha à esquerda */
+    flex-grow: 1; /* ocupa espaço disponível */
+    line-height: 1.4; /* altura da linha */
 }
 
 #instructions-screen .button-back-to-start {
      display: block;
-     margin: 40px auto 0 auto; 
+     margin: 40px auto 0 auto; /* centraliza horizontalmente */
 }
 
 /* --- BARRA DE PODERES --- */
 
 #powers-bar-container {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
+    position: fixed; /* fixa na tela */
+    bottom: 20px; /* distância do fundo */
+    left: 20px; /* distância da esquerda */
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    z-index: 100;
-    font-family: Arial, sans-serif; 
+    flex-direction: column; /* disposição vertical */
+    gap: 8px; /* espaçamento entre barras */
+    z-index: 100; /* acima de tudo */
+    font-family: Arial, sans-serif; /* fonte sans-serif */
 }
 
 .power-bar-wrapper {
     display: flex;
-    flex-direction: column;
-    gap: 3px;
+    flex-direction: column; /* disposição vertical */
+    gap: 3px; /* espaçamento entre nome e barra */
 }
 
 .power-bar-name {
-    color: #fff;
-    font-size: 10px;
-    font-family: "Press Start 2P", sans-serif;
+    color: #fff; /* texto branco */
+    font-size: 10px; /* tamanho pequeno */
+    font-family: "Press Start 2P", sans-serif; /* fonte pixel art */
 }
 
 .power-bar {
-    width: 120px;
-    height: 15px;
-    background-color: #333;
-    border-radius: 5px;
-    overflow: hidden;
-    border: 1px solid white;
+    width: 120px; /* largura da barra */
+    height: 15px; /* altura da barra */
+    background-color: #333; /* fundo cinza escuro */
+    border-radius: 5px; /* bordas arredondadas */
+    overflow: hidden; /* esconde overflow */
+    border: 1px solid white; /* borda branca */
 }
 
 .power-bar-inner {
-    height: 100%;
-    width: 100%;
-    transition: width 0.1s linear;
+    height: 100%; /* altura total */
+    width: 100%; /* largura variável (preenchimento) */
+    transition: width 0.1s linear; /* transição suave */
 }
 
 /* --- MENU DE IDIOMA --- */
 
 .language-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    font-family: 'Arial', sans-serif;
-    width: 120px; 
-    font-size: 12px;
-    user-select: none; 
+    position: fixed; /* fixa na tela */
+    bottom: 20px; /* distância do fundo */
+    right: 20px; /* distância da direita */
+    z-index: 1000; /* acima de tudo */
+    font-family: 'Arial', sans-serif; /* fonte sans-serif */
+    width: 120px; /* largura fixa */
+    font-size: 12px; /* tamanho do texto */
+    user-select: none; /* desabilita seleção de texto */
 }
 
 .lang-selected {
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 6px 10px;
-    border: 1px solid #444;
-    border-radius: 5px;
-    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.8); /* fundo preto semitransparente */
+    color: white; /* texto branco */
+    padding: 6px 10px; /* espaçamento interno */
+    border: 1px solid #444; /* borda cinza escura */
+    border-radius: 5px; /* bordas arredondadas */
+    cursor: pointer; /* cursor de clique */
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: background 0.3s;
+    align-items: center; /* centraliza verticalmente */
+    justify-content: space-between; /* espaça conteúdo */
+    transition: background 0.3s; /* transição suave */
 }
 
 .lang-selected:hover {
-    background-color: black;
-    border-color: #888;
+    background-color: black; /* fundo preto no hover */
+    border-color: #888; /* borda cinza clara */
 }
 
 .lang-options {
-    display: none;
-    position: absolute;
-    bottom: 100%;
+    display: none; /* escondido inicialmente */
+    position: absolute; /* posicionamento absoluto */
+    bottom: 100%; /* acima do botão */
     left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    border: 1px solid #444;
-    border-radius: 5px;
-    margin-bottom: 5px;
-    list-style: none;
+    width: 100%; /* largura total */
+    background-color: rgba(0, 0, 0, 0.9); /* fundo preto semitransparente */
+    border: 1px solid #444; /* borda cinza escura */
+    border-radius: 5px; /* bordas arredondadas */
+    margin-bottom: 5px; /* margem inferior */
+    list-style: none; /* remove marcadores */
     padding: 0;
 }
 
 .lang-options.open {
-    display: block;
+    display: block; /* exibe quando aberto */
 }
 
 .lang-option {
-    padding: 6px 10px;
+    padding: 6px 10px; /* espaçamento interno */
     display: flex;
-    align-items: center;
-    color: #ccc;
-    cursor: pointer;
-    border-bottom: 1px solid #333;
+    align-items: center; /* centraliza verticalmente */
+    color: #ccc; /* texto cinza claro */
+    cursor: pointer; /* cursor de clique */
+    border-bottom: 1px solid #333; /* borda inferior */
 }
 
 .lang-option:last-child {
-    border-bottom: none;
+    border-bottom: none; /* remove borda do último item */
 }
 
 .lang-option:hover {
-    background-color: #333;
-    color: white;
+    background-color: #333; /* fundo cinza escuro no hover */
+    color: white; /* texto branco */
 }
 
 .flag-img {
-    width: 18px;
-    height: auto;
-    margin-right: 8px;
-    border-radius: 2px;
-    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    width: 18px; /* largura da bandeira */
+    height: auto; /* altura proporcional */
+    margin-right: 8px; /* margem direita */
+    border-radius: 2px; /* bordas levemente arredondadas */
+    box-shadow: 0 0 2px rgba(0,0,0,0.5); /* sombra sutil */
 }
 
 .arrow {
-    font-size: 10px;
-    transition: transform 0.3s;
+    font-size: 10px; /* tamanho da seta */
+    transition: transform 0.3s; /* transição de rotação */
 }
 
 .lang-options.open + .lang-selected .arrow {
-    transform: rotate(180deg);
+    transform: rotate(180deg); /* rotaciona seta quando aberto */
 }
 
 /* --- RESPONSIVIDADE --- */
 
-@media (max-width: 768px) {
+@media (max-width: 768px) { /* tablets e menores */
     .score-ui, .kills-ui {
-        font-size: 0.8rem; 
-        padding: 5px;
+        font-size: 0.8rem; /* texto menor */
+        padding: 5px; /* padding reduzido */
     }
     
     .kills-ui {
-        flex-direction: column; 
-        align-items: flex-end;
-        gap: 5px;
+        flex-direction: column; /* disposição vertical */
+        align-items: flex-end; /* alinha à direita */
+        gap: 5px; /* espaçamento reduzido */
     }
 
     .screen h1 {
-        font-size: 2.5rem; 
+        font-size: 2.5rem; /* título menor */
         margin-bottom: 20px;
-        text-align: center;
+        text-align: center; /* centraliza */
     }
 
     .main-menu, .settings-menu, .skins-container {
-        width: 90%;
-        max-width: 400px;
+        width: 90%; /* largura relativa */
+        max-width: 400px; /* largura máxima */
     }
 
     button {
-        padding: 12px 20px;
-        font-size: 1rem;
-        touch-action: manipulation; 
+        padding: 12px 20px; /* espaçamento interno */
+        font-size: 1rem; /* tamanho do texto */
+        touch-action: manipulation; /* melhora interação touch */
     }
 
     .skins-container {
-        gap: 10px;
+        gap: 10px; /* espaçamento reduzido */
     }
 
     .skin-btn img {
-        width: 48px;
+        width: 48px; /* imagem menor */
         height: 48px;
     }
 
     .instructions-list {
-        max-height: 50vh;
-        overflow-y: auto;
-        padding-right: 10px;
+        max-height: 50vh; /* altura máxima */
+        overflow-y: auto; /* scroll vertical */
+        padding-right: 10px; /* espaço para scrollbar */
     }
 
     .language-container {
-        bottom: 10px;
+        bottom: 10px; /* posição ajustada */
         right: 10px;
-        width: 110px;
+        width: 110px; /* largura reduzida */
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 480px) { /* smartphones */
     .screen h1 {
-        font-size: 1.8rem;
+        font-size: 1.8rem; /* título ainda menor */
     }
 
     .main-menu button, 
     .settings-buttons-container button {
-        width: 100%;
-        margin-bottom: 8px;
+        width: 100%; /* largura total */
+        margin-bottom: 8px; /* margem inferior */
     }
 
     .skins-container {
-        flex-wrap: wrap;
+        flex-wrap: wrap; /* permite quebra de linha */
     }
 
     .score-ui {
-        font-size: 0.7rem;
+        font-size: 0.7rem; /* texto muito pequeno */
     }
 }

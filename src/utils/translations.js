@@ -6,7 +6,7 @@ export const LANGUAGES = {
 
 let currentLanguage = LANGUAGES.PT;
 
-// Dicionário com TODOS os textos do seu HTML
+// Dicionário de textos
 const TEXTS = {
     [LANGUAGES.PT]: {
         // HUD
@@ -149,7 +149,7 @@ export function getCurrentLanguage() {
 }
 
 /**
- * Esta função mágica procura os elementos no seu HTML e
+ * Esta função mágica procura os elementos no HTML e
  * substitui o texto sem quebrar os números ou spans.
  */
 function updateStaticHTML() {
