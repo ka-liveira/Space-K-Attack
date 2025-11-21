@@ -1,6 +1,6 @@
-# Space K-Attack 😺🚀
+# Space K-Attack 
 Um gato galáctico, um universo de pixel art e um MONTE de roedores intergalácticos pra detonar. Prepare-se para dizer "só mais um level" até o sol nascer!
-!(https://github.com/user-attachments/assets/60e93b29-9fce-4314-bc6b-42d3b8bc5734)
+<img src="https://github.com/user-attachments/assets/60e93b29-9fce-4314-bc6b-42d3b8bc5734" width="350">
 
 ## 🎮 Sobre o Projeto
 Space K-Attack é pura adrenalina felina em pixel art!
@@ -27,6 +27,7 @@ Com pixel art caprichado, cheio de detalhes fofos, efeitos sonoros que grudam na
 - 🔊 **Efeitos Sonoros Charmosos** - Barulhinhos que vão grudar na sua cabeça
 - 🎯 **"Só Mais Um Level"** - Gameplay viciante que te faz perder a noção do tempo
 
+
 ## 🛠️ Tecnologias Utilizadas
 - **HTML5** - Estrutura do jogo
 - **CSS3** - Estilização e animações
@@ -39,10 +40,12 @@ Com pixel art caprichado, cheio de detalhes fofos, efeitos sonoros que grudam na
 - **[Sfxr](https://www.youtube.com/watch?v=OuRvOCf9mJ4)** - Geração de efeitos sonoros
 - **[Pixel Art Starfields](https://space-spheremaps.itch.io/pixelart-starfields)** - Background espacial
 
+
 ## 🚀 Jogue Agora!
-**[🎮 CLIQUE AQUI PARA JOGAR](https://ka-liveira.github.io/Space-K-Attack)**
+**[CLIQUE AQUI PARA JOGAR](https://ka-liveira.github.io/Space-K-Attack)**
 
 Não precisa instalar nada! Basta clicar no link acima e começar a detonar roedores intergalácticos diretamente no seu navegador! 🐱💥
+
 
 ## 🎯 Como Jogar
 
@@ -55,7 +58,6 @@ Não precisa instalar nada! Basta clicar no link acima e começar a detonar roed
 - **ESC**: Pausa o jogo ⏸️
 
 ### Objetivo
-
 Seu objetivo é sobreviver o máximo de levels possível eliminando ondas de roedores intergalácticos! 
 
 - **Derrote todos os roedores** de cada level para avançar
@@ -65,11 +67,6 @@ Seu objetivo é sobreviver o máximo de levels possível eliminando ondas de roe
 
 
 ## 🙏 Agradecimentos
-
-- [Pixilart](https://www.pixilart.com/) - Plataforma incrível para criar pixel art
-- [iLoveIMG](https://www.iloveimg.com/) - Ferramenta essencial para ajustar imagens
-- [Sfxr Tutorial](https://www.youtube.com/watch?v=OuRvOCf9mJ4) - Por disponibilizar efeitos sonoros retro
-- [Space Spheremaps](https://space-spheremaps.itch.io/pixelart-starfields) - Pelo background espacial lindo
 - [Tutorial de Game Dev](https://www.youtube.com/watch?v=RZ3D39UzqZs&t=2196s) - Por ensinar a criar o jogo do zero
 - Toda a comunidade de game dev indie por inspiração e suporte! 🚀
 
