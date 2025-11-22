@@ -734,11 +734,17 @@ const gameLoop = () => {
   }
 
   powers.forEach((power, index) => {
-    power.update();
+    // 1. O Desenho acontece SEMPRE (para o item não sumir da tela no Game Over)
     power.draw(ctx);
-    if (power.collectedBy(player)) {
-      activatePower(power.type);
-      powers.splice(index, 1);
+
+    // 2. O Movimento e a Coleta só acontecem se o jogo estiver RODANDO
+    if (currentState === GameState.PLAYING) {
+        power.update();
+
+        if (power.collectedBy(player)) {
+            activatePower(power.type);
+            powers.splice(index, 1);
+        }
     }
   });
 
